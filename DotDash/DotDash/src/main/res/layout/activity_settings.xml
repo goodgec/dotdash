@@ -8,10 +8,6 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.groupa.dotdash.dotdash.Settings">
 
-    TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,8 +24,7 @@
         android:text="Text"
         android:id="@+id/incomingTextCheck"
         android:checked="false"
-        android:layout_below="@+id/incomingMessagesLabel"
-        android:layout_alignEnd="@+id/incomingVibrateCheck" />
+        android:layout_below="@+id/incomingMessagesLabel" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -53,12 +48,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/incomingWPMSlider"
-        android:background="#000000"
+        android:background="@android:color/transparent"
         android:indeterminate="false"
         android:progress="15"
         android:max="75"
-        android:layout_alignEnd="@+id/incomingVibrateCheck"
-        android:layout_marginTop="130dp"
-        android:layout_centerVertical="true" />
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentEnd="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Beep"
+        android:id="@+id/incomingBeepCheck"
+        android:layout_below="@+id/incomingLightCheck"
+        android:layout_alignParentStart="true"
+        android:checked="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Words Per Minute:"
+        android:id="@+id/textView"
+        android:layout_below="@+id/incomingBeepCheck"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="15"
+        android:id="@+id/incomingWPMNumber"
+        android:layout_alignTop="@+id/textView"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_marginLeft="20dp" />
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.groupa.dotdash.dotdash;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,13 +11,12 @@ import android.view.MenuItem;
  * Created by barterd on 5/8/14.
  */
 public class DotDash extends Activity {
-    private int currentScreen;
+    protected int currentScreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_contacts);
-        currentScreen = R.id.action_conversations;
     }
 
     @Override
@@ -33,27 +33,39 @@ public class DotDash extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Log.w("ID:", Integer.toString(id));
 
         if (currentScreen == id){
-            return super.onOptionsItemSelected(item);
+            Log.w("if happened:", Integer.toString(currentScreen));
+
+            return true;
+            //return super.onOptionsItemSelected(item);
         }
         switch(id){
             case R.id.action_compose:
                 //go to compose activity
-                startActivity(new Intent(getApplicationContext(), NewMessage.class));
                 currentScreen = R.id.action_compose;
+                Log.w("Curr:", Integer.toString(currentScreen));
+
+                startActivity(new Intent(getApplicationContext(), NewMessage.class));
                 break;
             case R.id.action_conversations:
-                startActivity(new Intent(getApplicationContext(), Conversations.class));
                 currentScreen = R.id.action_conversations;
+                Log.w("Curr:", Integer.toString(currentScreen));
+
+                startActivity(new Intent(getApplicationContext(), Conversations.class));
                 break;
             case R.id.action_contacts:
-                startActivity(new Intent(getApplicationContext(), Contacts.class));
                 currentScreen = R.id.action_contacts;
+                Log.w("Curr:", Integer.toString(currentScreen));
+
+                startActivity(new Intent(getApplicationContext(), Contacts.class));
                 break;
             case R.id.action_settings:
-                startActivity(new Intent(getApplicationContext(), Settings.class));
                 currentScreen = R.id.action_settings;
+                Log.w("Curr:", Integer.toString(currentScreen));
+
+                startActivity(new Intent(getApplicationContext(), Settings.class));
                 break;
 
         }
