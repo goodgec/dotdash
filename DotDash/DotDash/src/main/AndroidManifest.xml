@@ -25,6 +25,10 @@
             android:name="com.groupa.dotdash.dotdash.Contacts"
             android:label="@string/title_activity_contacts" >
         </activity>
+        <activity
+            android:name="com.groupa.dotdash.dotdash.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

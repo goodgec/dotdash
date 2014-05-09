@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.groupa.dotdash.dotdash.Settings">
+
+    TextView
+        android:text="@string/hello_world"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Incoming Messages"
+        android:id="@+id/incomingMessagesLabel"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Text"
+        android:id="@+id/incomingTextCheck"
+        android:checked="false"
+        android:layout_below="@+id/incomingMessagesLabel"
+        android:layout_alignEnd="@+id/incomingVibrateCheck" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vibrate"
+        android:id="@+id/incomingVibrateCheck"
+        android:layout_below="@+id/incomingTextCheck"
+        android:layout_alignStart="@+id/incomingTextCheck"
+        android:checked="false" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Light"
+        android:id="@+id/incomingLightCheck"
+        android:layout_below="@+id/incomingVibrateCheck"
+        android:layout_alignStart="@+id/incomingVibrateCheck"
+        android:checked="false" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/incomingWPMSlider"
+        android:background="#000000"
+        android:indeterminate="false"
+        android:progress="15"
+        android:max="75"
+        android:layout_alignEnd="@+id/incomingVibrateCheck"
+        android:layout_marginTop="130dp"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>
