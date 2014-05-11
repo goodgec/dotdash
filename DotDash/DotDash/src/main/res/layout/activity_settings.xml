@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.groupa.dotdash.dotdash.Settings">
+    tools:context="com.groupa.dotdash.dotdash.SettingsActivity">
 
 
     <TextView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="Text"
         android:id="@+id/incomingTextCheck"
-        android:checked="false"
+        android:checked="true"
         android:layout_below="@+id/incomingMessagesLabel" />
 
     <CheckBox
@@ -33,7 +33,7 @@
         android:id="@+id/incomingVibrateCheck"
         android:layout_below="@+id/incomingTextCheck"
         android:layout_alignStart="@+id/incomingTextCheck"
-        android:checked="false" />
+        android:checked="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/incomingWPMSlider"
+        android:id="@+id/wpmSlider"
         android:background="@android:color/transparent"
         android:indeterminate="false"
         android:progress="15"
@@ -81,8 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="15"
-        android:id="@+id/incomingWPMNumber"
+        android:id="@+id/wpmNumber"
         android:layout_alignTop="@+id/textView"
         android:layout_toRightOf="@+id/textView"
         android:layout_marginLeft="20dp" />

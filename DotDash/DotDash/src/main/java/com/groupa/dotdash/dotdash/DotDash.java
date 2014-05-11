@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 /**
- * Created by barterd on 5/8/14.
+ * Created by barterd on conversations/8/14.
  */
 public class DotDash extends Activity {
     protected int currentScreen;
@@ -47,25 +47,25 @@ public class DotDash extends Activity {
                 currentScreen = R.id.action_compose;
                 Log.w("Curr:", Integer.toString(currentScreen));
 
-                startActivity(new Intent(getApplicationContext(), NewMessage.class));
+                startActivity(new Intent(getApplicationContext(), NewMessageActivity.class));
                 break;
             case R.id.action_conversations:
                 currentScreen = R.id.action_conversations;
                 Log.w("Curr:", Integer.toString(currentScreen));
 
-                startActivity(new Intent(getApplicationContext(), Conversations.class));
+                startActivity(new Intent(getApplicationContext(), ConversationsActivity.class));
                 break;
             case R.id.action_contacts:
                 currentScreen = R.id.action_contacts;
                 Log.w("Curr:", Integer.toString(currentScreen));
 
-                startActivity(new Intent(getApplicationContext(), Contacts.class));
+                startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
                 break;
             case R.id.action_settings:
                 currentScreen = R.id.action_settings;
                 Log.w("Curr:", Integer.toString(currentScreen));
 
-                startActivity(new Intent(getApplicationContext(), Settings.class));
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
 
         }

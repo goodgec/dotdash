@@ -6,13 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class NewMessage extends DotDash {
+public class ContactsActivity extends DotDash {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_message);
-        currentScreen = R.id.action_compose;
+        setContentView(R.layout.activity_contacts);
+        currentScreen = R.id.action_contacts;
+
 
     }
 

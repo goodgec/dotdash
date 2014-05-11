@@ -2,19 +2,19 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 <item android:id="@+id/action_conversations"
-    android:icon="@drawable/ic_launcher"
+    android:icon="@drawable/conversations"
     android:title="@string/title_activity_dot_dash"
     android:showAsAction="ifRoom"/>
 <item android:id="@+id/action_compose"
-    android:icon="@drawable/ic_launcher"
+    android:icon="@drawable/compose"
     android:title="@string/app_name"
     android:showAsAction="ifRoom"/>
 <item android:id="@+id/action_contacts"
-    android:icon="@drawable/ic_launcher"
+    android:icon="@drawable/contacts"
     android:title="@string/title_activity_dot_dash"
     android:showAsAction="ifRoom"/>
 <item android:id="@+id/action_settings"
-    android:icon="@drawable/ic_launcher"
+    android:icon="@drawable/settings"
     android:title="@string/app_name"
     android:showAsAction="ifRoom"/>
 </menu>
