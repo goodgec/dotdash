@@ -3,6 +3,8 @@
     package="com.goodgec.smstester.app" >
 
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
     <application
         android:allowBackup="true"
@@ -18,6 +20,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.goodgec.smstester.app.MainActivity2"
+            android:label="@string/title_activity_main_activity2" >
+        </activity>
+        <!--<receiver android:name="com.goodgec.smstester.app.Receiver">-->
+            <!--<intent-filter android:priority="999999">-->
+                <!--<action android:name=-->
+                    <!--"android.provider.Telephony.SMS_RECEIVED" />-->
+                <!--<data android:scheme="sms" />-->
+                <!--<data android:host="localhost" />-->
+                <!--<data android:port="8901" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
     </application>
 
 </manifest>
