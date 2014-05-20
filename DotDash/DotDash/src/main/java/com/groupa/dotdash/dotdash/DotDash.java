@@ -46,25 +46,25 @@ public class DotDash extends Activity {
                 //go to compose activity
                 currentScreen = R.id.action_compose;
                 Log.w("Curr:", Integer.toString(currentScreen));
-
+                finish();
                 startActivity(new Intent(getApplicationContext(), NewMessageActivity.class));
                 break;
             case R.id.action_conversations:
                 currentScreen = R.id.action_conversations;
                 Log.w("Curr:", Integer.toString(currentScreen));
-
+                finish();
                 startActivity(new Intent(getApplicationContext(), ConversationsActivity.class));
                 break;
             case R.id.action_contacts:
                 currentScreen = R.id.action_contacts;
                 Log.w("Curr:", Integer.toString(currentScreen));
-
+                finish();
                 startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
                 break;
             case R.id.action_settings:
                 currentScreen = R.id.action_settings;
                 Log.w("Curr:", Integer.toString(currentScreen));
-
+                finish();
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
 

@@ -16,12 +16,12 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/imageButton"
-            android:background="#A4A4A4"
+            android:background="@drawable/gray_button"
             android:layout_weight="1"
             android:src="@drawable/lockplay" />
 
         <ImageButton
-            android:background="#848484"
+            android:background="@drawable/dark_gray_button"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:id="@+id/imageButton2"
@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:background="#3e96b8"
+        android:background="@drawable/lock_blue_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/imageButton3"
