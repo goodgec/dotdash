@@ -1,6 +1,7 @@
 package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.Menu;
@@ -21,6 +22,9 @@ public class ContactsActivity extends DotDash {
 //
 //        long[] times = {0, 100, 100, 100, 100, 400, 100, 400, 400, 100};
 //        vibrator.vibrate(times, -1);
+
+
+        displayAlert();
     }
 
 

@@ -1,7 +1,12 @@
 package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +46,9 @@ public class DotDash extends Activity {
         receiveAsVibrate = settings.getBoolean(RECEIVE_AS_VIBRATE_SETTING, true);
         receiveAsLight = settings.getBoolean(RECEIVE_AS_LIGHT_SETTING, false);
         receiveAsBeep = settings.getBoolean(RECEIVE_AS_BEEP_SETTING, false);
+
+        IntentFilter filter = new IntentFilter(Receiver.DOT_DASH_RECEIVED_MESSAGE);
+        this.registerReceiver(newMessageAlertReceiver, filter);
     }
 
     @Override
@@ -109,4 +117,37 @@ public class DotDash extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    protected void displayAlert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("You've Got Mail!").setCancelable(
+                false).setPositiveButton("Listen",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                }).setNegativeButton("Ignore",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private final BroadcastReceiver newMessageAlertReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (Receiver.DOT_DASH_RECEIVED_MESSAGE.equals(action))
+            {
+                //your SMS processing code
+                displayAlert();
+            }
+        }
+    };
 }
