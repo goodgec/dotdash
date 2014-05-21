@@ -6,30 +6,30 @@ package com.groupa.dotdash.dotdash;
 public class Message {
 
     private String text;
-    private Contact from;
-    private Contact to;
-    private int timestamp;
+    private Contact sender;
+    private Contact recipient;
+    private long timestamp;
 
-    public Message(String text, Contact from, Contact to, int timestamp) {
+    public Message(String text, Contact from, Contact to) {
         this.text = text;
-        this.from = from;
-        this.to = to;
-        this.timestamp = timestamp;
+        this.sender = from;
+        this.recipient = to;
+        this.timestamp = System.currentTimeMillis();
     }
 
     public String getText() {
         return text;
     }
 
-    public Contact getFrom() {
-        return from;
+    public Contact getSender() {
+        return sender;
     }
 
-    public Contact getTo() {
-        return to;
+    public Contact getRecipient() {
+        return recipient;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 }

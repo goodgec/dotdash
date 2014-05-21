@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Text"
-        android:id="@+id/incomingTextCheck"
+        android:id="@+id/receiveAsTextCheckBox"
         android:checked="true"
         android:layout_below="@+id/incomingMessagesLabel" />
 
@@ -30,18 +30,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Vibrate"
-        android:id="@+id/incomingVibrateCheck"
-        android:layout_below="@+id/incomingTextCheck"
-        android:layout_alignStart="@+id/incomingTextCheck"
+        android:id="@+id/receiveAsVibrateCheckBox"
+        android:layout_below="@+id/receiveAsTextCheckBox"
+        android:layout_alignStart="@+id/receiveAsTextCheckBox"
         android:checked="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Light"
-        android:id="@+id/incomingLightCheck"
-        android:layout_below="@+id/incomingVibrateCheck"
-        android:layout_alignStart="@+id/incomingVibrateCheck"
+        android:id="@+id/receiveAsLightCheckBox"
+        android:layout_below="@+id/receiveAsVibrateCheckBox"
+        android:layout_alignStart="@+id/receiveAsVibrateCheckBox"
         android:checked="false" />
 
     <SeekBar
@@ -62,8 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Beep"
-        android:id="@+id/incomingBeepCheck"
-        android:layout_below="@+id/incomingLightCheck"
+        android:id="@+id/receiveAsBeepCheckBox"
+        android:layout_below="@+id/receiveAsLightCheckBox"
         android:layout_alignParentStart="true"
         android:checked="false" />
 
@@ -73,7 +73,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Words Per Minute:"
         android:id="@+id/textView"
-        android:layout_below="@+id/incomingBeepCheck"
+        android:layout_below="@+id/receiveAsBeepCheckBox"
         android:layout_alignParentStart="true"
         android:layout_marginTop="27dp" />
 

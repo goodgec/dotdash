@@ -1,126 +1,116 @@
 package com.groupa.dotdash.dotdash;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by himelica on 5/20/14.
  */
 public class Translator {
 
-    public String convertTextToMorse(String text) {
-        String output = "";
+    public static final long MAX_DOT_DURATION = 200;
+    public static final long LETTER_BREAK_DURATION = 300;
+    public static final long SPACE_DURATION = 1000;
+    public static final long ELEMENT_DURATION = 80;
+
+    private static final ArrayList<String> morseAlphaCharacters = new ArrayList<String>(Arrays.asList(".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..",
+            ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--",
+            "-..-", "-.--", "--.."));
+    private static final ArrayList<String> morseNumericCharacters = new ArrayList<String>(Arrays.asList("-----",".----","..---","...--","....-",".....","-....","--...",
+            "---..","----."));
+
+//    public Translator() {}
+
+    public static long[] convertTextToMorse(String text) {
+        String morse = "";
         text = text.toUpperCase();
+
         for (char c : text.toCharArray()) {
-            output += convertCharToMorse(c);
+            morse += convertCharToMorse(c) + "b";
         }
 
-        return output;
+        ArrayList<Long> output = new ArrayList<Long>();
+        output.add((long)0);
+        for (char m : morse.toCharArray()){
+            switch (m) {
+                case '.':
+                    output.add(ELEMENT_DURATION);
+                    break;
+                case '-':
+                    output.add(ELEMENT_DURATION * 3);
+                    break;
+                case 'b':
+                    output.add((long)0);
+                    output.add(ELEMENT_DURATION);
+                    output.add((long)0);
+                    break;
+                case '/':
+                    output.add((long)0);
+                    output.add(ELEMENT_DURATION * 5);
+                    output.add((long)0);
+                    break;
+                default:
+                    break;
+            }
+            output.add(ELEMENT_DURATION);
+        }
+
+        long[] timeOutput = new long[output.size()];
+        for (int i = 0; i < output.size(); i++) {
+            timeOutput[i] = output.get(i);
+        }
+
+        return timeOutput;
     }
 
-    public String convertCharToMorse(char c) {
-        switch(c) {
-            case 'A':
-                return ".-";
-            case 'B':
-                return "-...";
-            case 'C':
-                return "-.-.";
-            case 'D':
-                return "-..";
-            case 'E':
-                return ".";
-            case 'F':
-                return "..-.";
-            case 'G':
-                return "--.";
-            case 'H':
-                return "....";
-            case 'I':
-                return "..";
-            case 'J':
-                return ".---";
-            case 'K':
-                return "-.-";
-            case 'L':
-                return ".-..";
-            case 'M':
-                return "--";
-            case 'N':
-                return "-.";
-            case 'O':
-                return "---";
-            case 'P':
-                return ".--.";
-            case 'Q':
-                return "--.-";
-            case 'R':
-                return ".-.";
-            case 'S':
-                return "...";
-            case 'T':
-                return "-";
-            case 'U':
-                return "..-";
-            case 'V':
-                return "...-";
-            case 'W':
-                return ".--";
-            case 'X':
-                return "-..-";
-            case 'Y':
-                return "-.--";
-            case 'Z':
-                return "--..";
-            case '0':
-                return "-----";
-            case '1':
-                return ".----";
-            case '2':
-                return "..---";
-            case '3':
-                return "...--";
-            case '4':
-                return "....-";
-            case '5':
-                return ".....";
-            case '6':
-                return "-....";
-            case '7':
-                return "--...";
-            case '8':
-                return "---..";
-            case '9':
-                return "----.";
-            case '.':
-                return ".-.-.-";
-            case ',':
-                return "--..--";
-            case ' ':
-                return "/";
-            default:
-                return "...-..-";
+    public static String convertCharToMorse(char c) {
+        if (c == '.') {
+            return ".-.-.-";
+        }
+        else if (c == ',') {
+            return "--..--";
+        }
+        else if (64 < c && c < 90) {
+            return morseAlphaCharacters.get(c - 'A');
+        }
+        else if (47 < c && c <58) {
+            return morseNumericCharacters.get(c - '0');
+        }
+        else if (c == ' '){
+            return "/";
+        }
+        else {
+            return "";
         }
     }
 
-    public String convertMorseToText(ArrayList<Double[]> pressTimes) {
-        String output = "";
-        // press times come from Rn minus Pn
-        // press times 0 to x is .   x to y is -
-        // wait times come from Pn minus Rn-1
-        // if long wait times then its a space
+    public static char convertMorseToText(ArrayList<Long> durations) {
+        String morseText = "";
 
-//        for i in input:
-//            while Pi - Ri-1 is not space:
-//                //creating a word
-//                while Pi - Ri-1 is not letter break:
-//                    // creating a letter
-//                    translate letter
-//                    append letter
-//            append a space
+        for (int i = 0; i < durations.size(); i ++) {
+            if (durations.get(i) <= MAX_DOT_DURATION) {
+                morseText += ".";
+            }
+            else {
+                morseText += "-";
+            }
+        }
 
-
-
-        return output;
+        if (morseAlphaCharacters.contains(morseText)) {
+            return (char) (morseAlphaCharacters.indexOf(morseText) + 'A');
+        }
+        else if (morseNumericCharacters.contains(morseText)) {
+            return (char) (morseNumericCharacters.indexOf(morseText) + '0');
+        }
+        else if (morseText.equals(".-.-.-")) {
+            return '.';
+        }
+        else if (morseText.equals("--..--")) {
+            return ',';
+        }
+        else {
+            return '?';
+        }
     }
-
 }

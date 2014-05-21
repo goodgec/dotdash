@@ -2,6 +2,7 @@ package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,12 +12,48 @@ import android.view.MenuItem;
  * Created by barterd on conversations/8/14.
  */
 public class DotDash extends Activity {
+
+    private final String WPM_SETTING = "wpm";
+    private final String RECEIVE_AS_TEXT_SETTING = "receiveAsText";
+    private final String RECEIVE_AS_VIBRATE_SETTING = "receiveAsVibrate";
+    private final String RECEIVE_AS_LIGHT_SETTING = "receiveAsLight";
+    private final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
+
+    protected int wpm;
+    protected boolean receiveAsText;
+    protected boolean receiveAsVibrate;
+    protected boolean receiveAsLight;
+    protected boolean receiveAsBeep;
+
     protected int currentScreen;
+
+    private SharedPreferences settings;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_contacts);
+
+        settings = getSharedPreferences(DotDash.class.getSimpleName(), Activity.MODE_PRIVATE);
+        editor = settings.edit();
+        wpm = settings.getInt(WPM_SETTING, 15);
+        receiveAsText = settings.getBoolean(RECEIVE_AS_TEXT_SETTING, true);
+        receiveAsVibrate = settings.getBoolean(RECEIVE_AS_VIBRATE_SETTING, true);
+        receiveAsLight = settings.getBoolean(RECEIVE_AS_LIGHT_SETTING, false);
+        receiveAsBeep = settings.getBoolean(RECEIVE_AS_BEEP_SETTING, false);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        editor.putInt(WPM_SETTING, wpm);
+        editor.putBoolean(RECEIVE_AS_TEXT_SETTING, receiveAsText);
+        editor.putBoolean(RECEIVE_AS_VIBRATE_SETTING, receiveAsVibrate);
+        editor.putBoolean(RECEIVE_AS_LIGHT_SETTING, receiveAsLight);
+        editor.putBoolean(RECEIVE_AS_BEEP_SETTING, receiveAsBeep);
+
+        editor.commit();
     }
 
     @Override

@@ -12,7 +12,6 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
         android:id="@+id/newMessageRecipientField"
         android:textSize="20sp"
@@ -35,10 +34,8 @@
         android:layout_alignStart="@+id/morseTapButton" />
 
     <Button
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tap here"
         android:id="@+id/morseTapButton"
         android:layout_below="@+id/newMessageRecipientField"
         android:layout_alignParentStart="true"
@@ -46,11 +43,14 @@
         android:layout_marginTop="29dp"
         android:background="@drawable/blue_button"
         android:textColor="#000100"
+        android:textAlignment="viewStart"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="15dp"
         android:layout_alignParentBottom="true"
         android:clickable="true"
-        android:layout_marginBottom="50dp" />
+        android:layout_marginBottom="50dp"
+        android:hint="Tap Here"
+        android:textColorHint="#000100"/>
 
     <ToggleButton
         android:layout_width="wrap_content"
@@ -61,14 +61,15 @@
         android:id="@+id/toggleButton"
         android:layout_alignBottom="@+id/newMessageRecipientField"
         android:layout_toRightOf="@+id/newMessageRecipientField"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="gone" />
 
-    <ImageButton
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Send"
         android:id="@+id/sendButton"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/morseTapButton"
-        android:background="@drawable/checkmark"/>
+        android:layout_toRightOf="@+id/newMessageRecipientField" />
 
 </RelativeLayout>
