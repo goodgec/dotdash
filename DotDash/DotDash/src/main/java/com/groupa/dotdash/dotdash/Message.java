@@ -32,4 +32,9 @@ public class Message {
     public long getTimestamp() {
         return timestamp;
     }
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }

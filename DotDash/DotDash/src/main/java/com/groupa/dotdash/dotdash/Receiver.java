@@ -19,6 +19,7 @@ public class Receiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         SmsMessage[] msgs = null;
         String message = "";
+        String sender = "";
         if (bundle != null) {
             //---retrieve the SMS message received---
             Object[] pdus = (Object[]) bundle.get("pdus");
@@ -27,10 +28,13 @@ public class Receiver extends BroadcastReceiver {
                 msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
                 message += msgs[i].getMessageBody().toString();
                 message += "\n";
+                sender = msgs[i].getOriginatingAddress();
             }
 
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
             Intent newMessageIntent = new Intent();
+            newMessageIntent.putExtra(DotDash.MESSAGE_SENDER, sender);
+            newMessageIntent.putExtra(DotDash.MESSAGE_TEXT, message);
             newMessageIntent.setAction(DOT_DASH_RECEIVED_MESSAGE);
             context.sendBroadcast(newMessageIntent);
 

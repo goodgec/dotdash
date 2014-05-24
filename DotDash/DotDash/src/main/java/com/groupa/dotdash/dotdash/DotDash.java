@@ -13,16 +13,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.HashMap;
+
 /**
  * Created by barterd on conversations/8/14.
  */
 public class DotDash extends Activity {
 
-    private final String WPM_SETTING = "wpm";
-    private final String RECEIVE_AS_TEXT_SETTING = "receiveAsText";
-    private final String RECEIVE_AS_VIBRATE_SETTING = "receiveAsVibrate";
-    private final String RECEIVE_AS_LIGHT_SETTING = "receiveAsLight";
-    private final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
+    protected static final String WPM_SETTING = "wpm";
+    protected static final String RECEIVE_AS_TEXT_SETTING = "receiveAsText";
+    protected static final String RECEIVE_AS_VIBRATE_SETTING = "receiveAsVibrate";
+    protected static final String RECEIVE_AS_LIGHT_SETTING = "receiveAsLight";
+    protected static final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
+    protected static final String CONTACT_NAME = "contactName";
+    public static final String MESSAGE_SENDER = "messageSender";
+    public static final String MESSAGE_TEXT = "messageText";
 
     protected int wpm;
     protected boolean receiveAsText;
@@ -32,8 +37,10 @@ public class DotDash extends Activity {
 
     protected int currentScreen;
 
+    protected HashMap<String, Contact> addressBook;
+
     private SharedPreferences settings;
-    private SharedPreferences.Editor editor;
+    protected SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +56,6 @@ public class DotDash extends Activity {
 
         IntentFilter filter = new IntentFilter(Receiver.DOT_DASH_RECEIVED_MESSAGE);
         this.registerReceiver(newMessageAlertReceiver, filter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        editor.putInt(WPM_SETTING, wpm);
-        editor.putBoolean(RECEIVE_AS_TEXT_SETTING, receiveAsText);
-        editor.putBoolean(RECEIVE_AS_VIBRATE_SETTING, receiveAsVibrate);
-        editor.putBoolean(RECEIVE_AS_LIGHT_SETTING, receiveAsLight);
-        editor.putBoolean(RECEIVE_AS_BEEP_SETTING, receiveAsBeep);
-
-        editor.commit();
     }
 
     @Override
@@ -118,6 +112,13 @@ public class DotDash extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(newMessageAlertReceiver);
+    }
+
+
     protected void displayAlert()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -145,9 +146,12 @@ public class DotDash extends Activity {
 
             if (Receiver.DOT_DASH_RECEIVED_MESSAGE.equals(action))
             {
-                //your SMS processing code
-                displayAlert();
+//                displayAlert();
+                Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
+                Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, DataManager.getInstance().getMe());
+                sender.getConversation().addMessage(newMessage);
             }
+
         }
     };
 }

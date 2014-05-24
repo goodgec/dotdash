@@ -12,6 +12,7 @@ public class Conversation {
 
     public Conversation(Contact contact) {
         this.contact = contact;
+        messages = new ArrayList<Message>();
     }
 
     public Contact getContact() {
@@ -24,5 +25,9 @@ public class Conversation {
 
     public void addMessage(Message message) {
         messages.add(message);
+    }
+
+    public int size() {
+        return messages.size();
     }
 }

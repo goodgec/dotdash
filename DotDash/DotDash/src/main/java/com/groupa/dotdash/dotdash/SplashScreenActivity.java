@@ -8,9 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends DotDash {
 
-    private static int SPLASH_TIME_OUT = 1000;
+    private static int SPLASH_TIME_OUT = 750;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

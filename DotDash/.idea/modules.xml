@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DotDash.iml" filepath="$PROJECT_DIR$/DotDash.iml" />
       <module fileurl="file://$PROJECT_DIR$/DotDash/DotDash-DotDash.iml" filepath="$PROJECT_DIR$/DotDash/DotDash-DotDash.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DotDash/DotDash-DotDash.iml" filepath="$PROJECT_DIR$/DotDash/DotDash-DotDash.iml" />
     </modules>
   </component>
 </project>

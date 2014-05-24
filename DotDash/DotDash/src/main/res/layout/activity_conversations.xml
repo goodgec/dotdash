@@ -18,10 +18,9 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/conversationList"
+            android:id="@+id/conversationsListView"
             android:layout_gravity="center_horizontal"
             android:choiceMode="singleChoice"
-            android:focusableInTouchMode="true"
-            android:entries="@array/conversations_array" />
+            android:focusableInTouchMode="true" />
     </LinearLayout>
 </RelativeLayout>

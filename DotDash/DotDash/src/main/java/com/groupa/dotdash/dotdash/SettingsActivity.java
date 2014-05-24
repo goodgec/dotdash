@@ -80,4 +80,17 @@ public class SettingsActivity extends DotDash{
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        editor.putInt(WPM_SETTING, wpm);
+        editor.putBoolean(RECEIVE_AS_TEXT_SETTING, receiveAsText);
+        editor.putBoolean(RECEIVE_AS_VIBRATE_SETTING, receiveAsVibrate);
+        editor.putBoolean(RECEIVE_AS_LIGHT_SETTING, receiveAsLight);
+        editor.putBoolean(RECEIVE_AS_BEEP_SETTING, receiveAsBeep);
+
+        editor.commit();
+    }
+
 }

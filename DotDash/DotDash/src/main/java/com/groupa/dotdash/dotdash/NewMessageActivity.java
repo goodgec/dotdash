@@ -1,13 +1,13 @@
 package com.groupa.dotdash.dotdash;
 
-import android.media.Image;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,16 +19,16 @@ public class NewMessageActivity extends DotDash {
 
     private Button morseButton;
     private Button sendButton;
+    private TextView newMessageRecipientField;
 
-    long lastDown;
-    long lastUp;
-    long lastDuration;
-
+    private long lastDown;
+    private long lastDuration;
     private ArrayList<Long> pressTimes;
     private String messageText;
     private Timer charTimer;
     private Timer spaceTimer;
 
+    private DataManager dm;
     private final Handler handler = new Handler();
 
     @Override
@@ -36,8 +36,19 @@ public class NewMessageActivity extends DotDash {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_message);
         currentScreen = R.id.action_compose;
-        morseButton = (Button)findViewById(R.id.morseTapButton);
 
+        newMessageRecipientField = (TextView)findViewById(R.id.newMessageRecipientField);
+
+        Intent intent = getIntent();
+        String recipient = intent.getStringExtra(CONTACT_NAME);
+        if (recipient != null) {
+            newMessageRecipientField.setText(recipient);
+        }
+
+
+        dm = DataManager.getInstance();
+
+        morseButton = (Button)findViewById(R.id.morseTapButton);
         pressTimes = new ArrayList<Long>();
         messageText = "";
         charTimer = new Timer(true);
@@ -93,15 +104,20 @@ public class NewMessageActivity extends DotDash {
             @Override
             public void onClick(View view) {
                 SmsManager manager = SmsManager.getDefault();
-                Contact alby = new Contact("Alby", "7067654085", "a");
-                Contact daniel = new Contact("Daniel", "6177770723", "d");
-                Message message = new Message(messageText, alby, daniel);
+                Contact recipient = dm.getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
 
-                manager.sendTextMessage(message.getRecipient().getNumber(), null, message.getText(), null, null);
-
-                morseButton.setText("");
-                messageText = "";
+                if (recipient != null) {
+                    Message message = new Message(messageText, dm.getMe(), recipient);
+                    recipient.getConversation().addMessage(message);
+                    manager.sendTextMessage(message.getRecipient().getNumber(), null, message.getText(), null, null);
+                    morseButton.setText("");
+                    messageText = "";
+                } else {
+                    Toast.makeText(view.getContext(), "Invalid recipient " + newMessageRecipientField.getText(), Toast.LENGTH_LONG).show();
+                }
             }
         });
+
+
     }
 }
