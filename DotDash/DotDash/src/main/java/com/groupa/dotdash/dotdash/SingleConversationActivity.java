@@ -26,61 +26,11 @@ public class SingleConversationActivity extends DotDash {
     private ArrayList<Message> messageList;
     private String converser;
     private Vibrator vibrator;
+    private BubbleArrayAdapter arrayAdapter;
 
 
     private ListView conversationListView;
     private Button replyButton;
-
-    private class BubbleArrayAdapter extends ArrayAdapter {
-        private ArrayList<Message> messages;
-        private LinearLayout wrapper;
-        private TextView bubbleText;
-
-        public void add(Message message) {
-            super.add(message);
-        }
-
-        public BubbleArrayAdapter(Context context, int resource, ArrayList<Message> messages) {
-            super(context, resource);
-            this.messages = messages;
-        }
-
-        public int getCount() {
-            return messages.size();
-        }
-
-        public Message getItem (int index) {
-            return messages.get(index);
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View row = convertView;
-            if (row == null){
-                LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                row = inflater.inflate(R.layout.activity_single_conversation, parent, false);
-            }
-
-            wrapper = (LinearLayout) row.findViewById(R.id.wrapper);
-
-            Message message = getItem(position);
-
-            if (message.getSender().equals(dm.getMe())) {
-                bubbleText = (TextView) row.findViewById(R.id.rightBubbleText);
-                bubbleText.setText(message.getText());
-                bubbleText.setBackgroundResource(R.drawable.rightbubble);
-                wrapper.setGravity(Gravity.RIGHT);
-            }
-            else {
-                bubbleText = (TextView) row.findViewById(R.id.leftBubbleText);
-                bubbleText.setText(message.getText());
-                bubbleText.setBackgroundResource(R.drawable.leftbubble);
-                wrapper.setGravity(Gravity.LEFT);
-            }
-
-            return row;
-        }
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +51,8 @@ public class SingleConversationActivity extends DotDash {
 
         messageList = dm.getAddressBookNamesMap().get(converser).getConversation().getMessages();
         conversationListView = (ListView)findViewById(R.id.conversationListView);
-        arrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
-        //arrayAdapter = new BubbleArrayAdapter(this, R.layout.activity_single_conversation, messageList);
+        //arrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
+        arrayAdapter = new BubbleArrayAdapter(this, R.layout.speech_bubble, messageList);
         conversationListView.setAdapter(arrayAdapter);
         //addItems();
 

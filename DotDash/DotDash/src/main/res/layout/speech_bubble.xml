@@ -2,16 +2,18 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:gravity="right"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:id="@+id/wrapper">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rightbubble"
+        android:background="@drawable/leftbubble"
         android:text="Medium Text"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:id="@+id/rightBubbleText" />
+        android:id="@+id/bubbleText" />
 
 </LinearLayout>
