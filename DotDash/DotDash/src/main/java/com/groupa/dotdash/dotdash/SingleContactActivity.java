@@ -28,7 +28,7 @@ public class SingleContactActivity extends DotDash {
         getActionBar().setTitle(contact.getName());
         contactNumberTextView = (TextView)findViewById(R.id.phoneNumberTextView);
         contactIDTextView = (TextView)findViewById(R.id.contactIDTextView);
-        contactIDTextView.setText(contact.getId());
+        contactIDTextView.setText(contact.getMorseID());
         contactNumberTextView.setText(contact.getNumber());
 
         sendMessageFromSingleContactButton = (Button) findViewById(R.id.sendMessageFromSingleContactButton);

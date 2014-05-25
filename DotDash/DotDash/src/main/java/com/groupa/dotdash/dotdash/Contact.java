@@ -5,20 +5,22 @@ package com.groupa.dotdash.dotdash;
  */
 public class Contact implements Comparable<Contact> {
 
+    private long id;
     private String name;
     private String number;
-    private String id;
+    private String morseID;
     private Conversation conversation;
 
-    public Contact(String name, String number) {
+    public Contact(long id, String name, String number) {
+        this.id = id;
         this.number = number;
         this.name = name;
         conversation = new Conversation(this);
     }
 
-    public Contact(String name, String number, String id) {
-        this(name, number);
-        this.id = id;
+    public Contact(long id, String name, String number, String morseID) {
+        this(id, name, number);
+        this.morseID = morseID;
     }
 
     public Conversation getConversation() {
@@ -45,12 +47,12 @@ public class Contact implements Comparable<Contact> {
         this.number = number;
     }
 
-    public String getId() {
-        return id;
+    public String getMorseID() {
+        return morseID;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMorseID(String morseID) {
+        this.morseID = morseID;
     }
 
     @Override

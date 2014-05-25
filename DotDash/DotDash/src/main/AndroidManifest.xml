@@ -35,6 +35,10 @@
             android:name="com.groupa.dotdash.dotdash.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
+        <activity
+            android:name="com.groupa.dotdash.dotdash.CreateContactActivity"
+            android:label="@string/title_activity_create_contact" >
+        </activity>
 
         <receiver android:name="com.groupa.dotdash.dotdash.LockScreenWidget" >
             <intent-filter>

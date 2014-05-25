@@ -107,9 +107,9 @@ public class NewMessageActivity extends DotDash {
                 Contact recipient = dm.getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
 
                 if (recipient != null) {
-                    Message message = new Message(messageText, dm.getMe(), recipient);
+                    Message message = new Message(messageText, recipient, true);
                     recipient.getConversation().addMessage(message);
-                    manager.sendTextMessage(message.getRecipient().getNumber(), null, message.getText(), null, null);
+                    manager.sendTextMessage(message.getContact().getNumber(), null, message.getText(), null, null);
                     morseButton.setText("");
                     messageText = "";
                 } else {

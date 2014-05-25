@@ -6,14 +6,14 @@ package com.groupa.dotdash.dotdash;
 public class Message {
 
     private String text;
-    private Contact sender;
-    private Contact recipient;
+    private Contact contact;
+    private boolean sentMessage;
     private long timestamp;
 
-    public Message(String text, Contact from, Contact to) {
+    public Message(String text, Contact contact, boolean sentMessage) {
         this.text = text;
-        this.sender = from;
-        this.recipient = to;
+        this.contact = contact;
+        this.sentMessage = sentMessage;
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -21,12 +21,12 @@ public class Message {
         return text;
     }
 
-    public Contact getSender() {
-        return sender;
+    public Contact getContact() {
+        return contact;
     }
 
-    public Contact getRecipient() {
-        return recipient;
+    public boolean isSentMessage() {
+        return sentMessage;
     }
 
     public long getTimestamp() {

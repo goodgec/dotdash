@@ -64,7 +64,7 @@ public class SingleConversationActivity extends DotDash {
 
             Message message = getItem(position);
 
-            if (message.getSender().equals(dm.getMe())) {
+            if (message.isSentMessage()) {
                 bubbleText = (TextView) row.findViewById(R.id.rightBubbleText);
                 bubbleText.setText(message.getText());
                 bubbleText.setBackgroundResource(R.drawable.rightbubble);

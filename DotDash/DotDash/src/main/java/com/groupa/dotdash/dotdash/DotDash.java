@@ -21,6 +21,8 @@ import java.util.HashMap;
  */
 public class DotDash extends Activity {
 
+    public static Context appContext;
+
     protected static final String WPM_SETTING = "wpm";
     protected static final String RECEIVE_AS_TEXT_SETTING = "receiveAsText";
     protected static final String RECEIVE_AS_VIBRATE_SETTING = "receiveAsVibrate";
@@ -150,7 +152,7 @@ public class DotDash extends Activity {
             {
 //                displayAlert();
                 Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
-                Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, DataManager.getInstance().getMe());
+                Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false);
                 sender.getConversation().addMessage(newMessage);
                 if (arrayAdapter != null) {
                     arrayAdapter.add(newMessage);

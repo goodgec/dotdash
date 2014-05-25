@@ -18,6 +18,8 @@ public class SplashScreenActivity extends DotDash {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_sceen);
 
+        appContext = getApplicationContext();
+
         // show splash screen for 3 seconds
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -32,7 +34,7 @@ public class SplashScreenActivity extends DotDash {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.splash_sceen, menu);
         return true;
