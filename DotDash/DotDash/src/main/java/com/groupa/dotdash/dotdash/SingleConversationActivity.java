@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,9 +36,7 @@ public class SingleConversationActivity extends DotDash {
         private LinearLayout wrapper;
         private TextView bubbleText;
 
-        @Override
         public void add(Message message) {
-            messages.add(message);
             super.add(message);
         }
 
@@ -58,7 +57,7 @@ public class SingleConversationActivity extends DotDash {
             View row = convertView;
             if (row == null){
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                row = inflater.inflate(R.id.conversationListView, parent, false);
+                row = inflater.inflate(R.layout.activity_single_conversation, parent, false);
             }
 
             wrapper = (LinearLayout) row.findViewById(R.id.wrapper);
@@ -68,11 +67,17 @@ public class SingleConversationActivity extends DotDash {
             if (message.getSender().equals(dm.getMe())) {
                 bubbleText = (TextView) row.findViewById(R.id.rightBubbleText);
                 bubbleText.setText(message.getText());
-                
+                bubbleText.setBackgroundResource(R.drawable.rightbubble);
+                wrapper.setGravity(Gravity.RIGHT);
+            }
+            else {
+                bubbleText = (TextView) row.findViewById(R.id.leftBubbleText);
+                bubbleText.setText(message.getText());
+                bubbleText.setBackgroundResource(R.drawable.leftbubble);
+                wrapper.setGravity(Gravity.LEFT);
             }
 
-            bubbleText = (TextView) row.findViewById(R.);
-
+            return row;
         }
     }
 
@@ -96,10 +101,10 @@ public class SingleConversationActivity extends DotDash {
 
         messageList = dm.getAddressBookNamesMap().get(converser).getConversation().getMessages();
         conversationListView = (ListView)findViewById(R.id.conversationListView);
-        ArrayAdapter<Message> arrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
-        //BubbleArrayAdapter arrayAdapter = new BubbleArrayAdapter(this);
-
+        arrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
+        //arrayAdapter = new BubbleArrayAdapter(this, R.layout.activity_single_conversation, messageList);
         conversationListView.setAdapter(arrayAdapter);
+        //addItems();
 
         conversationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -126,7 +131,7 @@ public class SingleConversationActivity extends DotDash {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this .s items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.single_conversation, menu);
         return true;
     }
@@ -142,5 +147,11 @@ public class SingleConversationActivity extends DotDash {
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    private void addItems(){
+//        for(Message m : messageList){
+//            arrayAdapter.add(m);
+//        }
+//    }
 
 }

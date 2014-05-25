@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import java.util.HashMap;
 
@@ -36,6 +37,7 @@ public class DotDash extends Activity {
     protected boolean receiveAsBeep;
 
     protected int currentScreen;
+    protected ArrayAdapter<Message> arrayAdapter;
 
     protected HashMap<String, Contact> addressBook;
 
@@ -150,6 +152,9 @@ public class DotDash extends Activity {
                 Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
                 Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, DataManager.getInstance().getMe());
                 sender.getConversation().addMessage(newMessage);
+                if (arrayAdapter != null) {
+                    arrayAdapter.add(newMessage);
+                }
             }
 
         }
