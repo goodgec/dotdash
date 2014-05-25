@@ -3,7 +3,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:weightSum="10">
+    android:weightSum="10"
+    android:id="@+id/wrapper"
+    android:focusable="false">
 
     <ListView
         android:layout_width="match_parent"
