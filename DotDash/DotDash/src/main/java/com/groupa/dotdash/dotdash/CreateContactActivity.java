@@ -1,6 +1,7 @@
 package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +38,8 @@ public class CreateContactActivity extends Activity {
                 DataManager.getInstance().addContact(nameField.getText().toString(),
                         numberField.getText().toString(),
                         idField.getText().toString());
+                finish();
+                startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
             }
         });
     }
@@ -44,7 +47,7 @@ public class CreateContactActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.create_contact, menu);
         return true;

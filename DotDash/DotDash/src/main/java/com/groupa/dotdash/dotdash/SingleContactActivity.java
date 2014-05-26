@@ -15,6 +15,7 @@ public class SingleContactActivity extends DotDash {
     private TextView contactNumberTextView;
     private TextView contactIDTextView;
     private Button sendMessageFromSingleContactButton;
+    private Button deleteContactButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,23 @@ public class SingleContactActivity extends DotDash {
             }
         });
 
+        deleteContactButton = (Button) findViewById(R.id.deleteContactButton);
+        deleteContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DataManager.getInstance().removeContact(contact);
+                finish();
+                startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
+            }
+        });
+
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.single_contact, menu);
         return true;

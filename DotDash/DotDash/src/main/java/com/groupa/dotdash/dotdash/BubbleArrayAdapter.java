@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by barterd on 5/25/14.
  */
-class BubbleArrayAdapter extends ArrayAdapter<Message> {
+public class BubbleArrayAdapter extends ArrayAdapter<Message> {
     private ArrayList<Message> messages;
     private TextView bubbleText;
     private int layoutResource;
@@ -61,7 +61,7 @@ class BubbleArrayAdapter extends ArrayAdapter<Message> {
 
         LinearLayout wrapper = (LinearLayout)row.findViewById(R.id.wrapper);
 
-        if (message.getSender().equals(DataManager.getInstance().getMe())) {
+        if (message.getContact().equals(DataManager.getInstance().getMe())) {
             bubbleText = (TextView) row.findViewById(R.id.bubbleText);
             bubbleText.setText(message.getText());
             bubbleText.setBackgroundResource(R.drawable.rightbubble);

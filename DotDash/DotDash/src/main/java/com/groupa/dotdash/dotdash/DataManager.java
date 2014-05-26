@@ -3,6 +3,8 @@ package com.groupa.dotdash.dotdash;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +64,7 @@ public class DataManager {
     }
 
     private Contact createContact(Cursor c) {
-        Contact contact = new Contact(0, c.getString(0), c.getString(1), c.getString(2));
+        Contact contact = new Contact(0, c.getString(1), c.getString(2), c.getString(3));
         return contact;
     }
 
@@ -78,6 +80,13 @@ public class DataManager {
         Contact contact = new Contact(newRowId, name, number, id);
         addressBookNames.put(contact.getName(), contact);
         addressBookNumbers.put(contact.getNumber(), contact);
+    }
+
+    public void removeContact(Contact contact){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(DotDashContract.ContactsTable.TABLE_NAME, DotDashContract.ContactsTable.COLUMN_NAME_NAME + " =? ", new String[] {contact.getName()});
+        addressBookNumbers.remove(contact.getNumber());
+        addressBookNames.remove(contact.getName());
     }
 
     public static DataManager getInstance() {

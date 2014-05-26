@@ -80,7 +80,7 @@ public class SingleConversationActivity extends DotDash {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this .s items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.single_conversation, menu);
         return true;
