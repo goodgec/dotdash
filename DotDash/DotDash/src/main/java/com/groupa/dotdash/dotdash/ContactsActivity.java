@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -13,7 +14,9 @@ import java.util.ArrayList;
 public class ContactsActivity extends DotDash {
     private ArrayList<Contact> contactsList;
     private DataManager dm;
+
     private ListView contactsListView;
+    private Button newContactButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +36,16 @@ public class ContactsActivity extends DotDash {
                 Intent nameIntent = new Intent(getApplicationContext(), SingleContactActivity.class);
                 nameIntent.putExtra("contactName", ((Contact)adapterView.getItemAtPosition(pos)).getName());
                 startActivity(nameIntent);
-//                startActivityForResult(nameIntent, RESULT_OK);
             }
         });
 
-//        // Vibrator stuff:
-//        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-//
-//        long[] times = {0, 100, 100, 100, 100, 400, 100, 400, 400, 100};
-//        vibrator.vibrate(times, -1);
-
-
-//        displayAlert();
+        newContactButton = (Button)findViewById(R.id.newContactButton);
+        newContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(), CreateContactActivity.class));
+            }
+        });
     }
 
 //    @Override
