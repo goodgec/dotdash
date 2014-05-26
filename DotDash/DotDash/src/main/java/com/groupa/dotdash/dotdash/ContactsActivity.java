@@ -35,8 +35,9 @@ public class ContactsActivity extends DotDash {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Intent nameIntent = new Intent(getApplicationContext(), SingleContactActivity.class);
-                nameIntent.putExtra("contactName", ((Contact)adapterView.getItemAtPosition(pos)).getName());
+                nameIntent.putExtra(CONTACT_NAME, ((Contact)adapterView.getItemAtPosition(pos)).getName());
                 startActivity(nameIntent);
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -45,6 +46,7 @@ public class ContactsActivity extends DotDash {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(view.getContext(), CreateContactActivity.class));
+                overridePendingTransition(0, 0);
             }
         });
     }

@@ -27,7 +27,7 @@ public class Receiver extends BroadcastReceiver {
             for (int i=0; i<msgs.length; i++) {
                 msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
                 message += msgs[i].getMessageBody().toString();
-                message += "\n";
+                message += "";//this was adding a newline, it made things look bad.
                 sender = msgs[i].getOriginatingAddress();
             }
 

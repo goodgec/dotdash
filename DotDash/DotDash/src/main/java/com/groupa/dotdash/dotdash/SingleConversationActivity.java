@@ -26,8 +26,6 @@ public class SingleConversationActivity extends DotDash {
     private ArrayList<Message> messageList;
     private String converser;
     private Vibrator vibrator;
-    private BubbleArrayAdapter arrayAdapter;
-
 
     private ListView conversationListView;
     private Button replyButton;
@@ -51,9 +49,9 @@ public class SingleConversationActivity extends DotDash {
 
         messageList = dm.getAddressBookNamesMap().get(converser).getConversation().getMessages();
         conversationListView = (ListView)findViewById(R.id.conversationListView);
-        //arrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
-        arrayAdapter = new BubbleArrayAdapter(this, R.layout.speech_bubble, messageList);
-        conversationListView.setAdapter(arrayAdapter);
+        //speechBubbleArrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
+        speechBubbleArrayAdapter = new BubbleArrayAdapter(this, R.layout.speech_bubble, messageList);
+        conversationListView.setAdapter(speechBubbleArrayAdapter);
         //addItems();
 
         conversationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,36 +70,32 @@ public class SingleConversationActivity extends DotDash {
                 newMessageIntent.putExtra(CONTACT_NAME, converser);
 //                newMessageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(newMessageIntent);
+                overridePendingTransition(0, 0);
                 finish();
             }
         });
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this .s items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.single_conversation, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-//    private void addItems(){
-//        for(Message m : messageList){
-//            arrayAdapter.add(m);
-//        }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        // Inflate the menu; this .s items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.single_conversation, menu);
+//        return super.onCreateOptionsMenu(menu);
 //    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
 
 }

@@ -18,7 +18,6 @@ public class ConversationsActivity extends DotDash {
     private DataManager dm;
 
     private ListView conversationsListView;
-    private Button replyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +45,7 @@ public class ConversationsActivity extends DotDash {
                 Intent nameIntent = new Intent(getApplicationContext(), SingleConversationActivity.class);
                 nameIntent.putExtra("contactName", ((Contact)adapterView.getItemAtPosition(pos)).getName());
                 startActivity(nameIntent);
+                overridePendingTransition(0, 0);
             }
         });
     }

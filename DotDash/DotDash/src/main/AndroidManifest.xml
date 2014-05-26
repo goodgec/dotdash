@@ -37,7 +37,8 @@
         </activity>
         <activity
             android:name="com.groupa.dotdash.dotdash.CreateContactActivity"
-            android:label="@string/title_activity_create_contact" >
+            android:label="@string/title_activity_create_contact"
+            android:parentActivityName="com.groupa.dotdash.dotdash.ContactsActivity" >
         </activity>
 
         <receiver android:name="com.groupa.dotdash.dotdash.LockScreenWidget" >
@@ -68,7 +69,8 @@
 
         <activity
             android:name="com.groupa.dotdash.dotdash.SingleConversationActivity"
-            android:label="@string/title_activity_single_conversation" >
+            android:label="@string/title_activity_single_conversation"
+            android:parentActivityName=".ConversationsActivity" >
         </activity>
     </application>
 

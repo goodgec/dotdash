@@ -15,6 +15,7 @@ public class Contact implements Comparable<Contact> {
         this.id = id;
         this.number = number;
         this.name = name;
+        this.morseID = "";
         conversation = new Conversation(this);
     }
 

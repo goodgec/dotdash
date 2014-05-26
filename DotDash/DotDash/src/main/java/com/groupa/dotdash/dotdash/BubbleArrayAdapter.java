@@ -63,11 +63,11 @@ public class BubbleArrayAdapter extends ArrayAdapter<Message> {
         bubbleText = (TextView) row.findViewById(R.id.bubbleText);
         bubbleText.setText(message.getText());
         if (message.isSentMessage()) {
-            bubbleText.setBackgroundResource(R.drawable.right);
+            bubbleText.setBackgroundResource(R.drawable.gpright);
             wrapper.setGravity(Gravity.RIGHT);
         }
         else {
-            bubbleText.setBackgroundResource(R.drawable.left);
+            bubbleText.setBackgroundResource(R.drawable.gpleft);
             wrapper.setGravity(Gravity.LEFT);
         }
 

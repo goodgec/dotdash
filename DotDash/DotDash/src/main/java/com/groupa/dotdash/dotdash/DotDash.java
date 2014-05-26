@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -29,6 +30,8 @@ public class DotDash extends Activity {
     protected static final String RECEIVE_AS_LIGHT_SETTING = "receiveAsLight";
     protected static final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
     protected static final String CONTACT_NAME = "contactName";
+    //protected static final String CONTACT_NUMBER = "contactNumber";
+    //protected static final String CONTACT_ID = "contactID";
     public static final String MESSAGE_SENDER = "messageSender";
     public static final String MESSAGE_TEXT = "messageText";
 
@@ -39,7 +42,7 @@ public class DotDash extends Activity {
     protected boolean receiveAsBeep;
 
     protected int currentScreen;
-    protected ArrayAdapter<Message> arrayAdapter;
+    protected BubbleArrayAdapter speechBubbleArrayAdapter;
 
     protected HashMap<String, Contact> addressBook;
 
@@ -78,6 +81,8 @@ public class DotDash extends Activity {
         int id = item.getItemId();
         Log.w("ID:", Integer.toString(id));
 
+        //Toast.makeText(this, "Selected" + String.valueOf(id), Toast.LENGTH_LONG).show();
+
         if (currentScreen == id){
             Log.w("if happened:", Integer.toString(currentScreen));
 
@@ -89,26 +94,34 @@ public class DotDash extends Activity {
                 //go to compose activity
                 currentScreen = R.id.action_compose;
                 Log.w("Curr:", Integer.toString(currentScreen));
-                finish();
                 startActivity(new Intent(getApplicationContext(), NewMessageActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+
                 break;
             case R.id.action_conversations:
                 currentScreen = R.id.action_conversations;
                 Log.w("Curr:", Integer.toString(currentScreen));
-                finish();
                 startActivity(new Intent(getApplicationContext(), ConversationsActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+
                 break;
             case R.id.action_contacts:
                 currentScreen = R.id.action_contacts;
                 Log.w("Curr:", Integer.toString(currentScreen));
-                finish();
                 startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+
                 break;
             case R.id.action_settings:
                 currentScreen = R.id.action_settings;
                 Log.w("Curr:", Integer.toString(currentScreen));
-                finish();
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+
                 break;
 
         }
@@ -154,8 +167,8 @@ public class DotDash extends Activity {
                 Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
                 Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false);
                 sender.getConversation().addMessage(newMessage);
-                if (arrayAdapter != null) {
-                    arrayAdapter.add(newMessage);
+                if (speechBubbleArrayAdapter != null) {
+                    speechBubbleArrayAdapter.add(newMessage);
                 }
             }
 

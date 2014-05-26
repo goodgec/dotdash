@@ -108,6 +108,10 @@ public class NewMessageActivity extends DotDash {
 
                 if (recipient != null) {
                     Message message = new Message(messageText, recipient, true);
+                    if (message.getText().length() == 0) {
+                        Toast.makeText(view.getContext(), "Invalid empty text", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     recipient.getConversation().addMessage(message);
                     manager.sendTextMessage(message.getContact().getNumber(), null, message.getText(), null, null);
                     morseButton.setText("");
