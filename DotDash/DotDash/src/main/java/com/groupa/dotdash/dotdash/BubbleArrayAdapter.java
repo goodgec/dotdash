@@ -60,18 +60,14 @@ public class BubbleArrayAdapter extends ArrayAdapter<Message> {
         }
 
         LinearLayout wrapper = (LinearLayout)row.findViewById(R.id.wrapper);
-
-        if (message.getContact().equals(DataManager.getInstance().getMe())) {
-            bubbleText = (TextView) row.findViewById(R.id.bubbleText);
-            bubbleText.setText(message.getText());
-            bubbleText.setBackgroundResource(R.drawable.rightbubble);
+        bubbleText = (TextView) row.findViewById(R.id.bubbleText);
+        bubbleText.setText(message.getText());
+        if (message.isSentMessage()) {
+            bubbleText.setBackgroundResource(R.drawable.right);
             wrapper.setGravity(Gravity.RIGHT);
         }
         else {
-            bubbleText = (TextView) row.findViewById(R.id.bubbleText);
-            bubbleText.setText(message.getText());
-            bubbleText.setBackgroundResource(R.drawable.leftbubble);
-            bubbleText.setGravity(Gravity.LEFT);
+            bubbleText.setBackgroundResource(R.drawable.left);
             wrapper.setGravity(Gravity.LEFT);
         }
 
