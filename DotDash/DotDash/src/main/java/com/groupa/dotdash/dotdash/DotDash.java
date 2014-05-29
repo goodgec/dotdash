@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +35,8 @@ public class DotDash extends Activity {
     //protected static final String CONTACT_ID = "contactID";
     public static final String MESSAGE_SENDER = "messageSender";
     public static final String MESSAGE_TEXT = "messageText";
+    public static final String MESSAGE_TIMESTAMP = "messageTimestamp";
+    public static final int DEFAULT_WPM = 15;
 
     protected int wpm;
     protected boolean receiveAsText;
@@ -43,6 +46,7 @@ public class DotDash extends Activity {
 
     protected int currentScreen;
     protected BubbleArrayAdapter speechBubbleArrayAdapter;
+    protected ArrayAdapter<Contact> conversationsActivityArrayAdapter;
 
     protected HashMap<String, Contact> addressBook;
 
@@ -55,7 +59,7 @@ public class DotDash extends Activity {
 
         settings = getSharedPreferences(DotDash.class.getSimpleName(), Activity.MODE_PRIVATE);
         editor = settings.edit();
-        wpm = settings.getInt(WPM_SETTING, 15);
+        wpm = settings.getInt(WPM_SETTING, DEFAULT_WPM);
         receiveAsText = settings.getBoolean(RECEIVE_AS_TEXT_SETTING, true);
         receiveAsVibrate = settings.getBoolean(RECEIVE_AS_VIBRATE_SETTING, true);
         receiveAsLight = settings.getBoolean(RECEIVE_AS_LIGHT_SETTING, false);
@@ -95,32 +99,32 @@ public class DotDash extends Activity {
                 currentScreen = R.id.action_compose;
                 Log.w("Curr:", Integer.toString(currentScreen));
                 startActivity(new Intent(getApplicationContext(), NewMessageActivity.class));
-                overridePendingTransition(0, 0);
                 finish();
+                overridePendingTransition(0, 0);
 
                 break;
             case R.id.action_conversations:
                 currentScreen = R.id.action_conversations;
                 Log.w("Curr:", Integer.toString(currentScreen));
                 startActivity(new Intent(getApplicationContext(), ConversationsActivity.class));
-                overridePendingTransition(0, 0);
                 finish();
+                overridePendingTransition(0, 0);
 
                 break;
             case R.id.action_contacts:
                 currentScreen = R.id.action_contacts;
                 Log.w("Curr:", Integer.toString(currentScreen));
                 startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
-                overridePendingTransition(0, 0);
                 finish();
+                overridePendingTransition(0, 0);
 
                 break;
             case R.id.action_settings:
                 currentScreen = R.id.action_settings;
                 Log.w("Curr:", Integer.toString(currentScreen));
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                overridePendingTransition(0, 0);
                 finish();
+                overridePendingTransition(0, 0);
 
                 break;
 
@@ -165,10 +169,23 @@ public class DotDash extends Activity {
             {
 //                displayAlert();
                 Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
-                Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false);
-                sender.getConversation().addMessage(newMessage);
-                if (speechBubbleArrayAdapter != null) {
-                    speechBubbleArrayAdapter.add(newMessage);
+                if (sender != null) {
+                    Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false, intent.getLongExtra(MESSAGE_TIMESTAMP,0));
+                    if (sender.getConversation().isDuplicate(newMessage)) {
+                        return;
+                    }
+                    sender.getConversation().addMessage(newMessage);
+                    DataManager.getInstance().addMessageToDb(newMessage);
+                    if (speechBubbleArrayAdapter != null) {
+                        speechBubbleArrayAdapter.add(newMessage);
+                        speechBubbleArrayAdapter.notifyDataSetChanged();
+                    }
+
+                    if (sender.getConversation().size() == 0 && conversationsActivityArrayAdapter != null) {
+                        conversationsActivityArrayAdapter.add(sender);
+                        conversationsActivityArrayAdapter.notifyDataSetChanged();
+                    }
+
                 }
             }
 

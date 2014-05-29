@@ -114,6 +114,7 @@ public class NewMessageActivity extends DotDash {
                     }
                     recipient.getConversation().addMessage(message);
                     manager.sendTextMessage(message.getContact().getNumber(), null, message.getText(), null, null);
+                    dm.addMessageToDb(message);
                     morseButton.setText("");
                     messageText = "";
                 } else {

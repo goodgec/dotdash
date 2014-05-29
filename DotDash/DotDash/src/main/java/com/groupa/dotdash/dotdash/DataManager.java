@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,61 +29,86 @@ public class DataManager {
         populateAddressBooks();
     }
 
-    private void populateAddressBooks() {
-        // load things from file.
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-//        String[] projection = {
-//                DotDashContract.ContactsTable._ID,
-//                DotDashContract.ContactsTable.COLUMN_NAME_NAME,
-//                DotDashContract.ContactsTable.COLUMN_NAME_NUMBER,
-//                DotDashContract.ContactsTable.COLUMN_NAME_MORSE_ID
-//        };
-
-        Cursor c = db.query(DotDashContract.ContactsTable.TABLE_NAME, null, null, null, null, null, null);
-        c.moveToFirst();
-        while (c.moveToNext()) {
-            Contact contact = createContact(c);
-            addressBookNames.put(contact.getName(), contact);
-            addressBookNumbers.put(contact.getNumber(), contact);
-        }
-
-
-//        Contact alby = new Contact("Alby", "7067654085", "a");
-//        Contact daniel = new Contact("Daniel", "6177770723", "d");
-//        Contact rachel = new Contact("Rachel", "2052422946", "r");
-//
-//        addressBookNames.put(alby.getName(), alby);
-//        addressBookNames.put(daniel.getName(), daniel);
-//        addressBookNames.put(rachel.getName(), rachel);
-//
-//        addressBookNumbers.put(alby.getNumber(), alby);
-//        addressBookNumbers.put(daniel.getNumber(), daniel);
-//        addressBookNumbers.put(rachel.getNumber(), rachel);
-    }
-
-    private Contact createContact(Cursor c) {
-        Contact contact = new Contact(0, c.getString(1), c.getString(2), c.getString(3));
-        return contact;
-    }
-
-    public void addContact(String name, String number, String id) {
+    public void addContactToDb(Contact contact) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DotDashContract.ContactsTable.COLUMN_NAME_NAME, name);
-        values.put(DotDashContract.ContactsTable.COLUMN_NAME_NUMBER, number);
-        values.put(DotDashContract.ContactsTable.COLUMN_NAME_MORSE_ID, id);
+        values.put(DotDashContract.ContactsTable.COLUMN_NAME_NAME, contact.getName());
+        values.put(DotDashContract.ContactsTable.COLUMN_NAME_NUMBER, contact.getNumber());
+        values.put(DotDashContract.ContactsTable.COLUMN_NAME_MORSE_ID, contact.getMorseID());
 
         long newRowId = db.insert(DotDashContract.ContactsTable.TABLE_NAME, null, values);
-        Contact contact = new Contact(newRowId, name, number, id);
+        contact.setInternalID(newRowId);
         addressBookNames.put(contact.getName(), contact);
         addressBookNumbers.put(contact.getNumber(), contact);
     }
 
+    private Contact createContactFromDb(Cursor c) {
+        Contact contact = new Contact(c.getInt(0), c.getString(1), c.getString(2), c.getString(3));
+        return contact;
+    }
+
+    private void populateAddressBooks() {
+        // load things from file.
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor c = db.query(DotDashContract.ContactsTable.TABLE_NAME, null, null, null, null, null, null);
+        c.moveToFirst();
+        while (c.moveToNext()) {
+            Contact contact = createContactFromDb(c);
+            addressBookNames.put(contact.getName(), contact);
+            addressBookNumbers.put(contact.getNumber(), contact);
+//            populateConversation(contact, db);
+        }
+        db.close();
+
+        for (Contact contact : getAddressBookList()) {
+            populateConversation(contact);
+        }
+
+    }
+
+    public void addMessageToDb(Message message) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DotDashContract.MessagesTable.COLUMN_NAME_CONTACT_NAME, message.getContact().getName());
+        values.put(DotDashContract.MessagesTable.COLUMN_NAME_SENDER, message.isSentMessage() ? 1 : 0);
+        values.put(DotDashContract.MessagesTable.COLUMN_NAME_TEXT, message.getText());
+        values.put(DotDashContract.MessagesTable.COLUMN_NAME_TIMESTAMP, message.getTimestamp());
+
+        long newRowId = db.insert(DotDashContract.MessagesTable.TABLE_NAME, null, values);
+    }
+
+    private Message createMessageFromDb(Cursor c) {
+        Contact contact = addressBookNames.get(c.getString(2));
+        Message message = new Message(c.getString(3), contact, c.getInt(2)==1);
+        Log.w("string4", String.valueOf(c.getInt(2)==1));
+        return message;
+    }
+
+    private void populateConversation(Contact contact) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.query(DotDashContract.MessagesTable.TABLE_NAME,
+                null,
+                DotDashContract.MessagesTable.COLUMN_NAME_CONTACT_NAME + " =? ",
+                new String[] {contact.getName()},
+                null,
+                null,
+                DotDashContract.MessagesTable.COLUMN_NAME_TIMESTAMP + " ASC");
+        c.moveToFirst();
+        while (c.moveToNext()) {
+            Message message = createMessageFromDb(c);
+            contact.getConversation().addMessage(message);
+        }
+        db.close();
+    }
+
     public void removeContact(Contact contact){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(DotDashContract.ContactsTable.TABLE_NAME, DotDashContract.ContactsTable.COLUMN_NAME_NAME + " =? ", new String[] {contact.getName()});
+        db.delete(DotDashContract.ContactsTable.TABLE_NAME,
+                DotDashContract.ContactsTable.COLUMN_NAME_NAME + " =? ",
+                new String[] {contact.getName()});
         addressBookNumbers.remove(contact.getNumber());
         addressBookNames.remove(contact.getName());
     }

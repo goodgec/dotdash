@@ -15,8 +15,6 @@ public class ConversationsActivity extends DotDash {
 
     private ArrayList<Contact> allContactsList;
     private ArrayList<Contact> contactsList;
-    private DataManager dm;
-
     private ListView conversationsListView;
 
     @Override
@@ -25,8 +23,7 @@ public class ConversationsActivity extends DotDash {
         setContentView(R.layout.activity_conversations);
         currentScreen = R.id.action_conversations;
 
-        dm = DataManager.getInstance();
-        allContactsList = dm.getAddressBookList();
+        allContactsList = DataManager.getInstance().getAddressBookList();
         contactsList = new ArrayList<Contact>();
         for (Contact c : allContactsList) {
             if (c.getConversation().size() > 0) {
@@ -36,8 +33,8 @@ public class ConversationsActivity extends DotDash {
         //TODO sort by most recent talking.
 
         conversationsListView = (ListView)findViewById(R.id.conversationsListView);
-        ArrayAdapter<Contact> arrayAdapter = new ArrayAdapter<Contact>(this, android.R.layout.simple_list_item_1, contactsList);
-        conversationsListView.setAdapter(arrayAdapter);
+        conversationsActivityArrayAdapter = new ArrayAdapter<Contact>(this, android.R.layout.simple_list_item_1, contactsList);
+        conversationsListView.setAdapter(conversationsActivityArrayAdapter);
 
         conversationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

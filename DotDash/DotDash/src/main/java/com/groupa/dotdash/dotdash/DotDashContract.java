@@ -18,8 +18,9 @@ public class DotDashContract {
 
     public static abstract class MessagesTable implements BaseColumns {
         public static final String TABLE_NAME = "messages";
-        public static final String COLUMN_NAME_CONTACT = "contact";
-        public static final String COLUMN_NAME_SENDER = "sender?";
+        public static final String COLUMN_NAME_CONTACT_NAME = "contact";
+        public static final String COLUMN_NAME_SENDER = "sender";
         public static final String COLUMN_NAME_TEXT = "text";
+        public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
     }
 }

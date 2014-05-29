@@ -35,6 +35,7 @@ public class Receiver extends BroadcastReceiver {
             Intent newMessageIntent = new Intent();
             newMessageIntent.putExtra(DotDash.MESSAGE_SENDER, sender);
             newMessageIntent.putExtra(DotDash.MESSAGE_TEXT, message);
+            newMessageIntent.putExtra(DotDash.MESSAGE_TIMESTAMP, msgs[0].getTimestampMillis());
             newMessageIntent.setAction(DOT_DASH_RECEIVED_MESSAGE);
             context.sendBroadcast(newMessageIntent);
 

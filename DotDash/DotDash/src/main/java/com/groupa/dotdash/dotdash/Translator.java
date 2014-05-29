@@ -12,7 +12,7 @@ public class Translator {
     public static final long MAX_DOT_DURATION = 200;
     public static final long LETTER_BREAK_DURATION = 300;
     public static final long SPACE_DURATION = 1000;
-    public static final long ELEMENT_DURATION = 80;
+    public static final long ELEMENT_DURATION = 1200; // Based on one word per minute read speed
 
     private static final ArrayList<String> morseAlphaCharacters = new ArrayList<String>(Arrays.asList(".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..",
             ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--",
@@ -22,7 +22,7 @@ public class Translator {
 
 //    public Translator() {}
 
-    public static long[] convertTextToMorse(String text) {
+    public static long[] convertTextToMorse(String text, int wpm) {
         String morse = "";
         text = text.toUpperCase();
 
@@ -58,7 +58,7 @@ public class Translator {
 
         long[] timeOutput = new long[output.size()];
         for (int i = 0; i < output.size(); i++) {
-            timeOutput[i] = output.get(i);
+            timeOutput[i] = output.get(i) / wpm;
         }
 
         return timeOutput;

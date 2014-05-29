@@ -24,24 +24,26 @@ public class SettingsActivity extends DotDash{
         setContentView(R.layout.activity_settings);
         currentScreen = R.id.action_settings;
 
+        wpmNumber = (TextView)findViewById(R.id.wpmNumber);
+        wpmNumber.setText(Integer.toString(wpm));
+
         wpmSlider = (SeekBar)findViewById(R.id.wpmSlider);
         wpmSlider.setProgress(wpm);
         wpmSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                wpmNumber.setText(Integer.toString(i));
-                wpm = i;
+                wpmNumber.setText(Integer.toString(i + 1));
+                wpm = i + 1;
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
-
-        wpmNumber = (TextView)findViewById(R.id.wpmNumber);
-        wpmNumber.setText(Integer.toString(wpm));
 
         receiveAsTextCheckBox = (CheckBox)findViewById(R.id.receiveAsTextCheckBox);
         receiveAsTextCheckBox.setChecked(receiveAsText);

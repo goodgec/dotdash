@@ -5,6 +5,7 @@ package com.groupa.dotdash.dotdash;
  */
 public class Message {
 
+    private long id;
     private String text;
     private Contact contact;
     private boolean sentMessage;
@@ -15,6 +16,13 @@ public class Message {
         this.contact = contact;
         this.sentMessage = sentMessage;
         this.timestamp = System.currentTimeMillis();
+    }
+
+    public Message(String text, Contact contact, boolean sentMessage, long timestamp) {
+        this.text = text;
+        this.contact = contact;
+        this.sentMessage = sentMessage;
+        this.timestamp = timestamp;
     }
 
     public String getText() {

@@ -46,7 +46,6 @@ public class SingleConversationActivity extends DotDash {
             getActionBar().setTitle(converser);
         }
 
-
         messageList = dm.getAddressBookNamesMap().get(converser).getConversation().getMessages();
         conversationListView = (ListView)findViewById(R.id.conversationListView);
         //speechBubbleArrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
@@ -58,7 +57,7 @@ public class SingleConversationActivity extends DotDash {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Message selectedMessage = (Message)adapterView.getItemAtPosition(pos);
-                vibrator.vibrate(Translator.convertTextToMorse(selectedMessage.getText()), -1);
+                vibrator.vibrate(Translator.convertTextToMorse(selectedMessage.getText(), wpm), -1);
             }
         });
 
@@ -75,27 +74,4 @@ public class SingleConversationActivity extends DotDash {
             }
         });
     }
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        // Inflate the menu; this .s items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.single_conversation, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
-
 }

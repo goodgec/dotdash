@@ -2,6 +2,8 @@ package com.groupa.dotdash.dotdash;
 
 import java.util.ArrayList;
 
+import javax.xml.parsers.FactoryConfigurationError;
+
 /**
  * Created by adamsr on 5/10/14.
  */
@@ -25,6 +27,13 @@ public class Conversation {
 
     public void addMessage(Message message) {
         messages.add(message);
+    }
+
+    public boolean isDuplicate(Message message) {
+        if (messages.size() == 0 || message.getTimestamp() != messages.get(messages.size() - 1).getTimestamp()) {
+            return false;
+        }
+        return true;
     }
 
     public int size() {

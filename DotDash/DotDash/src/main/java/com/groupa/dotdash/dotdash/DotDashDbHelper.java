@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DotDashDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "DotDash.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -29,9 +29,10 @@ public class DotDashDbHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_TABLE_MESSAGES =
             "CREATE TABLE " + DotDashContract.MessagesTable.TABLE_NAME + " (" +
                     DotDashContract.MessagesTable._ID + " INTEGER PRIMARY KEY," +
-                    DotDashContract.MessagesTable.COLUMN_NAME_CONTACT + INTEGER_TYPE + COMMA_SEP +
+                    DotDashContract.MessagesTable.COLUMN_NAME_CONTACT_NAME + INTEGER_TYPE + COMMA_SEP +
                     DotDashContract.MessagesTable.COLUMN_NAME_SENDER + INTEGER_TYPE + COMMA_SEP +
-                    DotDashContract.MessagesTable.COLUMN_NAME_TEXT + TEXT_TYPE +
+                    DotDashContract.MessagesTable.COLUMN_NAME_TEXT + TEXT_TYPE + COMMA_SEP +
+                    DotDashContract.MessagesTable.COLUMN_NAME_TIMESTAMP + INTEGER_TYPE +
                     " )";
     private static final String SQL_DELETE_TABLE_MESSAGES =
             "DROP TABLE IF EXISTS " + DotDashContract.MessagesTable.TABLE_NAME;
@@ -44,13 +45,13 @@ public class DotDashDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TABLE_CONTACTS);
-//        db.execSQL(SQL_CREATE_TABLE_MESSAGES);
+        db.execSQL(SQL_CREATE_TABLE_MESSAGES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i2) {
-        db.execSQL(SQL_DELETE_TABLE_CONTACTS);
-        db.execSQL(SQL_DELETE_TABLE_MESSAGES);
-        onCreate(db);
+//        db.execSQL(SQL_DELETE_TABLE_CONTACTS);
+//        db.execSQL(SQL_DELETE_TABLE_MESSAGES);
+//        onCreate(db);
     }
 }

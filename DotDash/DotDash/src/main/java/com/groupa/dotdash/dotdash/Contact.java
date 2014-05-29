@@ -19,9 +19,17 @@ public class Contact implements Comparable<Contact> {
         conversation = new Conversation(this);
     }
 
+    public Contact(String name, String number) {
+        this(-1, name, number);
+    }
+
     public Contact(long id, String name, String number, String morseID) {
         this(id, name, number);
         this.morseID = morseID;
+    }
+
+    public Contact(String name, String number, String morseID) {
+        this(-1, name, number, morseID);
     }
 
     public Conversation getConversation() {
@@ -54,6 +62,10 @@ public class Contact implements Comparable<Contact> {
 
     public void setMorseID(String morseID) {
         this.morseID = morseID;
+    }
+
+    public void setInternalID(long id) {
+        this.id = id;
     }
 
     @Override
