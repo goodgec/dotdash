@@ -24,7 +24,7 @@ public class SplashScreenActivity extends DotDash {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                Intent i = new Intent(getApplicationContext(), ConversationsActivity.class);
+//                Intent i = new Intent(getApplicationContext(), ConversationsFragment.class);
 //                startActivity(i);
 //                finish();
             }

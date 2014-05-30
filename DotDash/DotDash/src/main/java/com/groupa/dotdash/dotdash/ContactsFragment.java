@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ContactsActivity extends Fragment {
+public class ContactsFragment extends Fragment {
     private ArrayList<Contact> contactsList;
     private ListView contactsListView;
     private Button newContactButton;

@@ -18,7 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class NewMessageActivity extends Fragment {
+public class NewMessageFragment extends Fragment {
 
     private Button morseButton;
     private Button sendButton;
@@ -45,6 +45,7 @@ public class NewMessageActivity extends Fragment {
 //        if (recipient != null) {
 //            newMessageRecipientField.setText(recipient);
 //        }
+        Bundle bundle = getArguments();
 
         morseButton = (Button)fragmentView.findViewById(R.id.morseTapButton);
         pressTimes = new ArrayList<Long>();

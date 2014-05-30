@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class SettingsActivity extends Fragment {
+public class SettingsFragment extends Fragment {
 
     private SeekBar wpmSlider;
     private TextView wpmNumber;

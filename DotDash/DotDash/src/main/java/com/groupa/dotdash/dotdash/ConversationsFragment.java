@@ -15,7 +15,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-public class ConversationsActivity extends Fragment {
+public class ConversationsFragment extends Fragment {
 
     private ArrayList<Contact> allContactsList;
     private ArrayList<Contact> contactsList;

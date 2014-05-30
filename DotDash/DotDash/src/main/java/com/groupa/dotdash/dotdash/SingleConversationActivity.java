@@ -1,27 +1,17 @@
 package com.groupa.dotdash.dotdash;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SingleConversationActivity extends DotDash {
+public class SingleConversationActivity extends Activity {
     private DataManager dm;
     private ArrayList<Message> messageList;
     private String converser;
@@ -29,6 +19,8 @@ public class SingleConversationActivity extends DotDash {
 
     private ListView conversationListView;
     private Button replyButton;
+
+    protected BubbleArrayAdapter speechBubbleArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +33,7 @@ public class SingleConversationActivity extends DotDash {
         vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
 
         Intent intent = getIntent();
-        converser = intent.getStringExtra(CONTACT_NAME);
+        converser = intent.getStringExtra(DotDash.CONTACT_NAME);
         if (converser != null) {
             getActionBar().setTitle(converser);
         }
@@ -57,7 +49,7 @@ public class SingleConversationActivity extends DotDash {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Message selectedMessage = (Message)adapterView.getItemAtPosition(pos);
-                vibrator.vibrate(Translator.convertTextToMorse(selectedMessage.getText(), wpm), -1);
+                vibrator.vibrate(Translator.convertTextToMorse(selectedMessage.getText(), DotDash.wpm), -1);
             }
         });
 
@@ -65,8 +57,8 @@ public class SingleConversationActivity extends DotDash {
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent newMessageIntent = new Intent(view.getContext(), NewMessageActivity.class);
-                newMessageIntent.putExtra(CONTACT_NAME, converser);
+                Intent newMessageIntent = new Intent(view.getContext(), NewMessageFragment.class);
+                newMessageIntent.putExtra(DotDash.CONTACT_NAME, converser);
 //                newMessageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(newMessageIntent);
                 overridePendingTransition(0, 0);

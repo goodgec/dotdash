@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.groupa.dotdash.dotdash.ContactsActivity"
+    tools:context="com.groupa.dotdash.dotdash.ContactsFragment"
     android:weightSum="20">
 
     <ListView

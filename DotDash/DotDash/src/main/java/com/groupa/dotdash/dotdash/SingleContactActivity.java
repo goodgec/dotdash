@@ -1,14 +1,13 @@
 package com.groupa.dotdash.dotdash;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class SingleContactActivity extends DotDash {
+public class SingleContactActivity extends Activity {
 
 //    private DataManager dm;
     private Contact contact;
@@ -25,7 +24,7 @@ public class SingleContactActivity extends DotDash {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        contact = DataManager.getInstance().getAddressBookNamesMap().get(intent.getStringExtra(CONTACT_NAME));
+        contact = DataManager.getInstance().getAddressBookNamesMap().get(intent.getStringExtra(DotDash.CONTACT_NAME));
 
         getActionBar().setTitle(contact.getName());
         contactNumberTextView = (TextView)findViewById(R.id.phoneNumberTextView);
@@ -40,11 +39,12 @@ public class SingleContactActivity extends DotDash {
 //                Intent returnIntent = new Intent();
 //                setResult(RESULT_OK, returnIntent);
 
-                Intent newMessageIntent = new Intent(view.getContext(), NewMessageActivity.class);
-                newMessageIntent.putExtra(CONTACT_NAME, contact.getName());
-                newMessageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent newMessageIntent = new Intent(view.getContext(), DotDash.class);
+                newMessageIntent.putExtra(DotDash.TARGET_TAB, DotDash.NEW_MESSAGE_TAB_NUMBER);
+                newMessageIntent.putExtra(DotDash.CONTACT_NAME, contact.getName());
+//                newMessageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(newMessageIntent);
-                overridePendingTransition(0, 0);
+//                overridePendingTransition(0, 0);
                 finish();
             }
         });
@@ -56,7 +56,7 @@ public class SingleContactActivity extends DotDash {
                 DataManager.getInstance().removeContact(contact);
                 finish();
                 overridePendingTransition(0, 0);
-                startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
+                startActivity(new Intent(getApplicationContext(), ContactsFragment.class));
                 overridePendingTransition(0, 0);
             }
         });
@@ -66,7 +66,7 @@ public class SingleContactActivity extends DotDash {
             @Override
             public void onClick(View view) {
                 Intent editContactIntent = new Intent(view.getContext(), CreateContactActivity.class);
-                editContactIntent.putExtra(CONTACT_NAME, contact.getName());
+                editContactIntent.putExtra(DotDash.CONTACT_NAME, contact.getName());
                 //editContactIntent.putExtra(CONTACT_NUMBER, contact.getNumber());
                 //editContactIntent.putExtra(CONTACT_ID, contact.getMorseID());
                 startActivity(editContactIntent);
