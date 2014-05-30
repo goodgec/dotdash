@@ -66,7 +66,7 @@ public class DotDash extends Activity {
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
+//        actionBar.setDisplayShowHomeEnabled(false);
 
         // set up tabs
         ActionBar.Tab conversationsTab = actionBar.newTab()

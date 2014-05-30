@@ -35,7 +35,7 @@
         <item>Doge</item>
     </string-array>
 
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">DoTDaSh?!</string>
     <string name="add_widget">Add widget</string>
     <string name="title_activity_splash_sceen">DotDash</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
