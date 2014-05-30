@@ -1,6 +1,8 @@
 package com.groupa.dotdash.dotdash;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.xml.parsers.FactoryConfigurationError;
 
@@ -22,6 +24,7 @@ public class Conversation {
     }
 
     public ArrayList<Message> getMessages() {
+        Collections.sort(messages);
         return messages;
     }
 
@@ -30,7 +33,11 @@ public class Conversation {
     }
 
     public boolean isDuplicate(Message message) {
-        if (messages.size() == 0 || message.getTimestamp() != messages.get(messages.size() - 1).getTimestamp()) {
+        if (messages.size() == 0) {
+            return false;
+        }
+        Message lastMessage = messages.get(messages.size() - 1);
+        if (message.getTimestamp() < lastMessage.getTimestamp() - DotDash.MESSAGE_DUPLICATE_WINDOW || !message.getText().equals(lastMessage.getText())) {
             return false;
         }
         return true;

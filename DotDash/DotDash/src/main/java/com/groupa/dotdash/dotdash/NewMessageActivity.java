@@ -117,6 +117,7 @@ public class NewMessageActivity extends DotDash {
                     dm.addMessageToDb(message);
                     morseButton.setText("");
                     messageText = "";
+                    Toast.makeText(view.getContext(), "Message sent", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(view.getContext(), "Invalid recipient " + newMessageRecipientField.getText(), Toast.LENGTH_LONG).show();
                 }

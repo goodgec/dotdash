@@ -37,6 +37,7 @@ public class DotDash extends Activity {
     public static final String MESSAGE_TEXT = "messageText";
     public static final String MESSAGE_TIMESTAMP = "messageTimestamp";
     public static final int DEFAULT_WPM = 15;
+    public static final int MESSAGE_DUPLICATE_WINDOW = 1000;
 
     protected int wpm;
     protected boolean receiveAsText;
@@ -170,7 +171,7 @@ public class DotDash extends Activity {
 //                displayAlert();
                 Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
                 if (sender != null) {
-                    Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false, intent.getLongExtra(MESSAGE_TIMESTAMP,0));
+                    Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false);
                     if (sender.getConversation().isDuplicate(newMessage)) {
                         return;
                     }

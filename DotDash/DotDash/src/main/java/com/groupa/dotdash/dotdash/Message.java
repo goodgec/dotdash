@@ -3,7 +3,7 @@ package com.groupa.dotdash.dotdash;
 /**
  * Created by adamsr on 5/10/14.
  */
-public class Message {
+public class Message implements Comparable<Message>{
 
     private long id;
     private String text;
@@ -44,5 +44,10 @@ public class Message {
     @Override
     public String toString() {
         return text;
+    }
+
+    @Override
+    public int compareTo(Message message) {
+        return Long.compare(this.timestamp, message.timestamp);
     }
 }
