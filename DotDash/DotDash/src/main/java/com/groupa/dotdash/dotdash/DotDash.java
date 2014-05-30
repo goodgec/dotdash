@@ -1,5 +1,6 @@
 package com.groupa.dotdash.dotdash;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -25,12 +26,12 @@ public class DotDash extends Activity {
 
     public static Context appContext;
 
-    protected static final String WPM_SETTING = "wpm";
-    protected static final String RECEIVE_AS_TEXT_SETTING = "receiveAsText";
-    protected static final String RECEIVE_AS_VIBRATE_SETTING = "receiveAsVibrate";
-    protected static final String RECEIVE_AS_LIGHT_SETTING = "receiveAsLight";
-    protected static final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
-    protected static final String CONTACT_NAME = "contactName";
+    public static final String WPM_SETTING = "wpm";
+    public static final String RECEIVE_AS_TEXT_SETTING = "receiveAsText";
+    public static final String RECEIVE_AS_VIBRATE_SETTING = "receiveAsVibrate";
+    public static final String RECEIVE_AS_LIGHT_SETTING = "receiveAsLight";
+    public static final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
+    public static final String CONTACT_NAME = "contactName";
     //protected static final String CONTACT_NUMBER = "contactNumber";
     //protected static final String CONTACT_ID = "contactID";
     public static final String MESSAGE_SENDER = "messageSender";
@@ -38,11 +39,11 @@ public class DotDash extends Activity {
     public static final String MESSAGE_TIMESTAMP = "messageTimestamp";
     public static final int DEFAULT_WPM = 15;
 
-    protected int wpm;
-    protected boolean receiveAsText;
-    protected boolean receiveAsVibrate;
-    protected boolean receiveAsLight;
-    protected boolean receiveAsBeep;
+    public static int wpm;
+    public static boolean receiveAsText;
+    public static boolean receiveAsVibrate;
+    public static boolean receiveAsLight;
+    public static boolean receiveAsBeep;
 
     protected int currentScreen;
     protected BubbleArrayAdapter speechBubbleArrayAdapter;
@@ -53,9 +54,48 @@ public class DotDash extends Activity {
     private SharedPreferences settings;
     protected SharedPreferences.Editor editor;
 
+    private ActionBar actionBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dotdash);
+
+        appContext = getApplicationContext();
+
+        actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+
+        // set up tabs
+        ActionBar.Tab conversationsTab = actionBar.newTab()
+//                .setText("tab1")
+                .setTabListener(new TabListener<ConversationsActivity>(
+                        this, "conversations", ConversationsActivity.class))
+                .setIcon(R.drawable.conversations);
+        actionBar.addTab(conversationsTab);
+
+        ActionBar.Tab newMessageTab = actionBar.newTab()
+//                .setText("tab1")
+                .setTabListener(new TabListener<NewMessageActivity>(
+                        this, "newMessage", NewMessageActivity.class))
+                .setIcon(R.drawable.compose);
+        actionBar.addTab(newMessageTab);
+
+        ActionBar.Tab contactsTab = actionBar.newTab()
+//                .setText("tab1")
+                .setTabListener(new TabListener<ContactsActivity>(
+                        this, "contacts", ContactsActivity.class))
+                .setIcon(R.drawable.contacts);
+        actionBar.addTab(contactsTab);
+
+        ActionBar.Tab settingTab = actionBar.newTab()
+//                .setText("tab1")
+                .setTabListener(new TabListener<SettingsActivity>(
+                        this, "settings", SettingsActivity.class))
+                .setIcon(R.drawable.settings);
+        actionBar.addTab(settingTab);
 
         settings = getSharedPreferences(DotDash.class.getSimpleName(), Activity.MODE_PRIVATE);
         editor = settings.edit();
@@ -69,68 +109,81 @@ public class DotDash extends Activity {
         this.registerReceiver(newMessageAlertReceiver, filter);
     }
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.application_actions, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//        Log.w("ID:", Integer.toString(id));
+//
+//        //Toast.makeText(this, "Selected" + String.valueOf(id), Toast.LENGTH_LONG).show();
+//
+//        if (currentScreen == id){
+//            Log.w("if happened:", Integer.toString(currentScreen));
+//
+//            return true;
+//            //return super.onOptionsItemSelected(item);
+//        }
+//        switch(id){
+//            case R.id.action_compose:
+//                //go to compose activity
+//                currentScreen = R.id.action_compose;
+//                Log.w("Curr:", Integer.toString(currentScreen));
+//                startActivity(new Intent(getApplicationContext(), NewMessageActivity.class));
+//                finish();
+//                overridePendingTransition(0, 0);
+//
+//                break;
+//            case R.id.action_conversations:
+//                currentScreen = R.id.action_conversations;
+//                Log.w("Curr:", Integer.toString(currentScreen));
+//                startActivity(new Intent(getApplicationContext(), ConversationsActivity.class));
+//                finish();
+//                overridePendingTransition(0, 0);
+//
+//                break;
+//            case R.id.action_contacts:
+//                currentScreen = R.id.action_contacts;
+//                Log.w("Curr:", Integer.toString(currentScreen));
+//                startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
+//                finish();
+//                overridePendingTransition(0, 0);
+//
+//                break;
+//            case R.id.action_settings:
+//                currentScreen = R.id.action_settings;
+//                Log.w("Curr:", Integer.toString(currentScreen));
+//                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+//                finish();
+//                overridePendingTransition(0, 0);
+//
+//                break;
+//
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    protected void onStop() {
+        super.onStop();
 
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.application_actions, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+        editor.putInt(WPM_SETTING, wpm);
+        editor.putBoolean(RECEIVE_AS_TEXT_SETTING, receiveAsText);
+        editor.putBoolean(RECEIVE_AS_VIBRATE_SETTING, receiveAsVibrate);
+        editor.putBoolean(RECEIVE_AS_LIGHT_SETTING, receiveAsLight);
+        editor.putBoolean(RECEIVE_AS_BEEP_SETTING, receiveAsBeep);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        Log.w("ID:", Integer.toString(id));
-
-        //Toast.makeText(this, "Selected" + String.valueOf(id), Toast.LENGTH_LONG).show();
-
-        if (currentScreen == id){
-            Log.w("if happened:", Integer.toString(currentScreen));
-
-            return true;
-            //return super.onOptionsItemSelected(item);
-        }
-        switch(id){
-            case R.id.action_compose:
-                //go to compose activity
-                currentScreen = R.id.action_compose;
-                Log.w("Curr:", Integer.toString(currentScreen));
-                startActivity(new Intent(getApplicationContext(), NewMessageActivity.class));
-                finish();
-                overridePendingTransition(0, 0);
-
-                break;
-            case R.id.action_conversations:
-                currentScreen = R.id.action_conversations;
-                Log.w("Curr:", Integer.toString(currentScreen));
-                startActivity(new Intent(getApplicationContext(), ConversationsActivity.class));
-                finish();
-                overridePendingTransition(0, 0);
-
-                break;
-            case R.id.action_contacts:
-                currentScreen = R.id.action_contacts;
-                Log.w("Curr:", Integer.toString(currentScreen));
-                startActivity(new Intent(getApplicationContext(), ContactsActivity.class));
-                finish();
-                overridePendingTransition(0, 0);
-
-                break;
-            case R.id.action_settings:
-                currentScreen = R.id.action_settings;
-                Log.w("Curr:", Integer.toString(currentScreen));
-                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                finish();
-                overridePendingTransition(0, 0);
-
-                break;
-
-        }
-
-        return super.onOptionsItemSelected(item);
+        editor.commit();
     }
 
     @Override

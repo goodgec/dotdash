@@ -1,11 +1,14 @@
 package com.groupa.dotdash.dotdash;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class NewMessageActivity extends DotDash {
+public class NewMessageActivity extends Fragment {
 
     private Button morseButton;
     private Button sendButton;
@@ -28,27 +31,22 @@ public class NewMessageActivity extends DotDash {
     private Timer charTimer;
     private Timer spaceTimer;
 
-    private DataManager dm;
     private final Handler handler = new Handler();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_message);
-        currentScreen = R.id.action_compose;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.activity_new_message, container, false);
 
-        newMessageRecipientField = (TextView)findViewById(R.id.newMessageRecipientField);
+        newMessageRecipientField = (TextView)fragmentView.findViewById(R.id.newMessageRecipientField);
 
-        Intent intent = getIntent();
-        String recipient = intent.getStringExtra(CONTACT_NAME);
-        if (recipient != null) {
-            newMessageRecipientField.setText(recipient);
-        }
+//        Intent intent = getIntent();
+//        String recipient = intent.getStringExtra(DotDash.CONTACT_NAME);
+//        if (recipient != null) {
+//            newMessageRecipientField.setText(recipient);
+//        }
 
-
-        dm = DataManager.getInstance();
-
-        morseButton = (Button)findViewById(R.id.morseTapButton);
+        morseButton = (Button)fragmentView.findViewById(R.id.morseTapButton);
         pressTimes = new ArrayList<Long>();
         messageText = "";
         charTimer = new Timer(true);
@@ -99,12 +97,12 @@ public class NewMessageActivity extends DotDash {
             }
         });
 
-        sendButton = (Button)findViewById(R.id.sendButton);
+        sendButton = (Button)fragmentView.findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SmsManager manager = SmsManager.getDefault();
-                Contact recipient = dm.getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
+                Contact recipient = DataManager.getInstance().getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
 
                 if (recipient != null) {
                     Message message = new Message(messageText, recipient, true);
@@ -114,7 +112,7 @@ public class NewMessageActivity extends DotDash {
                     }
                     recipient.getConversation().addMessage(message);
                     manager.sendTextMessage(message.getContact().getNumber(), null, message.getText(), null, null);
-                    dm.addMessageToDb(message);
+                    DataManager.getInstance().addMessageToDb(message);
                     morseButton.setText("");
                     messageText = "";
                 } else {
@@ -124,5 +122,6 @@ public class NewMessageActivity extends DotDash {
         });
 
 
+        return fragmentView;
     }
 }

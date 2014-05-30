@@ -18,15 +18,15 @@ public class SplashScreenActivity extends DotDash {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_sceen);
 
-        appContext = getApplicationContext();
+//        appContext = getApplicationContext();
 
         // show splash screen for 3 seconds
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(getApplicationContext(), ConversationsActivity.class);
-                startActivity(i);
-                finish();
+//                Intent i = new Intent(getApplicationContext(), ConversationsActivity.class);
+//                startActivity(i);
+//                finish();
             }
         }, SPLASH_TIME_OUT);
     }

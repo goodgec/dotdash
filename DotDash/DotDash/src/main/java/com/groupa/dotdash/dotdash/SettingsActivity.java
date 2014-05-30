@@ -1,15 +1,16 @@
 package com.groupa.dotdash.dotdash;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-public class SettingsActivity extends DotDash{
+public class SettingsActivity extends Fragment {
 
     private SeekBar wpmSlider;
     private TextView wpmNumber;
@@ -19,21 +20,20 @@ public class SettingsActivity extends DotDash{
     private CheckBox receiveAsBeepCheckBox;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        currentScreen = R.id.action_settings;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.activity_settings, container, false);
 
-        wpmNumber = (TextView)findViewById(R.id.wpmNumber);
-        wpmNumber.setText(Integer.toString(wpm));
+        wpmNumber = (TextView)fragmentView.findViewById(R.id.wpmNumber);
+        wpmNumber.setText(Integer.toString(DotDash.wpm));
 
-        wpmSlider = (SeekBar)findViewById(R.id.wpmSlider);
-        wpmSlider.setProgress(wpm);
+        wpmSlider = (SeekBar)fragmentView.findViewById(R.id.wpmSlider);
+        wpmSlider.setProgress(DotDash.wpm);
         wpmSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 wpmNumber.setText(Integer.toString(i + 1));
-                wpm = i + 1;
+                DotDash.wpm = i + 1;
             }
 
             @Override
@@ -45,54 +45,42 @@ public class SettingsActivity extends DotDash{
             }
         });
 
-        receiveAsTextCheckBox = (CheckBox)findViewById(R.id.receiveAsTextCheckBox);
-        receiveAsTextCheckBox.setChecked(receiveAsText);
+        receiveAsTextCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsTextCheckBox);
+        receiveAsTextCheckBox.setChecked(DotDash.receiveAsText);
         receiveAsTextCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                receiveAsText = b;
+                DotDash.receiveAsText = b;
             }
         });
 
-        receiveAsVibrateCheckBox = (CheckBox)findViewById(R.id.receiveAsVibrateCheckBox);
-        receiveAsVibrateCheckBox.setChecked(receiveAsVibrate);
+        receiveAsVibrateCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsVibrateCheckBox);
+        receiveAsVibrateCheckBox.setChecked(DotDash.receiveAsVibrate);
         receiveAsVibrateCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                receiveAsVibrate = b;
+                DotDash.receiveAsVibrate = b;
             }
         });
 
-        receiveAsLightCheckBox = (CheckBox)findViewById(R.id.receiveAsLightCheckBox);
-        receiveAsLightCheckBox.setChecked(receiveAsLight);
+        receiveAsLightCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsLightCheckBox);
+        receiveAsLightCheckBox.setChecked(DotDash.receiveAsLight);
         receiveAsLightCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                receiveAsLight = b;
+                DotDash.receiveAsLight = b;
             }
         });
 
-        receiveAsBeepCheckBox = (CheckBox)findViewById(R.id.receiveAsBeepCheckBox);
-        receiveAsBeepCheckBox.setChecked(receiveAsBeep);
+        receiveAsBeepCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsBeepCheckBox);
+        receiveAsBeepCheckBox.setChecked(DotDash.receiveAsBeep);
         receiveAsBeepCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                receiveAsBeep = b;
+                DotDash.receiveAsBeep = b;
             }
         });
+
+        return fragmentView;
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        editor.putInt(WPM_SETTING, wpm);
-        editor.putBoolean(RECEIVE_AS_TEXT_SETTING, receiveAsText);
-        editor.putBoolean(RECEIVE_AS_VIBRATE_SETTING, receiveAsVibrate);
-        editor.putBoolean(RECEIVE_AS_LIGHT_SETTING, receiveAsLight);
-        editor.putBoolean(RECEIVE_AS_BEEP_SETTING, receiveAsBeep);
-
-        editor.commit();
-    }
-
 }

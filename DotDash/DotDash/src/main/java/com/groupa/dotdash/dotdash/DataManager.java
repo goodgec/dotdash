@@ -50,6 +50,7 @@ public class DataManager {
 
     private void populateAddressBooks() {
         // load things from file.
+        Log.e("alby", String.valueOf(dbHelper == null));
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor c = db.query(DotDashContract.ContactsTable.TABLE_NAME, null, null, null, null, null, null);
