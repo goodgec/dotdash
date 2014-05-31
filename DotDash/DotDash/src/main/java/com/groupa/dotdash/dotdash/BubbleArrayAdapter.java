@@ -31,6 +31,7 @@ public class BubbleArrayAdapter extends ArrayAdapter<Message> {
 
     public void add(Message message) {
         super.add(message);
+        notifyDataSetChanged();
     }
 
     public int getCount() {

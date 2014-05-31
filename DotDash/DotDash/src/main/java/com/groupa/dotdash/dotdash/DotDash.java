@@ -135,7 +135,7 @@ public class DotDash extends Activity {
         receiveAsBeep = settings.getBoolean(RECEIVE_AS_BEEP_SETTING, false);
         currentTabNumber = settings.getInt(CURRENT_TAB_NUMBER, 0);
 
-        actionBar.setSelectedNavigationItem(currentTabNumber);
+        actionBar.setSelectedNavigationItem(intent.getIntExtra(TARGET_TAB, currentTabNumber));
 
 
         IntentFilter filter = new IntentFilter(Receiver.DOT_DASH_RECEIVED_MESSAGE);
@@ -221,24 +221,34 @@ public class DotDash extends Activity {
 
             if (Receiver.DOT_DASH_RECEIVED_MESSAGE.equals(action))
             {
-//                displayAlert();
                 Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
                 if (sender != null) {
                     Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false, intent.getLongExtra(MESSAGE_TIMESTAMP,0));
+
                     if (sender.getConversation().isDuplicate(newMessage)) {
                         return;
                     }
+
                     sender.getConversation().addMessage(newMessage);
                     DataManager.getInstance().addMessageToDb(newMessage);
+
+                    // add sender to conversations list if they aren't already there
+                    if (sender.getConversation().size() == 0) {
+                        ((ConversationsFragment)conversationsFragment).addSender(sender);
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.detach(conversationsFragment);
+                        ft.attach(conversationsFragment);
+                        ft.commit();
+                    }
+
+                    // refresh message screen
+
+
 //                    if (speechBubbleArrayAdapter != null) {
 //                        speechBubbleArrayAdapter.add(newMessage);
 //                        speechBubbleArrayAdapter.notifyDataSetChanged();
 //                    }
 
-                    if (sender.getConversation().size() == 0 && conversationsActivityArrayAdapter != null) {
-                        conversationsActivityArrayAdapter.add(sender);
-                        conversationsActivityArrayAdapter.notifyDataSetChanged();
-                    }
 
                 }
             }

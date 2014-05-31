@@ -51,4 +51,8 @@ public class ConversationsFragment extends Fragment {
 
         return fragmentView;
     }
+
+    public void addSender(Contact sender) {
+        conversationsActivityArrayAdapter.add(sender);
+    }
 }

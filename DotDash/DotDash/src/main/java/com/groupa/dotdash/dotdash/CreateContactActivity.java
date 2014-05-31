@@ -1,6 +1,8 @@
 package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -41,6 +43,13 @@ public class CreateContactActivity extends Activity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (nameField.getText().toString().equals("")
+                        || numberField.getText().toString().equals("")
+                        || numberField.getText().toString().length() < 7) {
+                    displayAlert();
+                    return;
+                }
+
                 if(contactToEdit != null){
                     DataManager.getInstance().removeContact(contactToEdit);
                 }
@@ -58,5 +67,21 @@ public class CreateContactActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    private void displayAlert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Cannot save contact").setCancelable(
+                false)
+                .setMessage("Contacts must have a name and valid phone number.")
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
