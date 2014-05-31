@@ -35,7 +35,7 @@ public class ContactsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Intent nameIntent = new Intent(view.getContext(), SingleContactActivity.class);
                 nameIntent.putExtra(DotDash.CONTACT_NAME, ((Contact)adapterView.getItemAtPosition(pos)).getName());
-                startActivity(nameIntent);
+                getActivity().startActivityForResult(nameIntent, DotDash.REQUEST_CODE_DELETE_CONTACT);
             }
         });
 
@@ -43,7 +43,7 @@ public class ContactsFragment extends Fragment {
         newContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(view.getContext(), CreateContactActivity.class));
+                getActivity().startActivityForResult(new Intent(view.getContext(), CreateContactActivity.class), DotDash.REQUEST_CODE_CREATE_CONTACT);
             }
         });
 

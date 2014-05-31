@@ -54,10 +54,14 @@ public class SingleContactActivity extends Activity {
             @Override
             public void onClick(View view) {
                 DataManager.getInstance().removeContact(contact);
+                // remove all messages from that contact from db
+
+                setResult(RESULT_OK);
+
                 finish();
-                overridePendingTransition(0, 0);
-                startActivity(new Intent(getApplicationContext(), ContactsFragment.class));
-                overridePendingTransition(0, 0);
+//                overridePendingTransition(0, 0);
+//                startActivity(new Intent(getApplicationContext(), ContactsFragment.class));
+//                overridePendingTransition(0, 0);
             }
         });
 

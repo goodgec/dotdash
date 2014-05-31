@@ -49,8 +49,12 @@ public class CreateContactActivity extends Activity {
                         idField.getText().toString());
                 DataManager.getInstance().addContactToDb(contact);
 
-                startActivity(new Intent(getApplicationContext(), ContactsFragment.class));
-                overridePendingTransition(0, 0);
+                setResult(Activity.RESULT_OK);
+
+                Intent intent = new Intent(getApplicationContext(), SingleContactActivity.class);
+                intent.putExtra(DotDash.CONTACT_NAME, contact.getName());
+                startActivity(intent);
+//                overridePendingTransition(0, 0);
                 finish();
             }
         });

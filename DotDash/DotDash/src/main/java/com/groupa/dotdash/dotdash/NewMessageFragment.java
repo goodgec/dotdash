@@ -46,6 +46,7 @@ public class NewMessageFragment extends Fragment {
 //            newMessageRecipientField.setText(recipient);
 //        }
         Bundle bundle = getArguments();
+        newMessageRecipientField.setText(bundle.getString(DotDash.CONTACT_NAME, ""));
 
         morseButton = (Button)fragmentView.findViewById(R.id.morseTapButton);
         pressTimes = new ArrayList<Long>();

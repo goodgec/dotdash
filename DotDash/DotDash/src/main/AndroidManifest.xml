@@ -48,7 +48,7 @@
         <activity
             android:name="com.groupa.dotdash.dotdash.CreateContactActivity"
             android:label="@string/title_activity_create_contact"
-            android:parentActivityName="com.groupa.dotdash.dotdash.DotDash" >
+            android:parentActivityName="com.groupa.dotdash.dotdash.SingleContactActivity" >
         </activity>
 
         <activity

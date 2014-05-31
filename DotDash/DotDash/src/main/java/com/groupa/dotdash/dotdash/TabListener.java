@@ -14,11 +14,13 @@ public class TabListener implements ActionBar.TabListener {
     private Fragment fragment;
     private final Activity activity;
     private final String tag;
+    private final int tabNumber;
 
-    public TabListener(Fragment fragment, Activity activity, String tag) {
+    public TabListener(Fragment fragment, Activity activity, String tag, int tabNumber) {
         this.fragment = fragment;
         this.activity = activity;
         this.tag = tag;
+        this.tabNumber = tabNumber;
     }
 
     @Override
@@ -30,10 +32,12 @@ public class TabListener implements ActionBar.TabListener {
 //            fragmentTransaction.add(android.R.id.content, fragment, tag);
 //        } else {
             // If it exists, simply attach it in order to show it
+        activity.setTitle(tag);
+        ((DotDash)activity).setTabNumber(tabNumber);
+        fragmentTransaction.add(android.R.id.content, fragment, tag);
         fragmentTransaction.attach(fragment);
 //        }
         // update title text
-        activity.setTitle(tag);
     }
 
     @Override
