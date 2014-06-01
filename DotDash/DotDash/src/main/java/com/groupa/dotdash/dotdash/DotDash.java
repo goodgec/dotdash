@@ -80,6 +80,8 @@ public class DotDash extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dotdash);
 
+        setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
+
         Log.e("alby", "starting");
 
         appContext = getApplicationContext();

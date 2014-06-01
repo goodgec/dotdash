@@ -20,7 +20,7 @@ android:layout_height="fill_parent"
 
            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="To:"
                 android:id="@+id/toLabel"
@@ -29,31 +29,21 @@ android:layout_height="fill_parent"
                 android:layout_alignParentTop="true"
                 android:layout_alignBottom="@+id/newMessageRecipientField"
                 android:layout_alignStart="@+id/morseTapButton"
-               android:layout_weight=".5" />
+               android:layout_weight="1" />
 
            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
                android:id="@+id/newMessageRecipientField"
-                android:textSize="20sp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-               android:layout_toRightOf="@+id/toLabel"
-               android:layout_weight="11" />
+               android:layout_weight="8" />
 
-           <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New ToggleButton"
-                android:textOff="Text"
-                android:textOn="Morse"
-                android:id="@+id/toggleButton"
-                android:layout_alignBottom="@+id/newMessageRecipientField"
-                android:layout_toRightOf="@+id/newMessageRecipientField"
-                android:layout_alignParentEnd="true"
-                android:visibility="invisible"
+           <Button
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Search"
+               android:id="@+id/searchContactsButton"
                android:layout_weight="1" />
+
        </LinearLayout>
 
        <Button

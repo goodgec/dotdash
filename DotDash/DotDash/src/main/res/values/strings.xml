@@ -11,6 +11,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_single_contact">Contact Info</string>
     <string name="title_activity_create_contact">New Contact</string>
+    <string name="search_hint">Search contacts</string>
 
     <string-array name="contacts_array">
         <item>Mephistopholes</item>
@@ -41,5 +42,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_new_message_alert">NewMessageAlertActivity</string>
     <string name="title_activity_single_conversation">SingleConversationActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
 
 </resources>

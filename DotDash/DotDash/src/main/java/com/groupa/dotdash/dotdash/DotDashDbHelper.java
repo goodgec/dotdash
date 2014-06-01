@@ -37,6 +37,8 @@ public class DotDashDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_TABLE_MESSAGES =
             "DROP TABLE IF EXISTS " + DotDashContract.MessagesTable.TABLE_NAME;
 
+//    private static final String SQL_CREATE_VIRTUAL_TABLE_CONTACTS =
+//            "CREATE VIRTUAL TABLE virtual_contacts" + ;
 
     public DotDashDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,14 +46,22 @@ public class DotDashDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLE_CONTACTS);
-        db.execSQL(SQL_CREATE_TABLE_MESSAGES);
+        createTables(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i2) {
-//        db.execSQL(SQL_DELETE_TABLE_CONTACTS);
-//        db.execSQL(SQL_DELETE_TABLE_MESSAGES);
-//        onCreate(db);
+        dropIfExists(db);
+        createTables(db);
+    }
+
+    private void createTables(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_TABLE_CONTACTS);
+        db.execSQL(SQL_CREATE_TABLE_MESSAGES);
+    }
+
+    private void dropIfExists(SQLiteDatabase db) {
+        db.execSQL(SQL_DELETE_TABLE_CONTACTS);
+        db.execSQL(SQL_DELETE_TABLE_MESSAGES);
     }
 }

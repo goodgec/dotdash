@@ -1,6 +1,9 @@
 package com.groupa.dotdash.dotdash;
 
 import android.app.Fragment;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ public class NewMessageFragment extends Fragment {
     private Button morseButton;
     private Button sendButton;
     private TextView newMessageRecipientField;
+    private Button searchButton;
 
     private long lastDown;
     private long lastDuration;
@@ -43,8 +48,15 @@ public class NewMessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.activity_new_message, container, false);
 
-        newMessageRecipientField = (TextView)fragmentView.findViewById(R.id.newMessageRecipientField);
+        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getActivity().getComponentName());
+        SearchView sv = (SearchView)fragmentView.findViewById(R.id.newMessageRecipientField);
+        sv.setSearchableInfo(searchableInfo);
+
         morseButton = (Button)fragmentView.findViewById(R.id.morseTapButton);
+        sendButton = (Button)fragmentView.findViewById(R.id.sendButton);
+        newMessageRecipientField = (TextView)fragmentView.findViewById(R.id.newMessageRecipientField);
+        searchButton = (Button)fragmentView.findViewById(R.id.searchContactsButton);
 
 //        startedFromContact = false;
 //        Bundle bundle = getArguments();
@@ -114,7 +126,6 @@ public class NewMessageFragment extends Fragment {
             }
         });
 
-        sendButton = (Button)fragmentView.findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,6 +149,13 @@ public class NewMessageFragment extends Fragment {
             }
         });
 
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                newMessageRecipientField.setQuery();
+            }
+        });
 
         return fragmentView;
     }

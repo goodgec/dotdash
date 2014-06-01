@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,11 +101,37 @@ public class DataManager {
                 null,
                 DotDashContract.MessagesTable.COLUMN_NAME_TIMESTAMP + " ASC");
         c.moveToFirst();
+        // add first message
+//        contact.getConversation().addMessage(createMessageFromDb(c));
         while (c.moveToNext()) {
+            // add the rest
             Message message = createMessageFromDb(c);
             contact.getConversation().addMessage(message);
         }
         db.close();
+    }
+
+    public ArrayAdapter<Contact> searchContacts(String query) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ArrayAdapter<Contact> adapter = new ArrayAdapter<Contact>(DotDash.appContext, android.R.layout.simple_list_item_1);
+
+        Cursor c = db.query(DotDashContract.ContactsTable.TABLE_NAME,
+                new String[] {DotDashContract.ContactsTable.COLUMN_NAME_NUMBER},
+                DotDashContract.ContactsTable.COLUMN_NAME_NAME + " LIKE '%" + query + "%' OR " +
+                        DotDashContract.ContactsTable.COLUMN_NAME_NUMBER + " LIKE '%" + query + "%'",
+                null,
+                null,
+                null,
+                DotDashContract.ContactsTable.COLUMN_NAME_NAME + " ASC");
+        c.moveToFirst();
+//        Log.e("alby1", c.getString(2));
+        while (c.moveToNext()) {
+            Log.e("alby1", c.getString(0));
+            adapter.add(addressBookNumbers.get(c.getString(0)));
+        }
+        db.close();
+
+        return adapter;
     }
 
     public void removeContact(Contact contact){
