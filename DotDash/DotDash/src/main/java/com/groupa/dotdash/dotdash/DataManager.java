@@ -18,9 +18,12 @@ public class DataManager {
     private HashMap<String, Contact> addressBookNumbers;
     private DotDashDbHelper dbHelper;
 
+    private String currentMessageText;
+
     private static final DataManager dm = new DataManager();
 
     public DataManager(){
+        currentMessageText = "";
         me = new Contact(-1, "Me", "0");
         //populate address book
         addressBookNames = new HashMap<String, Contact>();
@@ -137,5 +140,13 @@ public class DataManager {
 
     public Contact getMe() {
         return me;
+    }
+
+    public String getCurrentMessageText() {
+        return currentMessageText;
+    }
+
+    public void setCurrentMessageText(String currentMessageText) {
+        this.currentMessageText = currentMessageText;
     }
 }

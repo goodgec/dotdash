@@ -16,7 +16,8 @@
 
         <activity
             android:name=".DotDash"
-            android:label="DotDash" >
+            android:label="DotDash"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,8 +39,9 @@
         <activity
             android:name="com.groupa.dotdash.dotdash.SingleContactActivity"
             android:label="@string/title_activity_single_contact"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.groupa.dotdash.dotdash.DotDash" >
-            </activity>
+        </activity>
             <!--android:parentActivityName="com.groupa.dotdash.dotdash.ContactsFragment" >-->
         <!--<activity-->
             <!--android:name="com.groupa.dotdash.dotdash.SettingsFragment"-->
@@ -48,11 +50,13 @@
         <activity
             android:name="com.groupa.dotdash.dotdash.CreateContactActivity"
             android:label="@string/title_activity_create_contact"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.groupa.dotdash.dotdash.SingleContactActivity" >
         </activity>
 
         <activity
             android:name="com.groupa.dotdash.dotdash.SplashScreenActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_splash_sceen" >
 
         </activity>
@@ -66,6 +70,7 @@
         <activity
             android:name="com.groupa.dotdash.dotdash.SingleConversationActivity"
             android:label="@string/title_activity_single_conversation"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.groupa.dotdash.dotdash.DotDash">
             </activity>
     </application>

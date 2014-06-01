@@ -12,7 +12,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
 import java.util.HashMap;
@@ -30,6 +32,7 @@ public class DotDash extends Activity {
     public static final String RECEIVE_AS_LIGHT_SETTING = "receiveAsLight";
     public static final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
     public static final String CURRENT_TAB_NUMBER = "currentTabNumber";
+    public static final String CURRENT_MESSAGE = "currentMessage";
 
     public static int wpm;
     public static boolean receiveAsText;
@@ -37,6 +40,7 @@ public class DotDash extends Activity {
     public static boolean receiveAsLight;
     public static boolean receiveAsBeep;
     public static int currentTabNumber;
+    public static String currentMessage;
 
     public static final String CONTACT_NAME = "contactName";
     //protected static final String CONTACT_NUMBER = "contactNumber";
@@ -47,7 +51,10 @@ public class DotDash extends Activity {
     public static final int DEFAULT_WPM = 15;
 
     public static final int REQUEST_CODE_CREATE_CONTACT = 0;
-    public static final int REQUEST_CODE_DELETE_CONTACT = 1;
+    public static final int REQUEST_CODE_VIEW_CONTACT = 1;
+
+    public static final int RESULT_CODE_DELETED_CONTACT = 0;
+    public static final int RESULT_CODE_SENDING_MESSAGE = 1;
 
     public static final String TARGET_TAB = "targetTab";
     public static final int CONVERSATIONS_TAB_NUMBER = 0;
@@ -63,10 +70,10 @@ public class DotDash extends Activity {
     protected SharedPreferences.Editor editor;
 
     private ActionBar actionBar;
-    private Fragment conversationsFragment;
-    private Fragment newMessageFragment;
-    private Fragment contactsFragment;
-    private Fragment settingsFragment;
+    private ConversationsFragment conversationsFragment;
+    private NewMessageFragment newMessageFragment;
+    private ContactsFragment contactsFragment;
+    private SettingsFragment settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +87,20 @@ public class DotDash extends Activity {
         actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-//        String targetTab = intent.getStringExtra(TARGET_TAB);
-
-
-//        actionBar.setDisplayShowTitleEnabled(false);
-//        actionBar.setDisplayShowHomeEnabled(false);
         Intent intent = getIntent();
 
+        settings = getSharedPreferences(DotDash.class.getSimpleName(), Activity.MODE_PRIVATE);
+        editor = settings.edit();
+        wpm = settings.getInt(WPM_SETTING, DEFAULT_WPM);
+        receiveAsText = settings.getBoolean(RECEIVE_AS_TEXT_SETTING, true);
+        receiveAsVibrate = settings.getBoolean(RECEIVE_AS_VIBRATE_SETTING, true);
+        receiveAsLight = settings.getBoolean(RECEIVE_AS_LIGHT_SETTING, false);
+        receiveAsBeep = settings.getBoolean(RECEIVE_AS_BEEP_SETTING, false);
+        currentTabNumber = intent.getIntExtra(TARGET_TAB, settings.getInt(CURRENT_TAB_NUMBER, 0));
+        currentMessage = intent.getStringExtra(CURRENT_MESSAGE);
+
         // set up tabs
-        conversationsFragment = Fragment.instantiate(this, ConversationsFragment.class.getName());
+        conversationsFragment = (ConversationsFragment)Fragment.instantiate(this, ConversationsFragment.class.getName());
         ActionBar.Tab conversationsTab = actionBar.newTab()
 //                .setText("tab1")
                 .setTabListener(new TabListener(
@@ -96,9 +108,10 @@ public class DotDash extends Activity {
                 .setIcon(R.drawable.conversations);
         actionBar.addTab(conversationsTab);
 
-        newMessageFragment = Fragment.instantiate(this, NewMessageFragment.class.getName());
+        newMessageFragment = (NewMessageFragment)Fragment.instantiate(this, NewMessageFragment.class.getName());
         Bundle bundle = new Bundle();
         bundle.putString(CONTACT_NAME, intent.getStringExtra(CONTACT_NAME));
+        bundle.putString(CURRENT_MESSAGE, currentMessage);
         newMessageFragment.setArguments(bundle);
         ActionBar.Tab newMessageTab = actionBar.newTab()
 //                .setText("tab1")
@@ -107,7 +120,7 @@ public class DotDash extends Activity {
                 .setIcon(R.drawable.compose);
         actionBar.addTab(newMessageTab);
 
-        contactsFragment = Fragment.instantiate(this, ContactsFragment.class.getName());
+        contactsFragment = (ContactsFragment)Fragment.instantiate(this, ContactsFragment.class.getName());
         ActionBar.Tab contactsTab = actionBar.newTab()
 //                .setText("tab1")
                 .setTabListener(new TabListener(
@@ -115,7 +128,7 @@ public class DotDash extends Activity {
                 .setIcon(R.drawable.contacts);
         actionBar.addTab(contactsTab);
 
-        settingsFragment = Fragment.instantiate(this, SettingsFragment.class.getName());
+        settingsFragment = (SettingsFragment)Fragment.instantiate(this, SettingsFragment.class.getName());
         ActionBar.Tab settingTab = actionBar.newTab()
 //                .setText("tab1")
                 .setTabListener(new TabListener(
@@ -126,16 +139,7 @@ public class DotDash extends Activity {
 //        currentTab = intent.getIntExtra(TARGET_TAB, currentTab);
 //        actionBar.setSelectedNavigationItem(currentTab);
 
-        settings = getSharedPreferences(DotDash.class.getSimpleName(), Activity.MODE_PRIVATE);
-        editor = settings.edit();
-        wpm = settings.getInt(WPM_SETTING, DEFAULT_WPM);
-        receiveAsText = settings.getBoolean(RECEIVE_AS_TEXT_SETTING, true);
-        receiveAsVibrate = settings.getBoolean(RECEIVE_AS_VIBRATE_SETTING, true);
-        receiveAsLight = settings.getBoolean(RECEIVE_AS_LIGHT_SETTING, false);
-        receiveAsBeep = settings.getBoolean(RECEIVE_AS_BEEP_SETTING, false);
-        currentTabNumber = settings.getInt(CURRENT_TAB_NUMBER, 0);
-
-        actionBar.setSelectedNavigationItem(intent.getIntExtra(TARGET_TAB, currentTabNumber));
+        actionBar.setSelectedNavigationItem(currentTabNumber);
 
 
         IntentFilter filter = new IntentFilter(Receiver.DOT_DASH_RECEIVED_MESSAGE);
@@ -152,12 +156,18 @@ public class DotDash extends Activity {
                 ft.attach(contactsFragment);
                 ft.commit();
             }
-        } else if (requestCode == REQUEST_CODE_DELETE_CONTACT) {
-            if (resultCode == RESULT_OK) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.detach(contactsFragment);
-                ft.attach(contactsFragment);
-                ft.commit();
+        } else if (requestCode == REQUEST_CODE_VIEW_CONTACT) {
+            switch (resultCode) {
+                case RESULT_CODE_DELETED_CONTACT:
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.detach(contactsFragment);
+                    ft.attach(contactsFragment);
+                    ft.commit();
+                    break;
+                case RESULT_CODE_SENDING_MESSAGE:
+                    actionBar.setSelectedNavigationItem(data.getIntExtra(TARGET_TAB, currentTabNumber));
+                    newMessageFragment.setContactName(data.getStringExtra(CONTACT_NAME));
+                    break;
             }
         }
     }
@@ -180,6 +190,8 @@ public class DotDash extends Activity {
         editor.putBoolean(RECEIVE_AS_LIGHT_SETTING, receiveAsLight);
         editor.putBoolean(RECEIVE_AS_BEEP_SETTING, receiveAsBeep);
         editor.putInt(CURRENT_TAB_NUMBER, currentTabNumber);
+//        Log.e("alby", newMessageFragment.getMessageText());
+        editor.putString(CURRENT_MESSAGE, newMessageFragment.getMessageText());
 
         editor.commit();
     }
@@ -213,6 +225,21 @@ public class DotDash extends Activity {
         alert.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (newMessageFragment.isStartedFromContact() && currentTabNumber == NEW_MESSAGE_TAB_NUMBER) {
+            Intent intent = new Intent(this, SingleContactActivity.class);
+            intent.putExtra(DotDash.CONTACT_NAME, newMessageFragment.getContactName());
+            startActivity(intent);
+            setTabNumber(DotDash.CONTACTS_TAB_NUMBER);
+            getActionBar().setDisplayHomeAsUpEnabled(false);
+            newMessageFragment.setStartedFromContact(false);
+        }
+        else {
+            finish();
+        }
+    }
+
     private final BroadcastReceiver newMessageAlertReceiver = new BroadcastReceiver() {
 
         @Override
@@ -234,7 +261,7 @@ public class DotDash extends Activity {
 
                     // add sender to conversations list if they aren't already there
                     if (sender.getConversation().size() == 0) {
-                        ((ConversationsFragment)conversationsFragment).addSender(sender);
+                        conversationsFragment.addSender(sender);
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.detach(conversationsFragment);
                         ft.attach(conversationsFragment);

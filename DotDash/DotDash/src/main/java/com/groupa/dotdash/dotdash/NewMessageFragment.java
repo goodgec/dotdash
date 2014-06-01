@@ -4,8 +4,11 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,8 @@ public class NewMessageFragment extends Fragment {
     private String messageText;
     private Timer charTimer;
     private Timer spaceTimer;
+    private boolean startedFromContact;
+    private String contactName;
 
     private final Handler handler = new Handler();
 
@@ -39,18 +44,28 @@ public class NewMessageFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.activity_new_message, container, false);
 
         newMessageRecipientField = (TextView)fragmentView.findViewById(R.id.newMessageRecipientField);
-
-//        Intent intent = getIntent();
-//        String recipient = intent.getStringExtra(DotDash.CONTACT_NAME);
-//        if (recipient != null) {
-//            newMessageRecipientField.setText(recipient);
-//        }
-        Bundle bundle = getArguments();
-        newMessageRecipientField.setText(bundle.getString(DotDash.CONTACT_NAME, ""));
-
         morseButton = (Button)fragmentView.findViewById(R.id.morseTapButton);
+
+//        startedFromContact = false;
+//        Bundle bundle = getArguments();
+        if (startedFromContact) {
+////            startedFromContact = true;
+//            contactName = bundle.getString(DotDash.CONTACT_NAME, "");
+            newMessageRecipientField.setText(contactName);
+        }
+
+//        Bundle bundle = getArguments();
+//        messageText = bundle.getString(DotDash.CURRENT_MESSAGE, "");
+//        if (!messageText.equals("")) {
+//            morseButton.setText(messageText);
+//        }
+
+        messageText = DataManager.getInstance().getCurrentMessageText();
+        if (!messageText.equals("")) {
+            morseButton.setText(messageText);
+        }
+
         pressTimes = new ArrayList<Long>();
-        messageText = "";
         charTimer = new Timer(true);
         spaceTimer = new Timer(true);
         morseButton.setOnTouchListener(new View.OnTouchListener() {
@@ -73,7 +88,7 @@ public class NewMessageFragment extends Fragment {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    morseButton.setText(messageText);
+                                    setText(messageText);
                                 }
                             });
                         }
@@ -88,7 +103,7 @@ public class NewMessageFragment extends Fragment {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    morseButton.setText(messageText);
+                                    setText(messageText);
                                 }
                             });
                         }
@@ -125,5 +140,50 @@ public class NewMessageFragment extends Fragment {
 
 
         return fragmentView;
+    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                if (startedFromContact) {
+//                    Intent intent = new Intent(getActivity().getApplicationContext(), SingleContactActivity.class);
+//                    intent.putExtra(DotDash.CONTACT_NAME, contactName);
+//                    startActivity(intent);
+//                    ((DotDash)getActivity()).setTabNumber(DotDash.CONTACTS_TAB_NUMBER);
+//                    getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
+//
+//                }
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+        startedFromContact = true;
+//        newMessageRecipientField.setText(contactName);
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public boolean isStartedFromContact() {
+        return startedFromContact;
+    }
+
+    public void setStartedFromContact(boolean startedFromContact) {
+        this.startedFromContact = startedFromContact;
+    }
+
+    private void setText(String s) {
+        morseButton.setText(s);
+        DataManager.getInstance().setCurrentMessageText(s);
     }
 }

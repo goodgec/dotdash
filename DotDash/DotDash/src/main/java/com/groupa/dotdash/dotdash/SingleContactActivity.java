@@ -3,6 +3,8 @@ package com.groupa.dotdash.dotdash;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,11 +41,12 @@ public class SingleContactActivity extends Activity {
 //                Intent returnIntent = new Intent();
 //                setResult(RESULT_OK, returnIntent);
 
-                Intent newMessageIntent = new Intent(view.getContext(), DotDash.class);
-                newMessageIntent.putExtra(DotDash.TARGET_TAB, DotDash.NEW_MESSAGE_TAB_NUMBER);
-                newMessageIntent.putExtra(DotDash.CONTACT_NAME, contact.getName());
+                Intent finishIntent = new Intent(view.getContext(), DotDash.class);
+                finishIntent.putExtra(DotDash.TARGET_TAB, DotDash.NEW_MESSAGE_TAB_NUMBER);
+                finishIntent.putExtra(DotDash.CONTACT_NAME, contact.getName());
+                setResult(DotDash.RESULT_CODE_SENDING_MESSAGE, finishIntent);
 //                newMessageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(newMessageIntent);
+//                startActivity(newMessageIntent);
 //                overridePendingTransition(0, 0);
                 finish();
             }
@@ -56,7 +59,7 @@ public class SingleContactActivity extends Activity {
                 DataManager.getInstance().removeContact(contact);
                 // remove all messages from that contact from db
 
-                setResult(RESULT_OK);
+                setResult(DotDash.RESULT_CODE_DELETED_CONTACT);
 
                 finish();
 //                overridePendingTransition(0, 0);
@@ -74,12 +77,10 @@ public class SingleContactActivity extends Activity {
                 //editContactIntent.putExtra(CONTACT_NUMBER, contact.getNumber());
                 //editContactIntent.putExtra(CONTACT_ID, contact.getMorseID());
                 startActivity(editContactIntent);
-                overridePendingTransition(0, 0);
+//                overridePendingTransition(0, 0);
+//                finish();
             }
         });
-
-
-
     }
 
 
@@ -91,16 +92,23 @@ public class SingleContactActivity extends Activity {
 //        return super.onCreateOptionsMenu(menu);
 //    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, DotDash.class);
+                intent.putExtra(DotDash.TARGET_TAB, DotDash.CONTACTS_TAB_NUMBER);
+                NavUtils.navigateUpTo(this, intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, DotDash.class);
+        intent.putExtra(DotDash.TARGET_TAB, DotDash.CONTACTS_TAB_NUMBER);
+        NavUtils.navigateUpTo(this, intent);
+    }
 }

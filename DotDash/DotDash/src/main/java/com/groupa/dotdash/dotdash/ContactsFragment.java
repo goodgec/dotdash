@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -35,7 +34,8 @@ public class ContactsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Intent nameIntent = new Intent(view.getContext(), SingleContactActivity.class);
                 nameIntent.putExtra(DotDash.CONTACT_NAME, ((Contact)adapterView.getItemAtPosition(pos)).getName());
-                getActivity().startActivityForResult(nameIntent, DotDash.REQUEST_CODE_DELETE_CONTACT);
+                getActivity().startActivityForResult(nameIntent, DotDash.REQUEST_CODE_VIEW_CONTACT);
+//                getActivity().finish();
             }
         });
 
