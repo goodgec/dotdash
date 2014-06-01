@@ -34,6 +34,7 @@ public class NewMessageFragment extends Fragment {
     private Timer charTimer;
     private Timer spaceTimer;
     private boolean startedFromContact;
+    private boolean startedFromConversation;
     private String contactName;
 
     private final Handler handler = new Handler();
@@ -162,7 +163,6 @@ public class NewMessageFragment extends Fragment {
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
-        startedFromContact = true;
 //        newMessageRecipientField.setText(contactName);
     }
 
@@ -180,6 +180,14 @@ public class NewMessageFragment extends Fragment {
 
     public void setStartedFromContact(boolean startedFromContact) {
         this.startedFromContact = startedFromContact;
+    }
+
+    public boolean isStartedFromConversation() {
+        return startedFromConversation;
+    }
+
+    public void setStartedFromConversation(boolean startedFromConversation) {
+        this.startedFromConversation = startedFromConversation;
     }
 
     private void setText(String s) {

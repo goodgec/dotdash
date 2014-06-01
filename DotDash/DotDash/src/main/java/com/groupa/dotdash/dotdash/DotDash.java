@@ -33,6 +33,7 @@ public class DotDash extends Activity {
     public static final String RECEIVE_AS_BEEP_SETTING = "receiveAsBeep";
     public static final String CURRENT_TAB_NUMBER = "currentTabNumber";
     public static final String CURRENT_MESSAGE = "currentMessage";
+    public static final String CAME_FROM_NOTIFICATION = "cameFromNotification";
 
     public static int wpm;
     public static boolean receiveAsText;
@@ -52,9 +53,11 @@ public class DotDash extends Activity {
 
     public static final int REQUEST_CODE_CREATE_CONTACT = 0;
     public static final int REQUEST_CODE_VIEW_CONTACT = 1;
+    public static final int REQUEST_CODE_VIEW_CONVERSATION = 2;
 
     public static final int RESULT_CODE_DELETED_CONTACT = 0;
     public static final int RESULT_CODE_SENDING_MESSAGE = 1;
+    public static final int RESULT_CODE_REPLY_MESSAGE = 2;
 
     public static final String TARGET_TAB = "targetTab";
     public static final int CONVERSATIONS_TAB_NUMBER = 0;
@@ -80,7 +83,7 @@ public class DotDash extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dotdash);
 
-        Log.e("alby", "starting");
+        //Log.e("alby", "starting");
 
         appContext = getApplicationContext();
 
@@ -144,6 +147,13 @@ public class DotDash extends Activity {
 
         IntentFilter filter = new IntentFilter(Receiver.DOT_DASH_RECEIVED_MESSAGE);
         this.registerReceiver(newMessageAlertReceiver, filter);
+
+
+        if (intent.getStringExtra(DotDash.CAME_FROM_NOTIFICATION) != null) {
+            Intent nameIntent = new Intent(this, SingleConversationActivity.class);
+            nameIntent.putExtra(DotDash.CONTACT_NAME, intent.getStringExtra(CONTACT_NAME));
+            startActivityForResult(nameIntent, DotDash.REQUEST_CODE_VIEW_CONVERSATION);
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -167,6 +177,15 @@ public class DotDash extends Activity {
                 case RESULT_CODE_SENDING_MESSAGE:
                     actionBar.setSelectedNavigationItem(data.getIntExtra(TARGET_TAB, currentTabNumber));
                     newMessageFragment.setContactName(data.getStringExtra(CONTACT_NAME));
+                    newMessageFragment.setStartedFromContact(true);
+                    break;
+            }
+        } else if (requestCode == REQUEST_CODE_VIEW_CONVERSATION) {
+            switch (resultCode) {
+                case RESULT_CODE_REPLY_MESSAGE:
+                    actionBar.setSelectedNavigationItem(data.getIntExtra(TARGET_TAB, currentTabNumber));
+                    newMessageFragment.setContactName(data.getStringExtra(CONTACT_NAME));
+                    newMessageFragment.setStartedFromConversation(true);
                     break;
             }
         }
@@ -176,13 +195,13 @@ public class DotDash extends Activity {
     protected void onPause() {
         super.onPause();
 
-        Log.e("alby", "pausing");
+        //Log.e("alby", "pausing");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("alby", "stopping");
+        //Log.e("alby", "stopping");
 
         editor.putInt(WPM_SETTING, wpm);
         editor.putBoolean(RECEIVE_AS_TEXT_SETTING, receiveAsText);
@@ -234,6 +253,14 @@ public class DotDash extends Activity {
             setTabNumber(DotDash.CONTACTS_TAB_NUMBER);
             getActionBar().setDisplayHomeAsUpEnabled(false);
             newMessageFragment.setStartedFromContact(false);
+        }
+        else if (newMessageFragment.isStartedFromConversation() && currentTabNumber == NEW_MESSAGE_TAB_NUMBER) {
+            Intent intent = new Intent(this, SingleConversationActivity.class);
+            intent.putExtra(DotDash.CONTACT_NAME, newMessageFragment.getContactName());
+            startActivity(intent);
+            setTabNumber(DotDash.CONVERSATIONS_TAB_NUMBER);
+            getActionBar().setDisplayHomeAsUpEnabled(false);
+            newMessageFragment.setStartedFromConversation(false);
         }
         else {
             finish();

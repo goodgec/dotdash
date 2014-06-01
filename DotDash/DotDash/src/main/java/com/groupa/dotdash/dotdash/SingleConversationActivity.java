@@ -57,11 +57,11 @@ public class SingleConversationActivity extends Activity {
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent newMessageIntent = new Intent(view.getContext(), DotDash.class);
-                newMessageIntent.putExtra(DotDash.CONTACT_NAME, converser);
-//                newMessageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(newMessageIntent);
-//                overridePendingTransition(0, 0);
+
+                Intent finishIntent = new Intent(view.getContext(), DotDash.class);
+                finishIntent.putExtra(DotDash.TARGET_TAB, DotDash.NEW_MESSAGE_TAB_NUMBER);
+                finishIntent.putExtra(DotDash.CONTACT_NAME, converser);
+                setResult(DotDash.RESULT_CODE_REPLY_MESSAGE, finishIntent);
                 finish();
             }
         });

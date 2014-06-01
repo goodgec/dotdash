@@ -38,16 +38,11 @@ public class SingleContactActivity extends Activity {
         sendMessageFromSingleContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent returnIntent = new Intent();
-//                setResult(RESULT_OK, returnIntent);
 
                 Intent finishIntent = new Intent(view.getContext(), DotDash.class);
                 finishIntent.putExtra(DotDash.TARGET_TAB, DotDash.NEW_MESSAGE_TAB_NUMBER);
                 finishIntent.putExtra(DotDash.CONTACT_NAME, contact.getName());
                 setResult(DotDash.RESULT_CODE_SENDING_MESSAGE, finishIntent);
-//                newMessageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(newMessageIntent);
-//                overridePendingTransition(0, 0);
                 finish();
             }
         });

@@ -43,9 +43,14 @@ public class ConversationsFragment extends Fragment {
         conversationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+//                Intent nameIntent = new Intent(view.getContext(), SingleConversationActivity.class);
+//                nameIntent.putExtra("contactName", ((Contact)adapterView.getItemAtPosition(pos)).getName());
+//                startActivity(nameIntent);
+
+
                 Intent nameIntent = new Intent(view.getContext(), SingleConversationActivity.class);
-                nameIntent.putExtra("contactName", ((Contact)adapterView.getItemAtPosition(pos)).getName());
-                startActivity(nameIntent);
+                nameIntent.putExtra(DotDash.CONTACT_NAME, ((Contact)adapterView.getItemAtPosition(pos)).getName());
+                getActivity().startActivityForResult(nameIntent, DotDash.REQUEST_CODE_VIEW_CONVERSATION);
             }
         });
 
