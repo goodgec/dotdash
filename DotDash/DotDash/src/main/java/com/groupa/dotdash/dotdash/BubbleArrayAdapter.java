@@ -51,14 +51,14 @@ public class BubbleArrayAdapter extends ArrayAdapter<Message> {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResource, parent, false);
 
-            message = getItem(position);
-
-            row.setTag(message);
 
         }
         else {
             message = (Message)row.getTag();
         }
+        message = getItem(position);
+
+        row.setTag(message);
 
         LinearLayout wrapper = (LinearLayout)row.findViewById(R.id.wrapper);
         bubbleText = (TextView) row.findViewById(R.id.bubbleText);

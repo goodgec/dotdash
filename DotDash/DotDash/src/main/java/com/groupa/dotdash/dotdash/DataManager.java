@@ -86,7 +86,7 @@ public class DataManager {
 
     private Message createMessageFromDb(Cursor c) {
         Contact contact = addressBookNames.get(c.getString(2));
-        Message message = new Message(c.getString(3), contact, c.getInt(2)==1);
+        Message message = new Message(c.getString(3), contact, c.getInt(2)==1, c.getLong(4));
         Log.w("string4", String.valueOf(c.getInt(2)==1));
         return message;
     }
