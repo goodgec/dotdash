@@ -67,7 +67,7 @@ public class NewMessageFragment extends Fragment {
         spaceTimer = new Timer(true);
 
         ArrayAdapter<Contact> suggestionsAdapter = new ArrayAdapter<Contact>(getActivity(), android.R.layout.simple_dropdown_item_1line, DataManager.getInstance().getAddressBookList());
-        //newMessageRecipientField.setAdapter(suggestionsAdapter);
+        newMessageRecipientField.setAdapter(suggestionsAdapter);
         newMessageRecipientField.setThreshold(1);
 
         if (contactName != null) {
