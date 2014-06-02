@@ -34,6 +34,7 @@ public class DotDash extends Activity {
     public static final String CURRENT_TAB_NUMBER = "currentTabNumber";
     public static final String CURRENT_MESSAGE = "currentMessage";
     public static final String CAME_FROM_NOTIFICATION = "cameFromNotification";
+    public static final String PLAY_MESSAGE = "playMessage";
 
     public static int wpm;
     public static boolean receiveAsText;
@@ -147,9 +148,10 @@ public class DotDash extends Activity {
         this.registerReceiver(newMessageAlertReceiver, filter);
 
 
-        if (intent.getStringExtra(DotDash.CAME_FROM_NOTIFICATION) != null) {
+        if (intent.getStringExtra(CAME_FROM_NOTIFICATION) != null) {
             Intent nameIntent = new Intent(this, SingleConversationActivity.class);
-            nameIntent.putExtra(DotDash.CONTACT_NAME, intent.getStringExtra(CONTACT_NAME));
+            nameIntent.putExtra(CONTACT_NAME, intent.getStringExtra(CONTACT_NAME));
+            nameIntent.putExtra(PLAY_MESSAGE, true);
             startActivityForResult(nameIntent, DotDash.REQUEST_CODE_VIEW_CONVERSATION);
         }
     }

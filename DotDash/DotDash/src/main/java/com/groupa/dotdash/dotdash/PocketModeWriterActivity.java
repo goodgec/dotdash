@@ -2,18 +2,13 @@ package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
-import android.util.Log;
-import android.view.DragEvent;
-import android.view.GestureDetector;
-import android.view.Menu;
+import android.os.Vibrator;
+import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -21,47 +16,42 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PocketModeActivity extends Activity {
+public class PocketModeWriterActivity extends Activity {
 
-    private ImageButton playButton;
     private ImageButton composeButton;
 
     PowerManager.WakeLock wakeLock;
 
-    private String morseID;
     private long lastDown;
     private long lastDuration;
     private ArrayList<Long> pressTimes;
+    private String messageText;
     private Timer charTimer;
     private Timer spaceTimer;
+    private Timer warningTimer;
+    private Timer sendTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pocket_mode);
-
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_pocket_mode_writer);
 
         PowerManager powerManager = (PowerManager)getSystemService(POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Lock");
         wakeLock.acquire();
 
-        playButton = (ImageButton)findViewById(R.id.pocketPlayButton);
-        composeButton = (ImageButton)findViewById(R.id.pocketNewMessageButton);
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Message unheardMessage = DataManager.getInstance().getNextMessage();
-                if (unheardMessage != null) {
-                    Translator.outputMessage(view.getContext(), Translator.convertTextToMorse(unheardMessage.getContact().getMorseID() + "  " + unheardMessage.getText(), DotDash.wpm));
-                }
-            }
-        });
+        composeButton = (ImageButton)findViewById(R.id.pocketComposeButton);
 
         pressTimes = new ArrayList<Long>();
         charTimer = new Timer(true);
         spaceTimer = new Timer(true);
-        morseID = "";
+        warningTimer = new Timer(true);
+        sendTimer = new Timer(true);
+        messageText = "";
+
+        Intent intent = getIntent();
+        final Contact contact = DataManager.getInstance().getAddressBookNamesMap().get(intent.getStringExtra(DotDash.CONTACT_NAME));
+
 
         composeButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -70,16 +60,37 @@ public class PocketModeActivity extends Activity {
                     lastDown = System.currentTimeMillis();
                     charTimer.cancel();
                     spaceTimer.cancel();
+
+                    warningTimer = new Timer(true);
+                    warningTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(100);
+                        }
+                    }, 1500);
+
+                    sendTimer = new Timer(true);
+                    sendTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(new long[] {0, 100, 100, 100}, -1);
+
+                            Translator.sendMessage(DotDash.appContext, contact, messageText);
+                            finish();
+                        }
+                    }, 2500);
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     lastDuration = System.currentTimeMillis() - lastDown;
                     pressTimes.add(lastDuration);
+                    warningTimer.cancel();
+                    sendTimer.cancel();
 
                     charTimer = new Timer(true);
                     charTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            morseID += Translator.convertMorseToText(pressTimes);
+                            messageText += Translator.convertMorseToText(pressTimes);
                             pressTimes.clear();
                         }
                     }, Translator.LETTER_BREAK_DURATION);
@@ -88,21 +99,11 @@ public class PocketModeActivity extends Activity {
                     spaceTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            Contact contact = DataManager.getInstance().getAddressBookMorseIDs().get(morseID);
-//                            Toast.makeText(DotDash.appContext, morseID, Toast.LENGTH_LONG).show();
-                            Log.e("alby", morseID);
-                            if (contact != null) {
-                                Log.e("alby", contact.getName());
-//                                Toast.makeText(DotDash.appContext, contact.getName(), Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(DotDash.appContext, PocketModeWriterActivity.class);
-                                intent.putExtra(DotDash.CONTACT_NAME, contact.getName());
-                                startActivity(intent);
-                            }
-                            morseID = "";
+                            messageText += ' ';
+                            pressTimes.clear();
                         }
                     }, Translator.SPACE_DURATION);
                 }
-
                 return true;
             }
         });
@@ -120,7 +121,7 @@ public class PocketModeActivity extends Activity {
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //
 //        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.pocket_mode, menu);
+//        getMenuInflater().inflate(R.menu.pocket_mode_writer, menu);
 //        return true;
 //    }
 

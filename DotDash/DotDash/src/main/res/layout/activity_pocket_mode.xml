@@ -9,7 +9,7 @@
     <ImageButton
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/playButton"
+        android:id="@+id/pocketPlayButton"
         android:background="@drawable/gray_button"
         android:layout_weight="1"
         android:src="@drawable/lockplay" />
@@ -18,7 +18,7 @@
         android:background="@drawable/lock_blue_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/composeButton"
+        android:id="@+id/pocketNewMessageButton"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:src="@drawable/lockcompose" />

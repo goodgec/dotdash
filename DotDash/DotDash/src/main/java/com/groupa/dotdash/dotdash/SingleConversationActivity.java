@@ -71,5 +71,10 @@ public class SingleConversationActivity extends Activity {
             public void run() {
                 conversationListView.setSelection(conversationListView.getCount() - 1);
             }});
+
+        if (intent.getBooleanExtra(DotDash.PLAY_MESSAGE, false)) {
+            Message lastMessage = messageList.get(messageList.size() - 1);
+            Translator.outputMessage(this, Translator.convertTextToMorse(lastMessage.getText(), DotDash.wpm));
+        }
     }
 }

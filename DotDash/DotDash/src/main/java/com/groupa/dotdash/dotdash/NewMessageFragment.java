@@ -137,18 +137,10 @@ public class NewMessageFragment extends Fragment {
                 charTimer.cancel();
                 pressTimes.clear();
 
-                SmsManager manager = SmsManager.getDefault();
                 Contact recipient = DataManager.getInstance().getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
 
                 if (recipient != null) {
-                    Message message = new Message(messageText, recipient, true);
-                    if (message.getText().length() == 0) {
-                        Toast.makeText(view.getContext(), "Invalid empty text", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    recipient.getConversation().addMessage(message);
-                    manager.sendTextMessage(message.getContact().getNumber(), null, message.getText(), null, null);
-                    DataManager.getInstance().addMessageToDb(message);
+                    Translator.sendMessage(view.getContext(), recipient, messageText);
                     morseButton.setText("");
                     messageText = "";
                 } else {

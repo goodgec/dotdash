@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,10 +31,10 @@ public class CreateContactActivity extends Activity {
         Intent intent = getIntent();
 
         nameField = (TextView)findViewById(R.id.createContactNameField);
-
         numberField = (TextView)findViewById(R.id.createContactNumberField);
-
         idField = (TextView)findViewById(R.id.createContactIDField);
+
+        idField.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
 
         editingContact = false;
         if (intent.hasExtra(DotDash.CONTACT_NAME)){
@@ -50,15 +51,16 @@ public class CreateContactActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (nameField.getText().toString().equals("")
-                        || numberField.getText().toString().equals("")
-                        || numberField.getText().toString().length() != 10) {
+                        || numberField.getText().equals("")
+                        || numberField.getText().length() != 10
+                        || idField.getText().length() != 1) {
                     displayAlert();
                     return;
                 }
 
                 Contact contact = new Contact(-1, nameField.getText().toString(),
                         numberField.getText().toString(),
-                        idField.getText().toString());
+                        idField.getText().toString().toUpperCase());
 
                 if(contactToEdit != null && !contact.equals(contactToEdit)){
                     DataManager.getInstance().editContact(contactToEdit, contact);
@@ -105,7 +107,7 @@ public class CreateContactActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Cannot save contact").setCancelable(
                 false)
-                .setMessage("Contacts must have a name and a 10-digit phone number.")
+                .setMessage("Contacts must have a name, a 10-digit phone number, and a 1-character ID.")
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {

@@ -14,9 +14,9 @@ import java.util.HashMap;
  * Created by barterd on 5/23/14.
  */
 public class DataManager {
-    private Contact me;
     private HashMap<String, Contact> addressBookNames;
     private HashMap<String, Contact> addressBookNumbers;
+    private HashMap<String, Contact> addressBookMorseIDs;
     private DotDashDbHelper dbHelper;
 
     private String currentMessageText;
@@ -27,8 +27,6 @@ public class DataManager {
     public DataManager(){
         newMessages = new ArrayList<Message>();
         currentMessageText = "";
-        me = new Contact(-1, "Me", "0");
-        //populate address book
         dbHelper = new DotDashDbHelper(DotDash.appContext);
         populateAddressBooks();
     }
@@ -56,6 +54,7 @@ public class DataManager {
         // load things from file.
         addressBookNames = new HashMap<String, Contact>();
         addressBookNumbers = new HashMap<String, Contact>();
+        addressBookMorseIDs = new HashMap<String, Contact>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor c = db.query(DotDashContract.ContactsTable.TABLE_NAME, null, null, null, null, null, null);
@@ -64,7 +63,7 @@ public class DataManager {
             Contact contact = createContactFromDb(c);
             addressBookNames.put(contact.getName(), contact);
             addressBookNumbers.put(contact.getNumber(), contact);
-//            populateConversation(contact, db);
+            addressBookMorseIDs.put(contact.getMorseID().toUpperCase(), contact);
         }
         db.close();
 
@@ -85,7 +84,9 @@ public class DataManager {
 
         db.insert(DotDashContract.MessagesTable.TABLE_NAME, null, values);
 
-        newMessages.add(message);
+        if (!message.isSentMessage()) {
+            newMessages.add(message);
+        }
     }
 
     public Message getNextMessage() {
@@ -153,6 +154,7 @@ public class DataManager {
 
         addressBookNumbers.remove(contact.getNumber());
         addressBookNames.remove(contact.getName());
+        addressBookMorseIDs.remove(contact.getMorseID());
         db.close();
     }
       
@@ -177,9 +179,11 @@ public class DataManager {
 
         addressBookNumbers.remove(oldContact.getNumber());
         addressBookNames.remove(oldContact.getName());
+        addressBookMorseIDs.remove(oldContact.getMorseID());
 
         addressBookNames.put(newContact.getName(), newContact);
         addressBookNumbers.put(newContact.getNumber(), newContact);
+        addressBookMorseIDs.put(newContact.getMorseID(), newContact);
 
         db.close();
     }
@@ -192,22 +196,18 @@ public class DataManager {
         return addressBookNames;
     }
 
-    public void setAddressBookNames(HashMap<String, Contact> addressBookNames) {
-        this.addressBookNames = addressBookNames;
-    }
-
     public HashMap<String, Contact> getAddressBookNumbersMap() {
         return addressBookNumbers;
+    }
+
+    public HashMap<String, Contact> getAddressBookMorseIDs() {
+        return addressBookMorseIDs;
     }
 
     public ArrayList<Contact> getAddressBookList() {
         ArrayList<Contact> sortedContacts = new ArrayList<Contact>(addressBookNames.values());
         Collections.sort(sortedContacts);
         return sortedContacts;
-    }
-
-    public Contact getMe() {
-        return me;
     }
 
     public String getCurrentMessageText() {
