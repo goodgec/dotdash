@@ -85,12 +85,13 @@ public class NewMessageFragment extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    morseButton.setBackground(getResources().getDrawable(R.drawable.blue_button));
+                    morseButton.setBackground(getResources().getDrawable(R.drawable.touch_down_morse_button));
+
                     lastDown = System.currentTimeMillis();
                     charTimer.cancel();
                     spaceTimer.cancel();
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    morseButton.setBackground(getResources().getDrawable(R.drawable.touch_down_morse_button));
+                    morseButton.setBackground(getResources().getDrawable(R.drawable.blue_button));
                     lastDuration = System.currentTimeMillis() - lastDown;
                     pressTimes.add(lastDuration);
 

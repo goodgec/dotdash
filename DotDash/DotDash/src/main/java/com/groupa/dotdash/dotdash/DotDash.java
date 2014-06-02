@@ -11,6 +11,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -101,41 +104,66 @@ public class DotDash extends Activity {
         currentTabNumber = intent.getIntExtra(TARGET_TAB, settings.getInt(CURRENT_TAB_NUMBER, 0));
         currentMessage = intent.getStringExtra(CURRENT_MESSAGE);
 
-        // set up tabs
+
         conversationsFragment = (ConversationsFragment)Fragment.instantiate(this, ConversationsFragment.class.getName());
+
+        Drawable drConversations = getResources().getDrawable(R.drawable.conversations);
+        Bitmap bitmapConversations = ((BitmapDrawable) drConversations).getBitmap();
+        Drawable conversationsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapConversations, 50, 50, true));
+
         ActionBar.Tab conversationsTab = actionBar.newTab()
 //                .setText("tab1")
                 .setTabListener(new TabListener(
                         conversationsFragment, this, "Conversations", CONVERSATIONS_TAB_NUMBER))
-                .setIcon(R.drawable.conversations);
+                .setIcon(conversationsSmall);
         actionBar.addTab(conversationsTab);
 
         newMessageFragment = (NewMessageFragment)Fragment.instantiate(this, NewMessageFragment.class.getName());
+
+
+        Drawable drCompose = getResources().getDrawable(R.drawable.compose);
+        Bitmap bitmapCompose = ((BitmapDrawable) drCompose).getBitmap();
+        Drawable composeSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapCompose, 50, 50, true));
+
         Bundle bundle = new Bundle();
         bundle.putString(CONTACT_NAME, intent.getStringExtra(CONTACT_NAME));
         bundle.putString(CURRENT_MESSAGE, currentMessage);
         newMessageFragment.setArguments(bundle);
+
+
         ActionBar.Tab newMessageTab = actionBar.newTab()
 //                .setText("tab1")
                 .setTabListener(new TabListener(
                         newMessageFragment, this, "New Message", NEW_MESSAGE_TAB_NUMBER))
-                .setIcon(R.drawable.compose);
+                .setIcon(composeSmall);
+
         actionBar.addTab(newMessageTab);
 
         contactsFragment = (ContactsFragment)Fragment.instantiate(this, ContactsFragment.class.getName());
+
+        Drawable drContacts = getResources().getDrawable(R.drawable.contacts);
+        Bitmap bitmapContacts = ((BitmapDrawable) drContacts).getBitmap();
+        Drawable contactsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapContacts, 50, 50, true));
+
         ActionBar.Tab contactsTab = actionBar.newTab()
 //                .setText("tab1")
                 .setTabListener(new TabListener(
                         contactsFragment, this, "Contacts", CONTACTS_TAB_NUMBER))
-                .setIcon(R.drawable.contacts);
+                .setIcon(contactsSmall);
         actionBar.addTab(contactsTab);
 
         settingsFragment = (SettingsFragment)Fragment.instantiate(this, SettingsFragment.class.getName());
+
+        Drawable drSettings = getResources().getDrawable(R.drawable.settings);
+        Bitmap bitmapSettings = ((BitmapDrawable) drSettings).getBitmap();
+        Drawable settingsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapSettings, 50, 50, true));
+
+
         ActionBar.Tab settingTab = actionBar.newTab()
 //                .setText("tab1")
                 .setTabListener(new TabListener(
                         settingsFragment, this, "Settings", SETTINGS_TAB_NUMBER))
-                .setIcon(R.drawable.settings);
+                .setIcon(settingsSmall);
         actionBar.addTab(settingTab);
 
 //        currentTab = intent.getIntExtra(TARGET_TAB, currentTab);
