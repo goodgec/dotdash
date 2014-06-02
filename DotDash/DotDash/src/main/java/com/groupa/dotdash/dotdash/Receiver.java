@@ -47,12 +47,6 @@ public class Receiver extends BroadcastReceiver {
                 if (sender.getConversation().isDuplicate(newMessage)) {
                     return;
                 }
-//                Toast.makeText(context, "third", Toast.LENGTH_SHORT).show();
-
-                Toast.makeText(context, context.getApplicationContext().getClass().getName(), Toast.LENGTH_LONG).show();
-
-
-
 
                 //Build Notification.
                 NotificationCompat.Builder notifier = new NotificationCompat.Builder(context);
@@ -61,22 +55,12 @@ public class Receiver extends BroadcastReceiver {
                 notifier.setContentText(newMessage.getText());
                 notifier.build();
 
-                // Creates an explicit intent for an Activity in your app
-                //Intent resultIntent = new Intent(context, Se.class);
-
                 Intent notifyIntent = new Intent(context, DotDash.class);
                 notifyIntent.putExtra(DotDash.CAME_FROM_NOTIFICATION, DotDash.CAME_FROM_NOTIFICATION);
                 notifyIntent.putExtra(DotDash.CONTACT_NAME, sender.getName());
-                //context.startActivityForResult(resultIntent, DotDash.REQUEST_CODE_VIEW_CONVERSATION);
 
-// The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-// Adds the back stack for the Intent (but not the Intent itself)
                 stackBuilder.addParentStack(DotDash.class);
-// Adds the Intent that starts the Activity to the top of the stack
                 stackBuilder.addNextIntent(notifyIntent);
                 PendingIntent resultPendingIntent =
                         stackBuilder.getPendingIntent(
@@ -86,7 +70,6 @@ public class Receiver extends BroadcastReceiver {
                 notifier.setContentIntent(resultPendingIntent);
                 NotificationManager mNotificationManager =
                         (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
                 mNotificationManager.notify(0, notifier.build());
 
 

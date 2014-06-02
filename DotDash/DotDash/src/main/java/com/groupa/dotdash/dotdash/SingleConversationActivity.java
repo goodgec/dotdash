@@ -2,6 +2,8 @@ package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
@@ -12,10 +14,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class SingleConversationActivity extends Activity {
-    private DataManager dm;
     private ArrayList<Message> messageList;
     private String converser;
     private Vibrator vibrator;
+    private ToneGenerator beeper;
 
     private ListView conversationListView;
     private Button replyButton;
@@ -28,9 +30,9 @@ public class SingleConversationActivity extends Activity {
         setContentView(R.layout.activity_single_conversation);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dm = DataManager.getInstance();
-
         vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+        beeper = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
+
 
         Intent intent = getIntent();
         converser = intent.getStringExtra(DotDash.CONTACT_NAME);
@@ -38,7 +40,7 @@ public class SingleConversationActivity extends Activity {
             getActionBar().setTitle(converser);
         }
 
-        messageList = dm.getAddressBookNamesMap().get(converser).getConversation().getMessages();
+        messageList = DataManager.getInstance().getAddressBookNamesMap().get(converser).getConversation().getMessages();
         conversationListView = (ListView)findViewById(R.id.conversationListView);
         //speechBubbleArrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
         speechBubbleArrayAdapter = new BubbleArrayAdapter(this, R.layout.speech_bubble, messageList);
@@ -49,7 +51,7 @@ public class SingleConversationActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Message selectedMessage = (Message)adapterView.getItemAtPosition(pos);
-                vibrator.vibrate(Translator.convertTextToMorse(selectedMessage.getText(), DotDash.wpm), -1);
+                Translator.outputMessage(view.getContext(), Translator.convertTextToMorse(selectedMessage.getText(), DotDash.wpm));
             }
         });
 

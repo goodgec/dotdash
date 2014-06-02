@@ -17,6 +17,7 @@
         <activity
             android:name=".DotDash"
             android:label="DotDash"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +41,7 @@
             android:name="com.groupa.dotdash.dotdash.SingleContactActivity"
             android:label="@string/title_activity_single_contact"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName="com.groupa.dotdash.dotdash.DotDash" >
         </activity>
             <!--android:parentActivityName="com.groupa.dotdash.dotdash.ContactsFragment" >-->
@@ -51,12 +53,14 @@
             android:name="com.groupa.dotdash.dotdash.CreateContactActivity"
             android:label="@string/title_activity_create_contact"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName="com.groupa.dotdash.dotdash.SingleContactActivity" >
         </activity>
 
         <activity
             android:name="com.groupa.dotdash.dotdash.SplashScreenActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_splash_sceen" >
 
         </activity>
@@ -71,6 +75,7 @@
             android:name="com.groupa.dotdash.dotdash.SingleConversationActivity"
             android:label="@string/title_activity_single_conversation"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName="com.groupa.dotdash.dotdash.DotDash">
             </activity>
     </application>
