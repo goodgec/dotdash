@@ -89,21 +89,14 @@ public class SingleContactActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent intent = new Intent(this, DotDash.class);
-                intent.putExtra(DotDash.TARGET_TAB, DotDash.CONTACTS_TAB_NUMBER);
-                NavUtils.navigateUpTo(this, intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        onBackPressed();
+        return true;
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, DotDash.class);
-        intent.putExtra(DotDash.TARGET_TAB, DotDash.CONTACTS_TAB_NUMBER);
-        NavUtils.navigateUpTo(this, intent);
-    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(this, DotDash.class);
+//        intent.putExtra(DotDash.TARGET_TAB, DotDash.CONTACTS_TAB_NUMBER);
+//        NavUtils.navigateUpTo(this, intent);
+//    }
 }

@@ -77,4 +77,11 @@ public class Contact implements Comparable<Contact> {
     public int compareTo(Contact contact) {
         return name.compareTo(contact.getName());
     }
+
+    public boolean equals(Contact other) {
+        if (name.equals(other.getName()) && number.equals(other.getNumber()) && morseID.equals(other.getMorseID())){
+            return true;
+        }
+        return false;
+    }
 }

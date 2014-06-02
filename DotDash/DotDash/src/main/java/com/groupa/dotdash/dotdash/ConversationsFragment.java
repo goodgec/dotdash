@@ -20,7 +20,7 @@ public class ConversationsFragment extends Fragment {
     private ArrayList<Contact> allContactsList;
     private ArrayList<Contact> contactsList;
     private ListView conversationsListView;
-    private ArrayAdapter<Contact> conversationsActivityArrayAdapter;
+    //private ArrayAdapter<Contact> conversationsActivityArrayAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,8 +37,8 @@ public class ConversationsFragment extends Fragment {
         //TODO sort by most recent talking.
 
         conversationsListView = (ListView)fragmentView.findViewById(R.id.conversationsListView);
-        conversationsActivityArrayAdapter = new ArrayAdapter<Contact>(getActivity(), android.R.layout.simple_list_item_1, contactsList);
-        conversationsListView.setAdapter(conversationsActivityArrayAdapter);
+        ArrayAdapter<Contact> arrayAdapter = new ArrayAdapter<Contact>(getActivity(), android.R.layout.simple_list_item_1, contactsList);
+        conversationsListView.setAdapter(arrayAdapter);
 
         conversationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -56,8 +56,8 @@ public class ConversationsFragment extends Fragment {
 
         return fragmentView;
     }
-
-    public void addSender(Contact sender) {
-        conversationsActivityArrayAdapter.add(sender);
-    }
+//
+//    public void addSender(Contact sender) {
+//        conversationsActivityArrayAdapter.add(sender);
+//    }
 }
