@@ -20,13 +20,16 @@ public class SingleConversationActivity extends Activity {
     private ListView conversationListView;
     private Button replyButton;
 
-    protected BubbleArrayAdapter speechBubbleArrayAdapter;
+    private BubbleArrayAdapter speechBubbleArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_conversation);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        conversationListView = (ListView)findViewById(R.id.conversationListView);
+        replyButton = (Button)findViewById(R.id.singleConversationReplyButton);
 
         dm = DataManager.getInstance();
 
@@ -39,7 +42,6 @@ public class SingleConversationActivity extends Activity {
         }
 
         messageList = dm.getAddressBookNamesMap().get(converser).getConversation().getMessages();
-        conversationListView = (ListView)findViewById(R.id.conversationListView);
         //speechBubbleArrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
         speechBubbleArrayAdapter = new BubbleArrayAdapter(this, R.layout.speech_bubble, messageList);
         conversationListView.setAdapter(speechBubbleArrayAdapter);
@@ -53,11 +55,9 @@ public class SingleConversationActivity extends Activity {
             }
         });
 
-        replyButton = (Button)findViewById(R.id.singleConversationReplyButton);
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent finishIntent = new Intent(view.getContext(), DotDash.class);
                 finishIntent.putExtra(DotDash.TARGET_TAB, DotDash.NEW_MESSAGE_TAB_NUMBER);
                 finishIntent.putExtra(DotDash.CONTACT_NAME, converser);
@@ -65,5 +65,10 @@ public class SingleConversationActivity extends Activity {
                 finish();
             }
         });
+
+        conversationListView.post(new Runnable(){
+            public void run() {
+                conversationListView.setSelection(conversationListView.getCount() - 1);
+            }});
     }
 }

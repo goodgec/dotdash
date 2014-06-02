@@ -50,8 +50,6 @@ public class BubbleArrayAdapter extends ArrayAdapter<Message> {
         if (row == null){
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResource, parent, false);
-
-
         }
         else {
             message = (Message)row.getTag();

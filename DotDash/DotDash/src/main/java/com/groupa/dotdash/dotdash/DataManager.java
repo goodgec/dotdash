@@ -124,7 +124,6 @@ public class DataManager {
                 null,
                 DotDashContract.ContactsTable.COLUMN_NAME_NAME + " ASC");
         c.moveToFirst();
-//        Log.e("alby1", c.getString(2));
         while (c.moveToNext()) {
             Log.e("alby1", c.getString(0));
             adapter.add(addressBookNumbers.get(c.getString(0)));

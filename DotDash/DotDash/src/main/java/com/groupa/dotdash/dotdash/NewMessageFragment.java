@@ -1,9 +1,11 @@
 package com.groupa.dotdash.dotdash;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +17,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -29,8 +33,7 @@ public class NewMessageFragment extends Fragment {
 
     private Button morseButton;
     private Button sendButton;
-    private TextView newMessageRecipientField;
-    private Button searchButton;
+    private AutoCompleteTextView newMessageRecipientField;
 
     private long lastDown;
     private long lastDuration;
@@ -49,15 +52,9 @@ public class NewMessageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.activity_new_message, container, false);
 
-        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getActivity().getComponentName());
-        SearchView sv = (SearchView)fragmentView.findViewById(R.id.newMessageRecipientField);
-        sv.setSearchableInfo(searchableInfo);
-
         morseButton = (Button)fragmentView.findViewById(R.id.morseTapButton);
         sendButton = (Button)fragmentView.findViewById(R.id.sendButton);
-        newMessageRecipientField = (TextView)fragmentView.findViewById(R.id.newMessageRecipientField);
-        searchButton = (Button)fragmentView.findViewById(R.id.searchContactsButton);
+        newMessageRecipientField = (AutoCompleteTextView)fragmentView.findViewById(R.id.newMessageRecipientField);
 
 //        startedFromContact = false;
 //        Bundle bundle = getArguments();
@@ -81,6 +78,12 @@ public class NewMessageFragment extends Fragment {
         pressTimes = new ArrayList<Long>();
         charTimer = new Timer(true);
         spaceTimer = new Timer(true);
+
+        ArrayAdapter<Contact> suggestionsAdapter = new ArrayAdapter<Contact>(getActivity(), android.R.layout.simple_dropdown_item_1line, DataManager.getInstance().getAddressBookList());
+        newMessageRecipientField.setAdapter(suggestionsAdapter);
+        newMessageRecipientField.setThreshold(1);
+
+
         morseButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -130,6 +133,10 @@ public class NewMessageFragment extends Fragment {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                spaceTimer.cancel();
+                charTimer.cancel();
+                pressTimes.clear();
+
                 SmsManager manager = SmsManager.getDefault();
                 Contact recipient = DataManager.getInstance().getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
 
@@ -150,15 +157,18 @@ public class NewMessageFragment extends Fragment {
             }
         });
 
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                newMessageRecipientField.setQuery();
-            }
-        });
-
         return fragmentView;
+    }
+
+
+
+    protected void displayAlert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("You've Got Mail!").setCancelable(
+                false);
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 //    @Override

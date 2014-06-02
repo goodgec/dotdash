@@ -65,10 +65,6 @@ public class DotDash extends Activity {
     public static final int CONTACTS_TAB_NUMBER = 2;
     public static final int SETTINGS_TAB_NUMBER = 3;
 
-    protected ArrayAdapter<Contact> conversationsActivityArrayAdapter;
-
-    protected HashMap<String, Contact> addressBook;
-
     private SharedPreferences settings;
     protected SharedPreferences.Editor editor;
 
@@ -85,7 +81,7 @@ public class DotDash extends Activity {
 
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
-        Log.e("alby", "starting");
+//        Log.e("alby", "starting");
 
         appContext = getApplicationContext();
 
