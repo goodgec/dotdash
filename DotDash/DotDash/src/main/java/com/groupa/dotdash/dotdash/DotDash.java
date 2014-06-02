@@ -286,7 +286,7 @@ public class DotDash extends Activity {
 
                     // add sender to conversations list if they aren't already there
                     if (sender.getConversation().size() == 0) {
-                        conversationsFragment.addSender(sender);
+                        //conversationsFragment.addSender(sender);
                         FragmentTransaction ft = getFragmentManager().beginTransaction();
                         ft.detach(conversationsFragment);
                         ft.attach(conversationsFragment);

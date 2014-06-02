@@ -29,8 +29,6 @@ public class DataManager {
         currentMessageText = "";
         me = new Contact(-1, "Me", "0");
         //populate address book
-        addressBookNames = new HashMap<String, Contact>();
-        addressBookNumbers = new HashMap<String, Contact>();
         dbHelper = new DotDashDbHelper(DotDash.appContext);
         populateAddressBooks();
     }
@@ -56,6 +54,8 @@ public class DataManager {
 
     private void populateAddressBooks() {
         // load things from file.
+        addressBookNames = new HashMap<String, Contact>();
+        addressBookNumbers = new HashMap<String, Contact>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor c = db.query(DotDashContract.ContactsTable.TABLE_NAME, null, null, null, null, null, null);
@@ -96,7 +96,7 @@ public class DataManager {
     private Message createMessageFromDb(Cursor c) {
         Contact contact = addressBookNames.get(c.getString(2));
         Message message = new Message(c.getString(3), contact, c.getInt(2)==1, c.getLong(4));
-        Log.w("string4", String.valueOf(c.getInt(2)==1));
+        Log.w("string4", String.valueOf(c.getInt(2) == 1));
         return message;
     }
 
@@ -134,7 +134,6 @@ public class DataManager {
                 DotDashContract.ContactsTable.COLUMN_NAME_NAME + " ASC");
         c.moveToFirst();
         while (c.moveToNext()) {
-            Log.e("alby1", c.getString(0));
             adapter.add(addressBookNumbers.get(c.getString(0)));
         }
         db.close();
@@ -147,8 +146,42 @@ public class DataManager {
         db.delete(DotDashContract.ContactsTable.TABLE_NAME,
                 DotDashContract.ContactsTable.COLUMN_NAME_NAME + " =? ",
                 new String[] {contact.getName()});
+
+        db.delete(DotDashContract.MessagesTable.TABLE_NAME,
+                DotDashContract.MessagesTable.COLUMN_NAME_CONTACT_NAME + " =? ",
+                new String[] {contact.getName()});
+
         addressBookNumbers.remove(contact.getNumber());
         addressBookNames.remove(contact.getName());
+        db.close();
+    }
+      
+    public void editContact(Contact oldContact, Contact newContact) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues cvContact = new ContentValues();
+        cvContact.put(DotDashContract.ContactsTable.COLUMN_NAME_NAME, newContact.getName());
+        cvContact.put(DotDashContract.ContactsTable.COLUMN_NAME_NUMBER, newContact.getNumber());
+        cvContact.put(DotDashContract.ContactsTable.COLUMN_NAME_MORSE_ID, newContact.getMorseID());
+
+        db.update(DotDashContract.ContactsTable.TABLE_NAME, cvContact,
+                DotDashContract.ContactsTable.COLUMN_NAME_NAME + " =? ",
+                new String[] {oldContact.getName()});
+
+        ContentValues cvMessages = new ContentValues();
+        cvMessages.put(DotDashContract.MessagesTable.COLUMN_NAME_CONTACT_NAME, newContact.getName());
+
+        db.update(DotDashContract.MessagesTable.TABLE_NAME, cvMessages,
+                DotDashContract.MessagesTable.COLUMN_NAME_CONTACT_NAME + " =? ",
+                new String[] {oldContact.getName()});
+
+        addressBookNumbers.remove(oldContact.getNumber());
+        addressBookNames.remove(oldContact.getName());
+
+        addressBookNames.put(newContact.getName(), newContact);
+        addressBookNumbers.put(newContact.getNumber(), newContact);
+
+        db.close();
     }
 
     public static DataManager getInstance() {

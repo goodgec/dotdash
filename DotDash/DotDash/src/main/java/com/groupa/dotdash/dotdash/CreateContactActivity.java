@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateContactActivity extends Activity {
 
@@ -50,19 +51,21 @@ public class CreateContactActivity extends Activity {
             public void onClick(View view) {
                 if (nameField.getText().toString().equals("")
                         || numberField.getText().toString().equals("")
-                        || numberField.getText().toString().length() < 0) {
+                        || numberField.getText().toString().length() != 10) {
                     displayAlert();
                     return;
                 }
 
-                if(contactToEdit != null){
-                    DataManager.getInstance().removeContact(contactToEdit);
-                }
                 Contact contact = new Contact(-1, nameField.getText().toString(),
                         numberField.getText().toString(),
                         idField.getText().toString());
-                DataManager.getInstance().addContactToDb(contact);
 
+                if(contactToEdit != null && !contact.equals(contactToEdit)){
+                    DataManager.getInstance().editContact(contactToEdit, contact);
+                }
+                else {
+                    DataManager.getInstance().addContactToDb(contact);
+                }
                 setResult(Activity.RESULT_OK);
 
 //                if (editingContact) {
