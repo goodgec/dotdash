@@ -36,7 +36,6 @@ public class TabListener implements ActionBar.TabListener {
         ((DotDash)activity).setTabNumber(tabNumber);
         fragmentTransaction.add(android.R.id.content, fragment, tag);
         fragmentTransaction.attach(fragment);
-        activity.getActionBar().setDisplayHomeAsUpEnabled(false);
 //        }
         // update title text
     }

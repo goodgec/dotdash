@@ -180,6 +180,7 @@ public class DataManager {
 
         addressBookNames.put(newContact.getName(), newContact);
         addressBookNumbers.put(newContact.getNumber(), newContact);
+        populateConversation(newContact);
 
         db.close();
     }

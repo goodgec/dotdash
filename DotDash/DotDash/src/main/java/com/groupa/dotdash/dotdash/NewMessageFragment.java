@@ -56,19 +56,6 @@ public class NewMessageFragment extends Fragment {
         sendButton = (Button)fragmentView.findViewById(R.id.sendButton);
         newMessageRecipientField = (AutoCompleteTextView)fragmentView.findViewById(R.id.newMessageRecipientField);
 
-//        startedFromContact = false;
-//        Bundle bundle = getArguments();
-        if (startedFromContact) {
-////            startedFromContact = true;
-//            contactName = bundle.getString(DotDash.CONTACT_NAME, "");
-            newMessageRecipientField.setText(contactName);
-        }
-
-//        Bundle bundle = getArguments();
-//        messageText = bundle.getString(DotDash.CURRENT_MESSAGE, "");
-//        if (!messageText.equals("")) {
-//            morseButton.setText(messageText);
-//        }
 
         messageText = DataManager.getInstance().getCurrentMessageText();
         if (!messageText.equals("")) {
@@ -80,9 +67,17 @@ public class NewMessageFragment extends Fragment {
         spaceTimer = new Timer(true);
 
         ArrayAdapter<Contact> suggestionsAdapter = new ArrayAdapter<Contact>(getActivity(), android.R.layout.simple_dropdown_item_1line, DataManager.getInstance().getAddressBookList());
-        newMessageRecipientField.setAdapter(suggestionsAdapter);
+        //newMessageRecipientField.setAdapter(suggestionsAdapter);
         newMessageRecipientField.setThreshold(1);
 
+        if (contactName != null) {
+            new Handler().post(new Runnable() {
+                public void run() {
+                    newMessageRecipientField.setText(contactName);
+                    newMessageRecipientField.dismissDropDown();
+                }
+            });
+        }
 
         morseButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -160,17 +155,6 @@ public class NewMessageFragment extends Fragment {
         return fragmentView;
     }
 
-
-
-    protected void displayAlert()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("You've Got Mail!").setCancelable(
-                false);
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
@@ -191,7 +175,6 @@ public class NewMessageFragment extends Fragment {
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
-//        newMessageRecipientField.setText(contactName);
     }
 
     public String getContactName() {
@@ -221,5 +204,11 @@ public class NewMessageFragment extends Fragment {
     private void setText(String s) {
         morseButton.setText(s);
         DataManager.getInstance().setCurrentMessageText(s);
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        Log.e("alby", "new message detatch");
     }
 }
