@@ -33,8 +33,6 @@ public class SingleConversationActivity extends Activity {
         conversationListView = (ListView)findViewById(R.id.conversationListView);
         replyButton = (Button)findViewById(R.id.singleConversationReplyButton);
 
-        dm = DataManager.getInstance();
-
         vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
         beeper = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
 
@@ -44,7 +42,7 @@ public class SingleConversationActivity extends Activity {
             getActionBar().setTitle(converser);
         }
 
-        messageList = dm.getAddressBookNamesMap().get(converser).getConversation().getMessages();
+        messageList = DataManager.getInstance().getAddressBookNamesMap().get(converser).getConversation().getMessages();
         //speechBubbleArrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
         speechBubbleArrayAdapter = new BubbleArrayAdapter(this, R.layout.speech_bubble, messageList);
         conversationListView.setAdapter(speechBubbleArrayAdapter);
