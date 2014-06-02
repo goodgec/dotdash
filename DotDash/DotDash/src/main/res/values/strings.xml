@@ -42,6 +42,6 @@
     <string name="title_activity_single_conversation">SingleConversationActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="title_activity_pocket_mode">Pocket Mode is go!</string>
-    <string name="title_activity_pocket_mode_writer">PocketModeWriterActivity</string>
+    <string name="title_activity_pocket_mode_writer">Pocket Mode is go!</string>
 
 </resources>

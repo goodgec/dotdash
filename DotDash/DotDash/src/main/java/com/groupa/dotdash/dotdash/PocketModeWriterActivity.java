@@ -9,6 +9,7 @@ import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -19,8 +20,6 @@ import java.util.TimerTask;
 public class PocketModeWriterActivity extends Activity {
 
     private ImageButton composeButton;
-
-    PowerManager.WakeLock wakeLock;
 
     private long lastDown;
     private long lastDuration;
@@ -36,9 +35,7 @@ public class PocketModeWriterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pocket_mode_writer);
 
-        PowerManager powerManager = (PowerManager)getSystemService(POWER_SERVICE);
-        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Lock");
-        wakeLock.acquire();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         composeButton = (ImageButton)findViewById(R.id.pocketComposeButton);
 
@@ -107,14 +104,6 @@ public class PocketModeWriterActivity extends Activity {
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (wakeLock.isHeld()) {
-            wakeLock.release();
-        }
     }
 
 //    @Override

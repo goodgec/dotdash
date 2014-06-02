@@ -184,6 +184,7 @@ public class DataManager {
         addressBookNames.put(newContact.getName(), newContact);
         addressBookNumbers.put(newContact.getNumber(), newContact);
         addressBookMorseIDs.put(newContact.getMorseID(), newContact);
+        populateConversation(newContact);
 
         db.close();
     }
@@ -208,6 +209,10 @@ public class DataManager {
         ArrayList<Contact> sortedContacts = new ArrayList<Contact>(addressBookNames.values());
         Collections.sort(sortedContacts);
         return sortedContacts;
+    }
+
+    public ArrayList<Message> getNewMessages() {
+        return newMessages;
     }
 
     public String getCurrentMessageText() {

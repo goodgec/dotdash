@@ -27,6 +27,8 @@ public class ConversationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.activity_conversations, container, false);
 
+        DataManager.getInstance().getNewMessages().clear();
+
         allContactsList = DataManager.getInstance().getAddressBookList();
         contactsList = new ArrayList<Contact>();
         for (Contact c : allContactsList) {
