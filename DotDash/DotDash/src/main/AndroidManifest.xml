@@ -16,52 +16,50 @@
         <activity
             android:name="com.groupa.dotdash.dotdash.DotDash"
             android:label="DotDash"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name="com.groupa.dotdash.dotdash.ConversationsFragment"-->
-            <!--android:label="@string/title_activity_conversations" >-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name="com.groupa.dotdash.dotdash.NewMessageFragment"-->
-            <!--android:label="@string/title_activity_new_message" >-->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name="com.groupa.dotdash.dotdash.ContactsFragment"-->
-            <!--android:label="@string/title_activity_contacts" >-->
-        <!--</activity>-->
+        <!-- <activity -->
+        <!-- android:name="com.groupa.dotdash.dotdash.ConversationsFragment" -->
+        <!-- android:label="@string/title_activity_conversations" > -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name="com.groupa.dotdash.dotdash.NewMessageFragment" -->
+        <!-- android:label="@string/title_activity_new_message" > -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name="com.groupa.dotdash.dotdash.ContactsFragment" -->
+        <!-- android:label="@string/title_activity_contacts" > -->
+        <!-- </activity> -->
         <activity
             android:name="com.groupa.dotdash.dotdash.SingleContactActivity"
             android:label="@string/title_activity_single_contact"
+            android:parentActivityName="com.groupa.dotdash.dotdash.DotDash"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName="com.groupa.dotdash.dotdash.DotDash" >
+            android:windowSoftInputMode="adjustResize" >
         </activity>
-            <!--android:parentActivityName="com.groupa.dotdash.dotdash.ContactsFragment" >-->
-        <!--<activity-->
-            <!--android:name="com.groupa.dotdash.dotdash.SettingsFragment"-->
-            <!--android:label="@string/title_activity_settings" >-->
-        <!--</activity>-->
+        <!-- android:parentActivityName="com.groupa.dotdash.dotdash.ContactsFragment" > -->
+        <!-- <activity -->
+        <!-- android:name="com.groupa.dotdash.dotdash.SettingsFragment" -->
+        <!-- android:label="@string/title_activity_settings" > -->
+        <!-- </activity> -->
         <activity
             android:name="com.groupa.dotdash.dotdash.CreateContactActivity"
             android:label="@string/title_activity_create_contact"
+            android:parentActivityName="com.groupa.dotdash.dotdash.SingleContactActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName="com.groupa.dotdash.dotdash.SingleContactActivity" >
+            android:windowSoftInputMode="adjustResize" >
         </activity>
-
         <activity
             android:name="com.groupa.dotdash.dotdash.SplashScreenActivity"
+            android:label="@string/title_activity_splash_sceen"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:label="@string/title_activity_splash_sceen" >
-
+            android:windowSoftInputMode="adjustResize" >
         </activity>
 
         <receiver android:name="com.groupa.dotdash.dotdash.Receiver" >
@@ -73,10 +71,17 @@
         <activity
             android:name="com.groupa.dotdash.dotdash.SingleConversationActivity"
             android:label="@string/title_activity_single_conversation"
+            android:parentActivityName="com.groupa.dotdash.dotdash.DotDash"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
+        </activity>
+        <activity
+            android:name="com.groupa.dotdash.dotdash.PocketModeActivity"
+            android:label="@string/title_activity_pocket_mode"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
-            android:parentActivityName="com.groupa.dotdash.dotdash.DotDash">
-            </activity>
+            android:parentActivityName=".DotDash">
+        </activity>
     </application>
 
 </manifest>

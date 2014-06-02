@@ -20,10 +20,12 @@ public class DataManager {
     private DotDashDbHelper dbHelper;
 
     private String currentMessageText;
+    private ArrayList<Message> newMessages;
 
     private static final DataManager dm = new DataManager();
 
     public DataManager(){
+        newMessages = new ArrayList<Message>();
         currentMessageText = "";
         me = new Contact(-1, "Me", "0");
         //populate address book
@@ -81,7 +83,14 @@ public class DataManager {
         values.put(DotDashContract.MessagesTable.COLUMN_NAME_TEXT, message.getText());
         values.put(DotDashContract.MessagesTable.COLUMN_NAME_TIMESTAMP, message.getTimestamp());
 
-        long newRowId = db.insert(DotDashContract.MessagesTable.TABLE_NAME, null, values);
+        db.insert(DotDashContract.MessagesTable.TABLE_NAME, null, values);
+
+        newMessages.add(message);
+    }
+
+    public Message getNextMessage() {
+
+        return newMessages.size() > 0 ? newMessages.remove(0) : null;
     }
 
     private Message createMessageFromDb(Cursor c) {
