@@ -109,7 +109,7 @@ public class DotDash extends Activity {
 
         Drawable drConversations = getResources().getDrawable(R.drawable.conversations);
         Bitmap bitmapConversations = ((BitmapDrawable) drConversations).getBitmap();
-        Drawable conversationsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapConversations, 50, 50, true));
+        Drawable conversationsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapConversations, 80, 80, true));
 
         ActionBar.Tab conversationsTab = actionBar.newTab()
 //                .setText("tab1")
@@ -123,7 +123,7 @@ public class DotDash extends Activity {
 
         Drawable drCompose = getResources().getDrawable(R.drawable.compose);
         Bitmap bitmapCompose = ((BitmapDrawable) drCompose).getBitmap();
-        Drawable composeSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapCompose, 50, 50, true));
+        Drawable composeSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapCompose, 80, 80, true));
 
         Bundle bundle = new Bundle();
         bundle.putString(CONTACT_NAME, intent.getStringExtra(CONTACT_NAME));
@@ -143,7 +143,7 @@ public class DotDash extends Activity {
 
         Drawable drContacts = getResources().getDrawable(R.drawable.contacts);
         Bitmap bitmapContacts = ((BitmapDrawable) drContacts).getBitmap();
-        Drawable contactsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapContacts, 50, 50, true));
+        Drawable contactsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapContacts, 80, 80, true));
 
         ActionBar.Tab contactsTab = actionBar.newTab()
 //                .setText("tab1")
@@ -156,7 +156,7 @@ public class DotDash extends Activity {
 
         Drawable drSettings = getResources().getDrawable(R.drawable.settings);
         Bitmap bitmapSettings = ((BitmapDrawable) drSettings).getBitmap();
-        Drawable settingsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapSettings, 50, 50, true));
+        Drawable settingsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapSettings, 80, 80, true));
 
 
         ActionBar.Tab settingTab = actionBar.newTab()
