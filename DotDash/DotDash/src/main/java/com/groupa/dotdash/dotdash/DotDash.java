@@ -62,6 +62,7 @@ public class DotDash extends Activity {
     public static final int RESULT_CODE_DELETED_CONTACT = 0;
     public static final int RESULT_CODE_SENDING_MESSAGE = 1;
     public static final int RESULT_CODE_REPLY_MESSAGE = 2;
+    public static final int RESULT_CODE_WENT_BACK = 3;
 
     public static final String TARGET_TAB = "targetTab";
     public static final int CONVERSATIONS_TAB_NUMBER = 0;

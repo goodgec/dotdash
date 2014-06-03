@@ -71,7 +71,7 @@ public class SingleContactActivity extends Activity {
                 editContactIntent.putExtra(DotDash.CONTACT_NAME, contact.getName());
                 //editContactIntent.putExtra(CONTACT_NUMBER, contact.getNumber());
                 //editContactIntent.putExtra(CONTACT_ID, contact.getMorseID());
-                startActivity(editContactIntent);
+                startActivityForResult(editContactIntent, DotDash.RESULT_OK);
 //                overridePendingTransition(0, 0);
 //                finish();
             }
