@@ -42,7 +42,7 @@ public class PocketModeActivity extends Activity {
             public void onClick(View view) {
                 Message unheardMessage = DataManager.getInstance().getNextMessage();
                 if (unheardMessage != null) {
-                    Translator.outputMessage(view.getContext(), Translator.convertTextToMorse(unheardMessage.getContact().getMorseID() + "  " + unheardMessage.getText(), DotDash.wpm));
+                    DotDash.outputMessage(Translator.convertTextToMorse(unheardMessage.getContact().getMorseID() + "  " + unheardMessage.getText(), DotDash.wpm));
                 }
             }
         });

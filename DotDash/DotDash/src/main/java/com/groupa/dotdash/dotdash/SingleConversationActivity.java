@@ -2,7 +2,12 @@ package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -42,7 +47,7 @@ public class SingleConversationActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 Message selectedMessage = (Message)adapterView.getItemAtPosition(pos);
-                Translator.outputMessage(view.getContext(), Translator.convertTextToMorse(selectedMessage.getText(), DotDash.wpm));
+                DotDash.outputMessage(Translator.convertTextToMorse(selectedMessage.getText(), DotDash.wpm));
             }
         });
 
@@ -64,7 +69,7 @@ public class SingleConversationActivity extends Activity {
 
         if (intent.getBooleanExtra(DotDash.PLAY_MESSAGE, false)) {
             Message lastMessage = messageList.get(messageList.size() - 1);
-            Translator.outputMessage(this, Translator.convertTextToMorse(lastMessage.getText(), DotDash.wpm));
+            DotDash.outputMessage(Translator.convertTextToMorse(lastMessage.getText(), DotDash.wpm));
         }
     }
 }

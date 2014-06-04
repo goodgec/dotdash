@@ -19,12 +19,17 @@ public class Receiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        DataManager dm = DataManager.getInstance();
+//        if (dm == null) {
+//            dm = new DataManager();
+//        }
+
         Bundle bundle = intent.getExtras();
         SmsMessage[] msgs = null;
         String message = "";
         String phoneNumber = "";
         if (bundle != null) {
-            //---retrieve the SMS message received---
+            // retrieve the SMS message received
             Object[] pdus = (Object[]) bundle.get("pdus");
             msgs = new SmsMessage[pdus.length];
             for (int i=0; i<msgs.length; i++) {
@@ -34,7 +39,7 @@ public class Receiver extends BroadcastReceiver {
                 phoneNumber = msgs[i].getOriginatingAddress();
             }
 
-            Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(phoneNumber);
+            Contact sender = dm.getAddressBookNumbersMap().get(phoneNumber);
 
             if (sender != null) {
                 Message newMessage = new Message(message, sender, false);
@@ -47,6 +52,7 @@ public class Receiver extends BroadcastReceiver {
                 notifier.setSmallIcon(R.drawable.ic_launcher);
                 notifier.setContentTitle(newMessage.getContact().getName() + ": ");
                 notifier.setContentText(newMessage.getText());
+                notifier.setAutoCancel(true);
                 notifier.build();
 
                 Intent notifyIntent = new Intent(context, DotDash.class);
@@ -66,7 +72,7 @@ public class Receiver extends BroadcastReceiver {
                         (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
                 mNotificationManager.notify(0, notifier.build());
 
-                DataManager.getInstance().addMessageToDb(newMessage);
+                dm.addMessageToDb(newMessage);
                 sender.getConversation().addMessage(newMessage);
             }
         }

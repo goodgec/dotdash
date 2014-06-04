@@ -24,7 +24,7 @@ public class DataManager {
 
     private static final DataManager dm = new DataManager();
 
-    public DataManager(){
+    public DataManager() {
         newMessages = new ArrayList<Message>();
         currentMessageText = "";
         dbHelper = new DotDashDbHelper(DotDash.appContext);
@@ -47,8 +47,7 @@ public class DataManager {
     }
 
     private Contact createContactFromDb(Cursor c) {
-        Contact contact = new Contact(c.getInt(0), c.getString(1), c.getString(2), c.getString(3));
-        return contact;
+        return new Contact(c.getInt(0), c.getString(1), c.getString(2), c.getString(3));
     }
 
     private void populateAddressBooks() {
@@ -189,6 +188,10 @@ public class DataManager {
 
         db.close();
     }
+
+//    public static Contact getContactFromDb() {
+//
+//    }
 
     public static DataManager getInstance() {
         return dm;

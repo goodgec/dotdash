@@ -1,6 +1,8 @@
 package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -49,11 +51,7 @@ public class SingleContactActivity extends Activity {
         deleteContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DataManager.getInstance().removeContact(contact);
-
-                setResult(DotDash.RESULT_CODE_DELETED_CONTACT);
-
-                finish();
+                displayDeleteAlert();
             }
         });
 
@@ -63,14 +61,60 @@ public class SingleContactActivity extends Activity {
             public void onClick(View view) {
                 Intent editContactIntent = new Intent(view.getContext(), CreateContactActivity.class);
                 editContactIntent.putExtra(DotDash.CONTACT_NAME, contact.getName());
-                startActivityForResult(editContactIntent, DotDash.RESULT_OK);
+                startActivityForResult(editContactIntent, DotDash.REQUEST_CODE_EDIT_CONTACT);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == DotDash.REQUEST_CODE_EDIT_CONTACT) {
+            if (resultCode == RESULT_OK) {
+                getActionBar().setTitle(data.getStringExtra(DotDash.CONTACT_NAME));
+                contactNumberTextView.setText(data.getStringExtra(DotDash.CONTACT_NUMBER));
+                contactIDTextView.setText(data.getStringExtra(DotDash.CONTACT_MORSE_ID));
+            }
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(DotDash.TARGET_TAB, DotDash.CONTACTS_TAB_NUMBER);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
+    private void displayDeleteAlert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false)
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                DataManager.getInstance().removeContact(contact);
+
+                                setResult(DotDash.RESULT_CODE_DELETED_CONTACT);
+
+                                finish();
+                            }
+                        })
+                .setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });;
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

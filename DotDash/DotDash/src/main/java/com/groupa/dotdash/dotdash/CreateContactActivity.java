@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,52 +52,69 @@ public class CreateContactActivity extends Activity {
                         || numberField.getText().equals("")
                         || numberField.getText().length() != 10
                         || idField.getText().length() == 0) {
-                    displayAlert();
+                    displayInvalidAlert();
                     return;
                 }
 
-                Contact contact = new Contact(-1, nameField.getText().toString(),
-                        numberField.getText().toString(),
-                        idField.getText().toString());
+                Contact contactFromId = DataManager.getInstance().getAddressBookMorseIDs().get(idField.getText().toString());
+                Contact contactFromNumber = DataManager.getInstance().getAddressBookNumbersMap().get(numberField.getText().toString());
+                if ((contactFromId == null || (editingContact && contactFromId.equals(contactToEdit)))
+                        && (contactFromNumber == null || (editingContact && contactFromNumber.equals(contactToEdit)))) {
 
-                if(contactToEdit != null && !contact.equals(contactToEdit)){
-                    DataManager.getInstance().editContact(contactToEdit, contact);
+                    Contact contact = new Contact(-1, nameField.getText().toString(),
+                            numberField.getText().toString(),
+                            idField.getText().toString());
+
+                    if(editingContact && !contact.equals(contactToEdit)){
+                        DataManager.getInstance().editContact(contactToEdit, contact);
+                    }
+                    else {
+                        DataManager.getInstance().addContactToDb(contact);
+                    }
+
+                    Intent intent = new Intent();
+                    intent.putExtra(DotDash.CONTACT_NAME, contact.getName());
+                    intent.putExtra(DotDash.CONTACT_NUMBER, contact.getNumber());
+                    intent.putExtra(DotDash.CONTACT_MORSE_ID, contact.getMorseID());
+                    setResult(RESULT_OK, intent);
+
+                    finish();
                 }
                 else {
-                    DataManager.getInstance().addContactToDb(contact);
+                    displayDuplicateAlert(contactFromId != null ? contactFromId.getName() : contactFromNumber.getName());
                 }
-                setResult(Activity.RESULT_OK);
 
-                finish();
             }
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (editingContact) {
-                    Intent intent = new Intent(this, SingleContactActivity.class);
-                    intent.putExtra(DotDash.CONTACT_NAME, contactToEdit.getName());
-                    NavUtils.navigateUpTo(this, intent);
-                }
-                else {
-                    Intent intent = new Intent(this, DotDash.class);
-                    NavUtils.navigateUpTo(this, intent);
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        onBackPressed();
+        return true;
     }
 
-    private void displayAlert()
+    private void displayInvalidAlert()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false)
                .setMessage("Contacts must have a name, a 10-digit phone number, and an ID.")
                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void displayDuplicateAlert(String name)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false)
+                .setMessage("Contacts must have a unique phone number and ID.\n\nConflicting contact: " + name)
+                .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();

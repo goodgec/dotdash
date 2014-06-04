@@ -115,22 +115,4 @@ public class Translator {
             return '?';
         }
     }
-
-    public static void outputMessage(Context context, long[] times) {
-        Vibrator vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-
-        if (DotDash.receiveAsVibrate){
-            vibrator.vibrate(times, -1);
-        }
-    }
-
-    public static void sendMessage(Contact contact, String text) {
-        SmsManager manager = SmsManager.getDefault();
-
-        Message message = new Message(text, contact, true);
-        contact.getConversation().addMessage(message);
-        manager.sendTextMessage(message.getContact().getNumber(), null, message.getText(), null, null);
-
-        DataManager.getInstance().addMessageToDb(message);
-    }
 }

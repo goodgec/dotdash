@@ -10,7 +10,7 @@ Pocket Mode can be used to send and receive morse messages from your pocket. In 
 
 STATUS
 Current issues:
-    1. receiveing messages when DotDash is completely closed (not just running in the background) causes DotDash to crash
+    1. Receiveing messages when DotDash is completely closed (not just running in the background) causes DotDash to crash.
 
 
 INSTALL NOTES

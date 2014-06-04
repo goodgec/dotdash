@@ -75,7 +75,7 @@ public class PocketModeWriterActivity extends Activity {
                             else {
                                 ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(new long[] {0, 100, 100, 100}, -1);
 
-                                Translator.sendMessage(contact, messageText);
+                                DotDash.sendMessage(contact, messageText);
                                 finish();
                             }
                         }

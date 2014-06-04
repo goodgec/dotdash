@@ -1,6 +1,7 @@
 package com.groupa.dotdash.dotdash;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -9,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,6 +52,15 @@ public class NewMessageFragment extends Fragment {
         clearButton = (Button)fragmentView.findViewById(R.id.clearButton);
         newMessageRecipientField = (AutoCompleteTextView)fragmentView.findViewById(R.id.newMessageRecipientField);
         newMessageRecipientField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        newMessageRecipientField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(v.getId() == R.id.newMessageRecipientField && !hasFocus) {
+                    InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        });
 
         messageText = DataManager.getInstance().getCurrentMessageText();
         if (!messageText.equals("")) {
@@ -74,6 +87,9 @@ public class NewMessageFragment extends Fragment {
         morseButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     morseButton.setBackground(getResources().getDrawable(R.drawable.touch_down_morse_button));
 
@@ -127,22 +143,38 @@ public class NewMessageFragment extends Fragment {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 spaceTimer.cancel();
                 charTimer.cancel();
                 pressTimes.clear();
 
-                Contact recipient = DataManager.getInstance().getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
+                String recipientText = newMessageRecipientField.getText().toString();
+
+                Contact recipient = DataManager.getInstance().getAddressBookNamesMap().get(recipientText);
 
                 if (recipient != null) {
                     if (messageText.length() == 0) {
                         Toast.makeText(view.getContext(), "Invalid empty text", Toast.LENGTH_LONG).show();
                     } else {
-                        Translator.sendMessage(recipient, messageText);
+                        DotDash.sendMessage(recipient, messageText);
                         Toast.makeText(view.getContext(), "Message sent", Toast.LENGTH_LONG).show();
                         setText("");
                         messageText = "";
                     }
-                } else {
+                }
+                else if (recipientText.length() == 10 && isNumeric(recipientText)) {
+                    if (messageText.length() == 0) {
+                        Toast.makeText(view.getContext(), "Invalid empty text", Toast.LENGTH_LONG).show();
+                    } else {
+                        DotDash.sendMessage(recipientText, messageText);
+                        Toast.makeText(view.getContext(), "Message sent", Toast.LENGTH_LONG).show();
+                        setText("");
+                        messageText = "";
+                    }
+                }
+                else {
                     Toast.makeText(view.getContext(), "Invalid recipient " + newMessageRecipientField.getText(), Toast.LENGTH_LONG).show();
                 }
             }
@@ -151,6 +183,9 @@ public class NewMessageFragment extends Fragment {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm =  (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 spaceTimer.cancel();
                 charTimer.cancel();
                 pressTimes.clear();
@@ -196,8 +231,11 @@ public class NewMessageFragment extends Fragment {
         DataManager.getInstance().setCurrentMessageText(s);
     }
 
-    @Override
-    public void onDetach(){
-        super.onDetach();
+    private boolean isNumeric(String str)
+    {
+        NumberFormat formatter = NumberFormat.getInstance();
+        ParsePosition pos = new ParsePosition(0);
+        formatter.parse(str, pos);
+        return str.length() == pos.getIndex();
     }
 }
