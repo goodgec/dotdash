@@ -13,29 +13,6 @@
     <string name="title_activity_create_contact">New Contact</string>
     <string name="search_hint">Search contacts</string>
 
-    <string-array name="contacts_array">
-        <item>Mephistopholes</item>
-        <item>Bill Murray</item>
-        <item>Keanu Reeves</item>
-        <item>Kermit the Froge</item>
-        <item>Albi Hymlyk</item>
-        <item>KC Goge</item>
-        <item>Danyuhl Bartur</item>
-        <item>Rqachul Admas</item>
-        <item>Doge</item>
-    </string-array>
-    <string-array name="conversations_array">
-        <item>Kermit the Froge</item>
-        <item>Mephistopholes</item>
-        <item>Bill Murray</item>
-        <item>Danyuhl Bartur</item>
-        <item>Keanu Reeves</item>
-        <item>Albi Hymlyk</item>
-        <item>KC Goge</item>
-        <item>Rqachul Admas</item>
-        <item>Doge</item>
-    </string-array>
-
     <string name="title_activity_splash_sceen">DotDash</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_new_message_alert">NewMessageAlertActivity</string>
