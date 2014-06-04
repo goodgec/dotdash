@@ -1,13 +1,10 @@
 package com.groupa.dotdash.dotdash;
 
 import android.content.Context;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.os.Vibrator;
 import android.telephony.SmsManager;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,8 +23,6 @@ public class Translator {
             "-..-", "-.--", "--.."));
     private static final ArrayList<String> morseNumericCharacters = new ArrayList<String>(Arrays.asList("-----",".----","..---","...--","....-",".....","-....","--...",
             "---..","----."));
-
-//    public Translator() {}
 
     public static long[] convertTextToMorse(String text, int wpm) {
         String morse = "";
@@ -123,33 +118,19 @@ public class Translator {
 
     public static void outputMessage(Context context, long[] times) {
         Vibrator vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-//        AudioManager beeper = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-
-//        ToneGenerator beeper = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, (int)(ToneGenerator.MAX_VOLUME * 0.85));
 
         if (DotDash.receiveAsVibrate){
             vibrator.vibrate(times, -1);
         }
-//        if (DotDash.receiveAsBeep) {
-//            for(int i = 1; i < times.length; i +=2) {
-//                beeper.startTone(ToneGenerator.TONE_,(int)times[i]);
-//                beeper.startTone(ToneGenerator.TONE_PROP_BEEP2, (int)times[i+1]);
-//                //beeper.startTone(AudioManager.RINGER_MODE_SILENT, (int)times[i+1]);
-//            }
-//        }
-//        beeper.release();
     }
 
-    public static void sendMessage(Context context, Contact contact, String text) {
+    public static void sendMessage(Contact contact, String text) {
         SmsManager manager = SmsManager.getDefault();
 
         Message message = new Message(text, contact, true);
-        if (message.getText().length() == 0) {
-            Toast.makeText(context, "Invalid empty text", Toast.LENGTH_LONG).show();
-            return;
-        }
         contact.getConversation().addMessage(message);
         manager.sendTextMessage(message.getContact().getNumber(), null, message.getText(), null, null);
+
         DataManager.getInstance().addMessageToDb(message);
     }
 }

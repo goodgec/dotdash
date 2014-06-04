@@ -1,3 +1,0 @@
-TODO
-
-Make sure message got send (PendingIntent)

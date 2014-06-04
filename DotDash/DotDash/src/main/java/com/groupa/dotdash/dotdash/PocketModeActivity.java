@@ -3,9 +3,7 @@ package com.groupa.dotdash.dotdash;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,10 +56,12 @@ public class PocketModeActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    newMessageButton.setBackground(getResources().getDrawable(R.drawable.touch_down_morse_button));
                     lastDown = System.currentTimeMillis();
                     charTimer.cancel();
                     spaceTimer.cancel();
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    newMessageButton.setBackground(getResources().getDrawable(R.drawable.blue_button));
                     lastDuration = System.currentTimeMillis() - lastDown;
                     pressTimes.add(lastDuration);
 
@@ -94,14 +94,6 @@ public class PocketModeActivity extends Activity {
             }
         });
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.pocket_mode, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

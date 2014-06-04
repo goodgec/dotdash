@@ -13,7 +13,6 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-
 public class ContactsFragment extends Fragment {
     private ArrayList<Contact> contactsList;
     private ListView contactsListView;
@@ -35,7 +34,6 @@ public class ContactsFragment extends Fragment {
                 Intent nameIntent = new Intent(view.getContext(), SingleContactActivity.class);
                 nameIntent.putExtra(DotDash.CONTACT_NAME, ((Contact)adapterView.getItemAtPosition(pos)).getName());
                 getActivity().startActivityForResult(nameIntent, DotDash.REQUEST_CODE_VIEW_CONTACT);
-//                getActivity().finish();
             }
         });
 

@@ -1,28 +1,17 @@
 package com.groupa.dotdash.dotdash;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.NavUtils;
-import android.telephony.SmsManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,6 +23,7 @@ public class NewMessageFragment extends Fragment {
 
     private Button morseButton;
     private Button sendButton;
+    private Button clearButton;
     private AutoCompleteTextView newMessageRecipientField;
 
     private long lastDown;
@@ -55,9 +45,9 @@ public class NewMessageFragment extends Fragment {
 
         morseButton = (Button)fragmentView.findViewById(R.id.morseTapButton);
         sendButton = (Button)fragmentView.findViewById(R.id.sendButton);
+        clearButton = (Button)fragmentView.findViewById(R.id.clearButton);
         newMessageRecipientField = (AutoCompleteTextView)fragmentView.findViewById(R.id.newMessageRecipientField);
         newMessageRecipientField.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-
 
         messageText = DataManager.getInstance().getCurrentMessageText();
         if (!messageText.equals("")) {
@@ -101,12 +91,14 @@ public class NewMessageFragment extends Fragment {
                         public void run() {
                             messageText += Translator.convertMorseToText(pressTimes);
                             pressTimes.clear();
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setText(messageText);
-                                }
-                            });
+                            if (DotDash.receiveAsText) {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setText(messageText);
+                                    }
+                                });
+                            }
                         }
                     }, Translator.LETTER_BREAK_DURATION);
 
@@ -116,12 +108,14 @@ public class NewMessageFragment extends Fragment {
                         public void run() {
                             messageText += ' ';
                             pressTimes.clear();
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    setText(messageText);
-                                }
-                            });
+                            if (DotDash.receiveAsText) {
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setText(messageText);
+                                    }
+                                });
+                            }
                         }
                     }, Translator.SPACE_DURATION);
 
@@ -140,35 +134,34 @@ public class NewMessageFragment extends Fragment {
                 Contact recipient = DataManager.getInstance().getAddressBookNamesMap().get(newMessageRecipientField.getText().toString());
 
                 if (recipient != null) {
-                    Translator.sendMessage(view.getContext(), recipient, messageText);
-                    morseButton.setText("");
-                    messageText = "";
+                    if (messageText.length() == 0) {
+                        Toast.makeText(view.getContext(), "Invalid empty text", Toast.LENGTH_LONG).show();
+                    } else {
+                        Translator.sendMessage(recipient, messageText);
+                        Toast.makeText(view.getContext(), "Message sent", Toast.LENGTH_LONG).show();
+                        setText("");
+                        messageText = "";
+                    }
                 } else {
                     Toast.makeText(view.getContext(), "Invalid recipient " + newMessageRecipientField.getText(), Toast.LENGTH_LONG).show();
                 }
             }
         });
 
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spaceTimer.cancel();
+                charTimer.cancel();
+                pressTimes.clear();
+
+                setText("");
+                messageText = "";
+            }
+        });
+
         return fragmentView;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                if (startedFromContact) {
-//                    Intent intent = new Intent(getActivity().getApplicationContext(), SingleContactActivity.class);
-//                    intent.putExtra(DotDash.CONTACT_NAME, contactName);
-//                    startActivity(intent);
-//                    ((DotDash)getActivity()).setTabNumber(DotDash.CONTACTS_TAB_NUMBER);
-//                    getActivity().getActionBar().setDisplayHomeAsUpEnabled(false);
-//
-//                }
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
@@ -206,6 +199,5 @@ public class NewMessageFragment extends Fragment {
     @Override
     public void onDetach(){
         super.onDetach();
-        Log.e("alby", "new message detatch");
     }
 }

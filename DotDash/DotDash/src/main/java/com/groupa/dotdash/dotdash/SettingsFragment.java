@@ -1,6 +1,8 @@
 package com.groupa.dotdash.dotdash;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,15 +20,21 @@ public class SettingsFragment extends Fragment {
     private TextView wpmNumber;
     private CheckBox receiveAsTextCheckBox;
     private CheckBox receiveAsVibrateCheckBox;
-    private CheckBox receiveAsLightCheckBox;
-    private CheckBox receiveAsBeepCheckBox;
     private Button pocketModeButton;
+    private Button pocketModeHelpButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.activity_settings, container, false);
+
         pocketModeButton = (Button)fragmentView.findViewById(R.id.pocketModeButton);
+        pocketModeHelpButton = (Button)fragmentView.findViewById(R.id.pocketModeHelpButton);
+        wpmNumber = (TextView)fragmentView.findViewById(R.id.wpmNumber);
+        wpmSlider = (SeekBar)fragmentView.findViewById(R.id.wpmSlider);
+        receiveAsTextCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsTextCheckBox);
+        receiveAsVibrateCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsVibrateCheckBox);
+
         pocketModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,10 +42,16 @@ public class SettingsFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
-        wpmNumber = (TextView)fragmentView.findViewById(R.id.wpmNumber);
+
+        pocketModeHelpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayAlert();
+            }
+        });
+
         wpmNumber.setText(Integer.toString(DotDash.wpm));
 
-        wpmSlider = (SeekBar)fragmentView.findViewById(R.id.wpmSlider);
         wpmSlider.setProgress(DotDash.wpm);
         wpmSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -55,7 +69,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        receiveAsTextCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsTextCheckBox);
         receiveAsTextCheckBox.setChecked(DotDash.receiveAsText);
         receiveAsTextCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -64,7 +77,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        receiveAsVibrateCheckBox = (CheckBox)fragmentView.findViewById(R.id.receiveAsVibrateCheckBox);
         receiveAsVibrateCheckBox.setChecked(DotDash.receiveAsVibrate);
         receiveAsVibrateCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -74,5 +86,26 @@ public class SettingsFragment extends Fragment {
         });
 
         return fragmentView;
+    }
+
+    private void displayAlert()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false)
+                .setTitle("Pocket Mode Help")
+                .setMessage("Pocket Mode can be used to send and receive morse messages from your pocket. " +
+                       "In the main screen, the top button will play back any unread messages in the order they " +
+                       "were received. Tap a contact's ID into the bottom button to start composing a message to " +
+                       "that contact. In the compose screen, simply tap out the message. To send the message, " +
+                       "press and hold the screen for about 3 seconds. There will be a warning vibration and two " +
+                       "message sent vibrations.\n\nPocket Mode is go!")
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

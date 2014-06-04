@@ -2,12 +2,9 @@ package com.groupa.dotdash.dotdash;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -15,12 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-
-import java.util.HashMap;
 
 /**
  * Created by barterd on conversations/8/14.
@@ -48,8 +39,6 @@ public class DotDash extends Activity {
     public static String currentMessage;
 
     public static final String CONTACT_NAME = "contactName";
-    //protected static final String CONTACT_NUMBER = "contactNumber";
-    //protected static final String CONTACT_ID = "contactID";
     public static final String MESSAGE_SENDER = "messageSender";
     public static final String MESSAGE_TEXT = "messageText";
     public static final String MESSAGE_TIMESTAMP = "messageTimestamp";
@@ -86,8 +75,6 @@ public class DotDash extends Activity {
 
         setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
 
-//        Log.e("alby", "starting");
-
         appContext = getApplicationContext();
 
         actionBar = getActionBar();
@@ -105,7 +92,6 @@ public class DotDash extends Activity {
         currentTabNumber = intent.getIntExtra(TARGET_TAB, settings.getInt(CURRENT_TAB_NUMBER, 0));
         currentMessage = intent.getStringExtra(CURRENT_MESSAGE);
 
-
         conversationsFragment = (ConversationsFragment)Fragment.instantiate(this, ConversationsFragment.class.getName());
 
         Drawable drConversations = getResources().getDrawable(R.drawable.conversations);
@@ -113,14 +99,12 @@ public class DotDash extends Activity {
         Drawable conversationsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapConversations, 80, 80, true));
 
         ActionBar.Tab conversationsTab = actionBar.newTab()
-//                .setText("tab1")
                 .setTabListener(new TabListener(
                         conversationsFragment, this, "Conversations", CONVERSATIONS_TAB_NUMBER))
                 .setIcon(conversationsSmall);
         actionBar.addTab(conversationsTab);
 
         newMessageFragment = (NewMessageFragment)Fragment.instantiate(this, NewMessageFragment.class.getName());
-
 
         Drawable drCompose = getResources().getDrawable(R.drawable.compose);
         Bitmap bitmapCompose = ((BitmapDrawable) drCompose).getBitmap();
@@ -131,9 +115,7 @@ public class DotDash extends Activity {
         bundle.putString(CURRENT_MESSAGE, currentMessage);
         newMessageFragment.setArguments(bundle);
 
-
         ActionBar.Tab newMessageTab = actionBar.newTab()
-//                .setText("tab1")
                 .setTabListener(new TabListener(
                         newMessageFragment, this, "New Message", NEW_MESSAGE_TAB_NUMBER))
                 .setIcon(composeSmall);
@@ -147,7 +129,6 @@ public class DotDash extends Activity {
         Drawable contactsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapContacts, 80, 80, true));
 
         ActionBar.Tab contactsTab = actionBar.newTab()
-//                .setText("tab1")
                 .setTabListener(new TabListener(
                         contactsFragment, this, "Contacts", CONTACTS_TAB_NUMBER))
                 .setIcon(contactsSmall);
@@ -159,23 +140,15 @@ public class DotDash extends Activity {
         Bitmap bitmapSettings = ((BitmapDrawable) drSettings).getBitmap();
         Drawable settingsSmall = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmapSettings, 80, 80, true));
 
-
         ActionBar.Tab settingTab = actionBar.newTab()
-//                .setText("tab1")
                 .setTabListener(new TabListener(
                         settingsFragment, this, "Settings", SETTINGS_TAB_NUMBER))
                 .setIcon(settingsSmall);
         actionBar.addTab(settingTab);
 
-//        currentTab = intent.getIntExtra(TARGET_TAB, currentTab);
-//        actionBar.setSelectedNavigationItem(currentTab);
-
         actionBar.setSelectedNavigationItem(currentTabNumber);
 
-
         IntentFilter filter = new IntentFilter(Receiver.DOT_DASH_RECEIVED_MESSAGE);
-        this.registerReceiver(newMessageAlertReceiver, filter);
-
 
         if (intent.getStringExtra(CAME_FROM_NOTIFICATION) != null) {
             Intent nameIntent = new Intent(this, SingleConversationActivity.class);
@@ -223,14 +196,11 @@ public class DotDash extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-
-        //Log.e("alby", "pausing");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //Log.e("alby", "stopping");
 
         editor.putInt(WPM_SETTING, wpm);
         editor.putBoolean(RECEIVE_AS_TEXT_SETTING, receiveAsText);
@@ -238,7 +208,6 @@ public class DotDash extends Activity {
         editor.putBoolean(RECEIVE_AS_LIGHT_SETTING, receiveAsLight);
         editor.putBoolean(RECEIVE_AS_BEEP_SETTING, receiveAsBeep);
         editor.putInt(CURRENT_TAB_NUMBER, currentTabNumber);
-//        Log.e("alby", newMessageFragment.getMessageText());
         editor.putString(CURRENT_MESSAGE, newMessageFragment.getMessageText());
 
         editor.commit();
@@ -247,30 +216,10 @@ public class DotDash extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(newMessageAlertReceiver);
     }
 
     public void setTabNumber(int tabNumber) {
         currentTabNumber = tabNumber;
-    }
-
-    protected void displayAlert()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("You've Got Mail!").setCancelable(
-                false).setPositiveButton("Listen",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                }).setNegativeButton("Ignore",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     @Override
@@ -295,47 +244,4 @@ public class DotDash extends Activity {
             finish();
         }
     }
-
-    private final BroadcastReceiver newMessageAlertReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (Receiver.DOT_DASH_RECEIVED_MESSAGE.equals(action))
-            {
-                Contact sender = DataManager.getInstance().getAddressBookNumbersMap().get(intent.getStringExtra(MESSAGE_SENDER));
-                if (sender != null) {
-                    Message newMessage = new Message(intent.getStringExtra(MESSAGE_TEXT), sender, false, intent.getLongExtra(MESSAGE_TIMESTAMP,0));
-
-                    if (sender.getConversation().isDuplicate(newMessage)) {
-                        return;
-                    }
-
-                    sender.getConversation().addMessage(newMessage);
-                    DataManager.getInstance().addMessageToDb(newMessage);
-
-                    // add sender to conversations list if they aren't already there
-                    if (sender.getConversation().size() == 0) {
-                        //conversationsFragment.addSender(sender);
-                        FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.detach(conversationsFragment);
-                        ft.attach(conversationsFragment);
-                        ft.commit();
-                    }
-
-                    // refresh message screen
-
-
-//                    if (speechBubbleArrayAdapter != null) {
-//                        speechBubbleArrayAdapter.add(newMessage);
-//                        speechBubbleArrayAdapter.notifyDataSetChanged();
-//                    }
-
-
-                }
-            }
-
-        }
-    };
 }

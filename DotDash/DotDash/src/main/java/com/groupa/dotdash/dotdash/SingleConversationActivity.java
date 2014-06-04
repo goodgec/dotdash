@@ -2,10 +2,7 @@ package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,8 +13,6 @@ import java.util.ArrayList;
 public class SingleConversationActivity extends Activity {
     private ArrayList<Message> messageList;
     private String converser;
-    private Vibrator vibrator;
-    private ToneGenerator beeper;
 
     private ListView conversationListView;
     private Button replyButton;
@@ -33,9 +28,6 @@ public class SingleConversationActivity extends Activity {
         conversationListView = (ListView)findViewById(R.id.conversationListView);
         replyButton = (Button)findViewById(R.id.singleConversationReplyButton);
 
-        vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
-        beeper = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
-
         Intent intent = getIntent();
         converser = intent.getStringExtra(DotDash.CONTACT_NAME);
         if (converser != null) {
@@ -43,10 +35,8 @@ public class SingleConversationActivity extends Activity {
         }
 
         messageList = DataManager.getInstance().getAddressBookNamesMap().get(converser).getConversation().getMessages();
-        //speechBubbleArrayAdapter = new ArrayAdapter<Message>(this, android.R.layout.simple_list_item_1, messageList);
         speechBubbleArrayAdapter = new BubbleArrayAdapter(this, R.layout.speech_bubble, messageList);
         conversationListView.setAdapter(speechBubbleArrayAdapter);
-        //addItems();
 
         conversationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

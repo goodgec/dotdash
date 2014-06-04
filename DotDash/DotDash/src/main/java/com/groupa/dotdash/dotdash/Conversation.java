@@ -2,8 +2,6 @@ package com.groupa.dotdash.dotdash;
 
 import java.util.ArrayList;
 
-import javax.xml.parsers.FactoryConfigurationError;
-
 /**
  * Created by adamsr on 5/10/14.
  */

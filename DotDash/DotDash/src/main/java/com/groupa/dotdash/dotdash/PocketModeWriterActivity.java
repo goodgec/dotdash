@@ -3,15 +3,12 @@ package com.groupa.dotdash.dotdash;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.Vibrator;
-import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -49,11 +46,12 @@ public class PocketModeWriterActivity extends Activity {
         Intent intent = getIntent();
         final Contact contact = DataManager.getInstance().getAddressBookNamesMap().get(intent.getStringExtra(DotDash.CONTACT_NAME));
 
-
         composeButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    composeButton.setBackground(getResources().getDrawable(R.drawable.touch_down_morse_button));
+
                     lastDown = System.currentTimeMillis();
                     charTimer.cancel();
                     spaceTimer.cancel();
@@ -70,14 +68,22 @@ public class PocketModeWriterActivity extends Activity {
                     sendTimer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(new long[] {0, 100, 100, 100}, -1);
+                            if (messageText.length()  == 0) {
+                                ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(100);
+                                finish();
+                            }
+                            else {
+                                ((Vibrator)getSystemService(VIBRATOR_SERVICE)).vibrate(new long[] {0, 100, 100, 100}, -1);
 
-                            Translator.sendMessage(DotDash.appContext, contact, messageText);
-                            finish();
+                                Translator.sendMessage(contact, messageText);
+                                finish();
+                            }
                         }
                     }, 2500);
                 }
                 else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    composeButton.setBackground(getResources().getDrawable(R.drawable.blue_button));
+
                     lastDuration = System.currentTimeMillis() - lastDown;
                     pressTimes.add(lastDuration);
                     warningTimer.cancel();
@@ -105,14 +111,6 @@ public class PocketModeWriterActivity extends Activity {
             }
         });
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.pocket_mode_writer, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

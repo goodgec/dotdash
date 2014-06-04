@@ -2,7 +2,6 @@ package com.groupa.dotdash.dotdash;
 
 import android.app.Activity;
 import android.content.Context;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,9 +49,6 @@ public class BubbleArrayAdapter extends ArrayAdapter<Message> {
         if (row == null){
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResource, parent, false);
-        }
-        else {
-            message = (Message)row.getTag();
         }
         message = getItem(position);
 

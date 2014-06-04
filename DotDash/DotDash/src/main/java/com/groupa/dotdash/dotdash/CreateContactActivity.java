@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CreateContactActivity extends Activity {
 
@@ -53,14 +52,14 @@ public class CreateContactActivity extends Activity {
                 if (nameField.getText().toString().equals("")
                         || numberField.getText().equals("")
                         || numberField.getText().length() != 10
-                        || idField.getText().length() != 1) {
+                        || idField.getText().length() == 0) {
                     displayAlert();
                     return;
                 }
 
                 Contact contact = new Contact(-1, nameField.getText().toString(),
                         numberField.getText().toString(),
-                        idField.getText().toString().toUpperCase());
+                        idField.getText().toString());
 
                 if(contactToEdit != null && !contact.equals(contactToEdit)){
                     DataManager.getInstance().editContact(contactToEdit, contact);
@@ -70,12 +69,6 @@ public class CreateContactActivity extends Activity {
                 }
                 setResult(Activity.RESULT_OK);
 
-//                if (editingContact) {
-//                Intent intent = new Intent(getApplicationContext(), SingleContactActivity.class);
-//                intent.putExtra(DotDash.CONTACT_NAME, contact.getName());
-//                startActivity(intent);
-//                }
-//                overridePendingTransition(0, 0);
                 finish();
             }
         });
@@ -89,8 +82,6 @@ public class CreateContactActivity extends Activity {
                     Intent intent = new Intent(this, SingleContactActivity.class);
                     intent.putExtra(DotDash.CONTACT_NAME, contactToEdit.getName());
                     NavUtils.navigateUpTo(this, intent);
-//                    startActivity(intent);
-//                    finish();
                 }
                 else {
                     Intent intent = new Intent(this, DotDash.class);
@@ -105,10 +96,9 @@ public class CreateContactActivity extends Activity {
     private void displayAlert()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Cannot save contact").setCancelable(
-                false)
-                .setMessage("Contacts must have a name, a 10-digit phone number, and a 1-character ID.")
-                .setPositiveButton("OK",
+        builder.setCancelable(false)
+               .setMessage("Contacts must have a name, a 10-digit phone number, and an ID.")
+               .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();

@@ -43,6 +43,7 @@ public class DataManager {
         contact.setInternalID(newRowId);
         addressBookNames.put(contact.getName(), contact);
         addressBookNumbers.put(contact.getNumber(), contact);
+        addressBookMorseIDs.put(contact.getMorseID(), contact);
     }
 
     private Contact createContactFromDb(Cursor c) {
@@ -63,7 +64,7 @@ public class DataManager {
             Contact contact = createContactFromDb(c);
             addressBookNames.put(contact.getName(), contact);
             addressBookNumbers.put(contact.getNumber(), contact);
-            addressBookMorseIDs.put(contact.getMorseID().toUpperCase(), contact);
+            addressBookMorseIDs.put(contact.getMorseID(), contact);
         }
         db.close();
 

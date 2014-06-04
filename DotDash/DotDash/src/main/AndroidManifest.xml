@@ -56,12 +56,6 @@
             android:windowSoftInputMode="stateHidden">
             <!--android:windowSoftInputMode="adjustResize" >-->
         </activity>
-        <activity
-            android:name="com.groupa.dotdash.dotdash.SplashScreenActivity"
-            android:label="@string/title_activity_splash_sceen"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
 
         <receiver android:name="com.groupa.dotdash.dotdash.Receiver" >
             <intent-filter>
